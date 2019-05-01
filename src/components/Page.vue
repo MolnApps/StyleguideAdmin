@@ -1,9 +1,11 @@
 <template>
     <div>
-        <div v-if="! editing">
-            <h1 v-text="page.title"></h1>
-            <p v-text="page.body"></p>
-            <button id="edit" @click="toggle">Edit</button>
+        <div v-if="! editing" class="p-16">
+            <div class="flex border-0 border-t-2 border-grey pt-2 mb-6">
+                <h2 v-text="page.title" class="flex-1"></h2>
+                <button id="edit" @click="toggle" class="btn btn-blue">Edit</button>
+            </div>
+            <p v-text="page.body" class="w-3/4"></p>
         </div>
         <page-form 
             v-if="editing" 
