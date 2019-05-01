@@ -1,0 +1,4 @@
+Create a git repo
+Style the component in browser
+Move test api to setup.js
+Test require in styleguide repo
