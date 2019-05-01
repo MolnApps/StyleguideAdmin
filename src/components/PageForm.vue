@@ -16,7 +16,7 @@
 import StyleguideForm from './../StyleguideForm';
 
 export default {
-    props: ['dataPage'],
+    props: ['dataPage', 'dataEndpoint'],
     data() {
         return {
             form: new StyleguideForm(this.dataPage),
@@ -28,7 +28,7 @@ export default {
                 this.$emit('success', this.form.data());
             });
 
-            this.form.submit('/pages/1');
+            this.form.submit(this.dataEndpoint);
         },
         cancel: function() {
             this.$emit('cancel');

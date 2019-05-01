@@ -10,7 +10,8 @@ describe('PageForm.vue', () => {
 	beforeEach(() => {
 		wrapper = shallowMount(PageForm, {
 			propsData: { 
-				dataPage: {title:'Foo', body: 'Bar'}
+				dataPage: {title:'Foo', body: 'Bar'},
+				dataEndpoint: '/pages/1'
 			}
 	    });
 
@@ -84,7 +85,7 @@ describe('PageForm.vue', () => {
 	})
 
 	let mockSuccessfullRequest = () => {
-		moxios.stubRequest('/pages/1', {
+		moxios.stubRequest(/pages\/\d+/, {
 			status: 200,
 			responseText: {
 				feedback: ['The page was updated.']
@@ -93,7 +94,7 @@ describe('PageForm.vue', () => {
 	}
 
 	let mockRequestWithValidationErrors = () => {
-		moxios.stubRequest('/pages/1', {
+		moxios.stubRequest(/pages\/\d+/, {
 			status: 403,
 			responseText: {
 				errors: {

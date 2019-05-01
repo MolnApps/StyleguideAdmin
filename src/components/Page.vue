@@ -3,11 +3,12 @@
         <div v-if="! editing">
             <h1 v-text="page.title"></h1>
             <p v-text="page.body"></p>
-            <button id="edit" @click="edit">Edit</button>
+            <button id="edit" @click="toggle">Edit</button>
         </div>
         <page-form 
             v-if="editing" 
             :data-page="dataPage" 
+            :data-endpoint="dataEndpoint"
             @success="refresh" 
             @cancel="toggle"
         ></page-form>
@@ -20,7 +21,7 @@ export default {
     components: {
         PageForm
     },
-    props: ['dataPage'],
+    props: ['dataPage', 'dataEndpoint'],
     data() {
         return {
             page: this.dataPage,
@@ -28,11 +29,8 @@ export default {
         }
     },
     methods: {
-        edit: function() {
-            this.toggle();
-        },
         refresh: function(data) {
-            this.page = JSON.parse(JSON.stringify(data))
+            this.page = data;
             this.toggle();
         },
         toggle: function() {
