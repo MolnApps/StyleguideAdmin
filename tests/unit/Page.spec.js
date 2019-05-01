@@ -1,7 +1,7 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import Page from '@/components/Page.vue'
-import moxios from 'moxios'
-import TestUI from './../../src/TestHelpers.js'
+import PageForm from '@/components/PageForm.vue'
+import TestUI from '@/TestHelpers.js'
 
 describe('Page.vue', () => {
 	let wrapper;
@@ -10,26 +10,19 @@ describe('Page.vue', () => {
 	beforeEach(() => {
 		wrapper = shallowMount(Page, {
 			propsData: { 
-				dataPage: {title:'Foo', body: 'Bar'},
-				dataForm: null
+				dataPage: {title:'Foo', body: 'Bar'}
 			}
 	    });
 
-	    moxios.install();
-
 	    ui = new TestUI(wrapper);
 	})
-
-	afterEach(() => {
-		moxios.uninstall();
-    })
 
 	it('displays a page markup', () => {
 		ui.see('Foo');
 		ui.see('Bar');
 	})
 
-	it('displays a edit button', () => {
+	it('displays an edit button', () => {
 		ui.seeInput('#edit');
 	})
 
@@ -38,114 +31,50 @@ describe('Page.vue', () => {
 
 		ui.click('#edit');
 
-		ui.seeForm('#pageForm');
+		ui.seeChildComponent(PageForm);
 	})
 
-	it('has all inputs', () => {
+	it('hides the form when the form is submitted', () => {
 		ui.click('#edit');
 
-		ui.seeInput('input[name="title"]', 'Foo');
-		ui.seeInput('textarea[name="body"]', 'Bar');
+		ui.seeChildComponent(PageForm);
+
+		wrapper.find(PageForm).vm.$emit('success', {});
+
+		ui.notSeeChildComponent(PageForm);
 	})
 
-	it('hides the form when the save button is clicked', (done) => {
+	it('refreshes the page when the form is submitted with success', () => {
+		let attr = {title: 'Foobar', body: 'Barbaz'};
+
+    	ui.notSee(attr.title);
+    	ui.notSee(attr.body);
+
+    	ui.click('#edit');
+
+    	ui.emit(PageForm, 'success', attr);
+
+    	ui.see(attr.title);
+    	ui.see(attr.body);
+    })
+
+    it('hides the form when the cancel button is clicked', () => {
 		ui.click('#edit');
 
-		ui.seeForm('#pageForm');
+		ui.seeChildComponent(PageForm);
 
-		mockSuccessfullRequest();
-		
-		ui.click('#save');
+		ui.emit(PageForm, 'cancel');
 
-		expectAfterRequest(() => {
-			ui.notSeeForm('#pageForm');	
-		}, done);
-	})
-
-	it('updates the page when the save button is clicked', (done) => {
-		ui.notSee('Foobar');
-		ui.notSee('Barbaz');
-
-		ui.click('#edit');
-
-		ui.type('input[name="title"]', 'Foobar');
-		ui.type('textarea[name="body"]', 'Barbaz');
-
-		mockSuccessfullRequest();
-		
-		ui.click('#save');
-
-		expectAfterRequest(() => {
-			ui.see('Foobar');
-			ui.see('Barbaz');
-		}, done);
+		ui.notSeeChildComponent(PageForm);
 	})
 
 	it('does not update the page when the cancel button is clicked', () => {
-		ui.notSee('Foobar');
-		ui.notSee('Barbaz');
+		let before = wrapper.html();
 
 		ui.click('#edit');
 
-		ui.type('input[name="title"]', 'Foobar');
-		ui.type('textarea[name="body"]', 'Barbaz');
+		ui.emit(PageForm, 'cancel');
 
-		ui.click('#cancel');
-
-		ui.notSee('Foobar');
-		ui.notSee('Barbaz');
+		expect(wrapper.html()).toBe(before);
 	})
-
-	it('calls the api when the save button is clicked', (done) => {
-		ui.click('#edit');
-
-		ui.type('input[name="title"]', 'Foobar');
-		ui.type('textarea[name="body"]', 'Barbaz');
-
-		mockSuccessfullRequest();
-		
-		ui.click('#save');
-
-		expectAfterRequest(() => {
-			ui.see('The page was updated.');
-		}, done);
-	})
-
-	it('displays validation errors', (done) => {
-		ui.click('#edit');
-
-		moxios.stubRequest('/pages/1', {
-			status: 403,
-			responseText: {
-				errors: {
-					title: ['Title is required'],
-					body: ['Body is required']
-				}
-			}
-		});
-
-	    ui.click('#save');
-
-		expectAfterRequest(() => {
-			ui.see('Title is required');
-			ui.see('Body is required');
-			ui.seeForm('#pageForm');
-		}, done);
-	})
-
-	let mockSuccessfullRequest = () => {
-		moxios.stubRequest('/pages/1', {
-			status: 200,
-			responseText: {
-				feedback: ['The page was updated.']
-			}
-		});
-	}
-
-	let expectAfterRequest = (callback, done) => {
-		moxios.wait(() => {
-			callback();
-			done();
-		});
-	}
 })

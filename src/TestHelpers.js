@@ -4,6 +4,21 @@ class TestUI {
 	constructor(wrapper) {
 		this.wrapper = wrapper;
 	}
+
+	seeChildComponent(childComponent)
+	{
+		expect(this.wrapper.find(childComponent).exists()).toBe(true);
+	}
+
+	notSeeChildComponent(childComponent)
+	{
+		expect(this.wrapper.find(childComponent).exists()).toBe(false);
+	}
+
+	emit(childComponent, eventName, data)
+	{
+		this.wrapper.find(childComponent).vm.$emit(eventName, data);
+	}
 	
 	see(text, selector) {
 		let node = selector ? this.wrapper.find(selector) : this.wrapper;
