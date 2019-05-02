@@ -1,1 +1,13 @@
-Test require in styleguide repo
+— Colour palette editor
+—— Use form object
+—— Define actual request parameters for removing/associating colours
+—— Basic styling in browser
+—— Extract ajax helper methods
+—— Write test to sort colours
+— Typography editor
+— Logo editor
+— Moodboard editor
+— Video editor
+— Contacts editor
+— Index editor
+— Chapter editor

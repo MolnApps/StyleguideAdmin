@@ -37,10 +37,10 @@ class TestUI {
 	}
 
 	seeInput(selector, value) {
-		if (value) {
+		if (value != undefined) {
 			expect(this.wrapper.find(selector).element.value).toBe(value);
 		} else {
-			expect(this.wrapper.find(selector)).toBeTruthy();
+			expect(this.wrapper.find(selector).exists()).toBe(true);
 		}
 	}
 
