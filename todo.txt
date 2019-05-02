@@ -1,2 +1,1 @@
-Style the component in browser
 Test require in styleguide repo

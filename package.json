@@ -1,16 +1,18 @@
 {
   "name": "styleguide-admin",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.2",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --target lib --name page-form ./src/components/PageForm.vue",
     "test:unit": "vue-cli-service test:unit",
     "css": "npx tailwind build ./src/scss/app.css -c tailwind.js -o ./public/output.css"
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "axios": "^0.18.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
@@ -24,7 +26,6 @@
     "tailwindcss": "^0.7.4",
     "vue-template-compiler": "^2.5.21",
     "expect": "^24.7.1",
-    "moxios": "^0.4.0",
-    "axios": "^0.18.0"
+    "moxios": "^0.4.0"
   }
 }

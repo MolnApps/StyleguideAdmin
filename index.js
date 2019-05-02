@@ -1,0 +1,1 @@
+module.exports = require('./dist/js/app.31aa6293.js');
