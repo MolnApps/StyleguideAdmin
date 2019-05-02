@@ -7,4 +7,3 @@ export {
 }
 
 export default {}
->>>>>>> Make friendly for npm package users
