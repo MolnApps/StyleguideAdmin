@@ -1,5 +1,7 @@
 — Colour palette editor
-—— Use form object
+—— Use form object for #add
+—— Add cancel button for add colour
+—— Use form object for #persist
 —— Define actual request parameters for removing/associating colours
 —— Basic styling in browser
 —— Extract ajax helper methods

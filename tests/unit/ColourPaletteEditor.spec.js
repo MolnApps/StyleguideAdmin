@@ -55,15 +55,15 @@ describe('ColourPaletteEditor.vue', () => {
 
 		ui.notSeeInput('button[id="add"]');
 		ui.seeForm('#colourForm');
-		ui.seeInput('input[name="title"]');
-		ui.seeInput('input[name="hex"]');
-		ui.seeInput('input[name="rgb"]');
-		ui.seeInput('input[name="cmyk"]');
-		ui.seeInput('input[name="pantone"]');
+		ui.seeInput('input[name="title"]', '');
+		ui.seeInput('input[name="hex"]', '');
+		ui.seeInput('input[name="rgb"]', '');
+		ui.seeInput('input[name="cmyk"]', '');
+		ui.seeInput('input[name="pantone"]', '');
 		ui.seeInput('button[id="save"]');
 	})
 
-	it ('adds the colour if the save button is clicked', (done) => {
+	it ('persists the colour if the save button is clicked', (done) => {
 		let colour = makeColour('Cyan', '#00ffff');
 
 		mockSuccessfullRequest(colour, {id: 25});
@@ -80,8 +80,28 @@ describe('ColourPaletteEditor.vue', () => {
 		moxios.wait(() => {
 			expectRequest('/colours', colour);
 			expectColour('Cyan', 25);
+			expectEvent('success');
 			done();
 		});
+	})
+
+	it ('does not persist the colour if the cancel button is clicked', () => {
+		let colour = makeColour('Cyan', '#00ffff');
+
+		ui.notSee(colour.title, 'div.page');
+		ui.notSee(colour.title, 'div.all');
+
+		ui.click('#add');
+
+		fillColourForm(colour);
+
+		ui.click('#cancelAdd');
+
+		ui.notSeeForm('#colourForm');
+		ui.notSee(colour.title, 'div.page');
+		ui.notSee(colour.title, 'div.all');
+
+		expect(moxios.requests.mostRecent()).toBeFalsy();
 	})
 
 	it ('displays validation errors', (done) => {
@@ -189,7 +209,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.seeInput('input[name="hex"]', '#0000ff');
 
 		fillColourForm(newColour);
-		
+
 		ui.click('#save');
 
 		moxios.wait(() => {

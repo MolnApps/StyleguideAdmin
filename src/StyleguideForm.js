@@ -28,7 +28,7 @@ class StyleguideForm extends EventEmitter
 		return axios.post(endpoint, this.data())
             .then(({data}) => {
             	this.feedback = data.feedback;
-                this.emit('success');
+                this.emit('success', data);
             })
             .catch((error) => {
             	this.errors = error.response.data.errors;
