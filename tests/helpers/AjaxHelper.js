@@ -2,19 +2,19 @@ import moxios from 'moxios'
 
 class AjaxHelper {
 	constructor () {
-		this.moxios = moxios;
+		
 	}
 
 	install() {
-		this.moxios.install();
+		moxios.install();
 	}
 
 	uninstall() {
-		this.moxios.uninstall();
+		moxios.uninstall();
 	}
 
 	stubRequest(endpoint, response) {
-		this.moxios.stubRequest(endpoint, response);
+		moxios.stubRequest(endpoint, response);
 	}
 
 	getSuccessfulResponse(record, override) {
@@ -42,13 +42,13 @@ class AjaxHelper {
 	}
 
 	expectRequest(url, params) {
-		let request = this.moxios.requests.mostRecent();
+		let request = moxios.requests.mostRecent();
 		expect(request.config.url).toEqual(url);
 		expect(JSON.parse(request.config.data)).toEqual(params);
 	}
 
 	expectAfterRequest(callback, done) {
-		this.moxios.wait(() => {
+		moxios.wait(() => {
 			callback();
 			done();
 		});

@@ -96,12 +96,11 @@ describe('ColourPaletteEditor.vue', () => {
 
 		ui.click('#save');
 
-		moxios.wait(() => {
+		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/colours', colour);
 			colourHelper.expect('Cyan', 25);
 			ui.expectEvent('success');
-			done();
-		});
+		}, done);
 	})
 
 	it ('does not persist the colour if the cancel button is clicked', () => {
