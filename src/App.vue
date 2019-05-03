@@ -1,16 +1,24 @@
 <template>
   <div id="app" class="container mx-auto leading-normal">
-    <page :dataEndpoint="'/pages/1'" :dataPage="{title:'Foo', body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni ab, tempora vel. Nihil iusto aut magni eligendi exercitationem ipsum, similique quisquam voluptatum voluptas cum eum blanditiis accusamus fuga perferendis inventore?'}"/>
+    <colour-palette-editor 
+    	:dataEndpoint="'/colours'" 
+    	:dataPageColours="[{id: 2, title: 'Green', hex: '#00ff00'}]" 
+    	:dataAllColours="[
+    		{id: 1, title: 'Red', hex: '#ff0000'}, 
+    		{id: 2, title: 'Green', hex: '#00ff00'}, 
+    		{id: 3, title: 'Blue', hex: '#0000ff'}
+    	]"
+    ></colour-palette-editor>
   </div>
 </template>
 
 <script>
-import Page from './components/Page.vue'
+import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
 
 export default {
   name: 'app',
   components: {
-    Page
+    ColourPaletteEditor
   }
 }
 </script>

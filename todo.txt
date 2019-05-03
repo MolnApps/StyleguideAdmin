@@ -1,10 +1,9 @@
 — Colour palette editor
-—— Use form object for #add
-—— Add cancel button for add colour
-—— Use form object for #persist
+—— Add a colour from the global palette by click
+-- Hide #persist and #cancel buttons when #add is clicked
+—— When the form is visible and I click on the edit button of a colour, it should not be toggled.
 —— Define actual request parameters for removing/associating colours
-—— Basic styling in browser
-—— Extract ajax helper methods
+—— Extract ajax test helper methods
 —— Write test to sort colours
 — Typography editor
 — Logo editor
