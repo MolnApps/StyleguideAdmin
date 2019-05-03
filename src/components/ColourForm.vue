@@ -60,6 +60,7 @@ export default {
     data() {
         return {
             colour: this.dataColour,
+            colourId: null,
             form: null
         }
     },
@@ -68,7 +69,7 @@ export default {
     },
     methods: {
         saveColour: function() {
-            let originalColourId = this.eraseFormId();
+            this.colourId = this.eraseFormId();
 
             this.form.on('success', this.onSuccess.bind(this));
 
@@ -88,9 +89,12 @@ export default {
             this.resetForm();
             this.$emit('cancel');
         },
-        onSuccess: function() {
+        onSuccess: function(data) {
             this.resetForm();
-            this.$emit('success', this.form.data());
+            this.$emit('success', {
+                data: data, 
+                id: this.colourId
+            });
         },
         resetForm: function() {
             this.form = new StyleguideForm(this.colour);

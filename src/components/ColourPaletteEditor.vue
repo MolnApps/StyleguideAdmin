@@ -2,96 +2,32 @@
     <div>
         <!-- Page colours -->
         <div class="page Colour__container" v-if="! displayForm">
-            <div 
+            <colour 
                 v-for="colour in pageColours" 
-                :data-id="colour.id" 
-                class="Colour"
-            >
-                <div 
-                    v-text="colour.title" 
-                    :style="'background-color:' + colour.hex" 
-                    class="Colour__fill"
-                ></div>
-                <div class="Colour__actions">
-                    <span 
-                        href="#" 
-                        @click.prevent="removeColour(colour.id)" 
-                        class="del Colour__action"
-                    >Remove</span>
-                    <span 
-                        href="#" 
-                        @click.prevent="editColour(colour)" 
-                        class="edit Colour__action"
-                    >Edit</span>
-                </div>
-            </div>
+                :data-colour="colour"
+                :data-editable="true"
+                @remove="removeColour"
+                @edit="editColour"
+            ></colour>
         </div>
         <!-- Form -->
-        <form id="colourForm" v-if="displayForm" class="Form">
-            <h3 class="Form__title">Colour</h3>
-            <input 
-                type="text" 
-                name="title" 
-                v-model="form.title" 
-                placeholder="Title" 
-                class="Form__input" />
-            <p v-if="form.errors.title" v-for="error in form.errors.title" v-text="error"></p>
-            <input 
-                type="text" 
-                name="hex" 
-                v-model="form.hex" 
-                placeholder="Hex"
-                class="Form__input" />
-            <p v-if="form.errors.hex" v-for="error in form.errors.hex" v-text="error"></p>
-            <input 
-                type="text" 
-                name="rgb" 
-                v-model="form.rgb" 
-                placeholder="RGB"
-                class="Form__input" />
-            <p v-if="form.errors.rgb" v-for="error in form.errors.rgb" v-text="error"></p>
-            <input 
-                type="text" 
-                name="cmyk" 
-                v-model="form.cmyk" 
-                placeholder="CMYK"
-                class="Form__input" />
-            <p v-if="form.errors.cmyk" v-for="error in form.errors.cmyk" v-text="error"></p>
-            <input 
-                type="text" 
-                name="pantone" 
-                v-model="form.pantone" 
-                placeholder="Pantone"
-                class="Form__input" />
-            <p v-if="form.errors.pantone" v-for="error in form.errors.pantone" v-text="error"></p>
-            <div class="Actions">
-                <button 
-                    id="cancelAdd" 
-                    @click="resetFormAndClose" 
-                    class="Button Button--secondary"
-                >Cancel</button>
-                <button 
-                    id="save" 
-                    @click="saveColour" 
-                    class="Button Button--primary"
-                >Save</button>
-            </div>
-        </form>
+        <colour-form 
+            v-if="displayForm" 
+            :data-endpoint="dataEndpoint" 
+            :data-colour="colour"
+            @success="onSaveColour"
+            @cancel="resetColourAndClose"
+        ></colour-form>
         <!-- All colours -->
         <div class="all Colour__container" v-if="! displayForm">
-            <div 
-                v-for="colour in allColours" 
-                :data-id="colour.id" 
-                v-if="! isInPalette(colour)" 
-                class="Colour Colour--small"
-                @click="addColour(colour)"
-            >
-                <div 
-                    v-text="colour.title" 
-                    :style="'background-color:' + colour.hex" 
-                    class="Colour__fill"
-                ></div>
-            </div>
+            <colour
+                v-for="colour in allColours"
+                v-if="! isInPalette(colour)"
+                :data-colour="colour"
+                :data-editable="false"
+                data-mod="small"
+                @click="addColour"
+            ></colour>
             <button 
                 id="add" 
                 @click="toggleForm" 
@@ -107,23 +43,23 @@
 </template>
 
 <script>
-import axios from 'axios'
 import StyleguideForm from './../StyleguideForm.js'
 import ColourForm from './ColourForm.vue'
+import Colour from './Colour.vue'
 export default {
-    components: {ColourForm},
+    components: {ColourForm, Colour},
     props: ['dataPageColours', 'dataAllColours', 'dataEndpoint'],
     data() {
         return {
             pageColours: this.dataPageColours,
             allColours: this.dataAllColours,
             displayForm: false,
-            form: null,
-            changesForm: new StyleguideForm({foo: 'bar'})
+            changesForm: new StyleguideForm({foo: 'bar'}),
+            colour: {}
         }
     },
     created() {
-        this.resetForm();
+        this.resetColour();
     },
     methods: {
         isInPalette: function(colour) {
@@ -134,54 +70,38 @@ export default {
         toggleForm: function() {
             this.displayForm = ! this.displayForm;
         },
-        addColour: function(colour) {
-            this.pageColours.push(colour);
+        onSaveColour: function(data) {
+            this.removeColour({id: data.id});
+            this.pageColours.push(data.data.record);
+            this.allColours.push(data.data.record);
+            this.resetColourAndClose();
+
+            this.$emit('success', data);
         },
-        saveColour: function() {
-            let originalColourId = this.eraseFormId();
-
-            this.form.on('success', (data) => {
-                this.removeColour(originalColourId);
-                this.pageColours.push(data.record);
-                this.allColours.push(data.record);
-                this.resetFormAndClose();
-
-                this.$emit('success', this.form.data());
-            });
-
-            this.form.submit(this.dataEndpoint);
-        },
-        eraseFormId: function() {
-            let id;
-
-            if (this.form.id) {
-                id = this.form.id;
-                this.form.id = '';
-            }
-            
-            return id;
-        },
-        resetFormAndClose: function() {
-            this.resetForm();
+        resetColourAndClose: function() {
+            this.resetColour();
             this.toggleForm();
         },
-        resetForm: function() {
-            this.form = new StyleguideForm({
+        resetColour: function() {
+            this.colour = {
                 title: '',
                 hex: '',
                 rgb: '',
                 cmyk: '',
                 pantone: '',
                 id: ''
-            });
+            };
         },
-        removeColour: function(id) {
+        addColour: function(colour) {
+            this.pageColours.push(colour);
+        },
+        removeColour: function(colour) {
             this.pageColours = this.pageColours.filter((c) => {
-                return c.id != id;
+                return c.id != colour.id;
             });
         },
         editColour: function(colour) {
-            this.form = new StyleguideForm(colour);
+            this.colour = colour;
             this.toggleForm();
         },
         saveChanges: function() {
@@ -202,62 +122,6 @@ export default {
     display: flex;
     justify-content: center;
     padding: 12px;
-}
-.Colour {
-    background: #fff;
-    display: flex;
-    flex-flow: column;
-    margin: 0px 12px;
-}
-.Colour--small {
-    margin: 0px 6px;
-}
-.Colour__fill {
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.Colour--small .Colour__fill {
-    width: 50px;
-    height: 50px;
-    font-size: 10px;
-}
-.Colour__actions {
-    display: flex;
-    justify-content: center;
-}
-.Colour__action {
-    font-size: 10px;
-    color: #ccc;
-    margin: 6px;
-    cursor: pointer;
-}
-.Form {
-    display: flex;
-    flex-flow: column;
-    padding: 50px;
-    border: 1px solid #ccc;
-    max-width: 360px;
-    margin: 0 auto;
-    border-radius: 5px;
-    position: absolute;
-    top: 24px;
-    left: 0;
-    right: 0;
-    background: #fff;
-}
-.Form__title {
-    text-align: center;
-    padding: 0px 12px 12px;
-}
-.Form__input {
-    border: 1px solid #ccc;
-    margin-bottom: 12px;
-    padding: 12px;
-    border-radius: 5px;
 }
 .Actions {
     display: flex;
