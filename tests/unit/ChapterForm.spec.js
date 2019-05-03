@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
-import PageForm from '@/components/PageForm.vue'
+import ChapterForm from '@/components/ChapterForm.vue'
 import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
 
-describe('PageForm.vue', () => {
+describe('ChapterForm.vue', () => {
 	let wrapper;
 	let ui;
 	let ajaxHelper;
@@ -16,29 +16,26 @@ describe('PageForm.vue', () => {
 		ajaxHelper.uninstall();
     })
 
-	it('displays an empty form', () => {
-		bootstrapWrapper({id: '', title: '', body: ''});
+	it ('displays an empty form', () => {
+		bootstrapWrapper({id: '', title:'', body: ''});
 
-		ui.seeForm('#pageForm');
-		ui.see('New page');
+	    ui.seeForm('#chapterForm');
+		ui.see('New chapter');
 		ui.seeInput('input[name="title"]', '');
-		ui.seeInput('textarea[name="body"]', '');
 	})
 
 	it ('displays a filled form if page is provided', () => {
 		bootstrapWrapper();
 		
-	    ui.seeForm('#pageForm');
-		ui.see('Edit page');
+	    ui.seeForm('#chapterForm');
+		ui.see('Edit chapter');
 		ui.seeInput('input[name="title"]', 'Foo');
-		ui.seeInput('textarea[name="body"]', 'Bar');
 	})
 
 	it('calls the api when the save button is clicked', (done) => {
 		bootstrapWrapper();
 
-		ui.type('input[name="title"]', 'Foobar');
-		ui.type('textarea[name="body"]', 'Barbaz');
+	    ui.type('input[name="title"]', 'Foobar');
 
 		mockSuccessfullRequest();
 		
@@ -58,7 +55,6 @@ describe('PageForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('Title is required');
-			ui.see('Body is required');
 		}, done);
 	})
 
@@ -73,7 +69,7 @@ describe('PageForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
-			ui.expectEventData('success', [{ id: '1', title: 'Foo', body: 'Bar' }]);
+			ui.expectEventData('success', [{ id: '1', title: 'Foo', body: '' }]);
 		}, done);
 	})
 
@@ -98,9 +94,9 @@ describe('PageForm.vue', () => {
 	})
 
 	let bootstrapWrapper = (page) => {
-		page = page ? page : {id: '1', title:'Foo', body: 'Bar'};
+		page = page ? page : {id: '1', title:'Foo', body: ''};
 
-		wrapper = shallowMount(PageForm, {
+		wrapper = shallowMount(ChapterForm, {
 			propsData: {
 				dataPage: page,
 				dataEndpoint: '/pages/' + page.id
@@ -121,8 +117,7 @@ describe('PageForm.vue', () => {
 		ajaxHelper.stubRequest(
 			/pages\/\d+/, 
 			ajaxHelper.getResponseWithValidationErrors({
-				title: ['Title is required'],
-				body: ['Body is required']
+				title: ['Title is required']
 			})
 		);
 	}

@@ -1,9 +1,8 @@
-— Colour palette editor
-—— Write test to sort colours
-— Typography editor
 — Logo editor
+— Typography editor
 — Moodboard editor
 — Video editor
 — Contacts editor
 — Index editor
-— Chapter editor
+— Colour palette editor
+—— Write test to sort colours
