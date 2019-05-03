@@ -1,4 +1,5 @@
 import moxios from 'moxios'
+import expect from 'expect'
 
 class AjaxHelper {
 	constructor () {
@@ -52,6 +53,10 @@ class AjaxHelper {
 			callback();
 			done();
 		});
+	}
+
+	expectNoRequests() {
+		expect(moxios.requests.mostRecent()).toBeFalsy();
 	}
 }
 

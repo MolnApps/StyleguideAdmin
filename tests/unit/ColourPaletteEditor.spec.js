@@ -119,7 +119,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.notSee(colour.title, 'div.page');
 		ui.notSee(colour.title, 'div.all');
 
-		expect(moxios.requests.mostRecent()).toBeFalsy();
+		ajaxHelper.expectNoRequests();
 	})
 
 	it ('displays validation errors', (done) => {
@@ -129,7 +129,7 @@ describe('ColourPaletteEditor.vue', () => {
 
 		ui.click('#save');
 
-		moxios.wait(() => {
+		ajaxHelper.expectAfterRequest(() => {
 			ui.seeForm('#colourForm');
 
 			ui.see('Title is required');
@@ -137,9 +137,7 @@ describe('ColourPaletteEditor.vue', () => {
 			ui.see('RGB value is required');
 			ui.see('CMYK value is required');
 			ui.see('Pantone is required');
-			
-			done();
-		});
+		}, done);
 	})
 
 	it ('reset the form when the save button is clicked', (done) => {
@@ -153,14 +151,12 @@ describe('ColourPaletteEditor.vue', () => {
 
 		ui.click('#save');
 
-		moxios.wait(() => {
+		ajaxHelper.expectAfterRequest(() => {
 			ui.click('#add');
 
 			ui.seeInput('input[name="title"]', '');
 			ui.seeInput('input[name="hex"]', '');	
-
-			done();
-		});
+		}, done);
 	})
 
 	it ('will not affect a previously added colour when adding another colour', (done) => {
@@ -242,7 +238,7 @@ describe('ColourPaletteEditor.vue', () => {
 
 		ui.click('#save');
 
-		moxios.wait(() => {
+		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/colours', newColour);
 			colourHelper.expect('Purple', 25);
 
@@ -251,9 +247,7 @@ describe('ColourPaletteEditor.vue', () => {
 			ui.notSee('Blue', 'div.page');
 
 			ui.see('Blue', 'div.all');
-
-			done();
-		})
+		}, done);
 	})
 
 	it ('persists the changes if the save button is clicked', (done) => {
@@ -295,10 +289,9 @@ describe('ColourPaletteEditor.vue', () => {
 		
 		ui.click('#persist');
 		
-		moxios.wait(function () {
+		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
-			done()
-		})
+		}, done);
 	})
 
 	it ('does not persist the changes if the cancel button is clicked', (done) => {
