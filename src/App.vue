@@ -1,24 +1,27 @@
 <template>
   <div id="app" class="container mx-auto leading-normal">
-    <colour-palette-editor 
-    	:dataEndpoint="'/colours'" 
-    	:dataPageColours="[{id: 2, title: 'Green', hex: '#00ff00'}]" 
-    	:dataAllColours="[
-    		{id: 1, title: 'Red', hex: '#ff0000'}, 
-    		{id: 2, title: 'Green', hex: '#00ff00'}, 
-    		{id: 3, title: 'Blue', hex: '#0000ff'}
+    <logo-editor 
+    	:dataEndpoint="'/logos'" 
+    	:dataPageLogos="[
+        {id: 1, title: 'Primary', url: 'storage/logo.svg', pivot: {preferences: {'background-color': '#00ff00'}}},
+        {id: 1, title: 'Primary', url: 'storage/logo.svg', pivot: {preferences: {'background-color': '#ff0000'}}}
+      ]" 
+    	:dataAllLogos="[
+    		{id: 1, title: 'Primary', url: 'storage/logo.svg'}, 
+    		{id: 2, title: 'Secondary positive', url: 'storage/logo-black.svg'}, 
+    		{id: 3, title: 'Secondary negative', url: 'storage/logo-white.svg'}
     	]"
-    ></colour-palette-editor>
+    ></logo-editor>
   </div>
 </template>
 
 <script>
-import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
+import LogoEditor from './components/LogoEditor.vue'
 
 export default {
   name: 'app',
   components: {
-    ColourPaletteEditor
+    LogoEditor
   }
 }
 </script>

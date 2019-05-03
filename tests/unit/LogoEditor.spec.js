@@ -20,18 +20,19 @@ describe('LogoEditor.vue', () => {
 		ajaxHelper.uninstall();
     })
 
-	it.only ('it shows all page logos and their background', () => {
-		bootstrapWrapper([
-			logoHelper.make('Primary logo', logoHelper.pivot('#ffffff')),
-			logoHelper.make('Primary logo', logoHelper.pivot('#000000'))
-		])
+	it ('it shows all page logos and their background', () => {
+		bootstrapWrapper()
 
 		ui.seeElement('div.page div[data-id="1"][data-background="#ffffff"]');
 		ui.seeElement('div.page div[data-id="1"][data-background="#000000"]');
 	})
 
-	it ('it shows all logos except the ones already associate with the page', () => {
-		
+	it ('it shows all logos including the ones already associate with the page', () => {
+		bootstrapWrapper()
+
+		ui.seeElement('div.all div[data-id="1"]');
+		ui.seeElement('div.all div[data-id="2"]');
+		ui.seeElement('div.all div[data-id="3"]');
 	})
 
 	it ('can arrange logos in a different order', () => {
@@ -94,11 +95,22 @@ describe('LogoEditor.vue', () => {
 		
 	})
 
-	let bootstrapWrapper = (pageLogos) => {
+	let bootstrapWrapper = (pageLogos, allLogos) => {
+		pageLogos = pageLogos ? pageLogos : [
+			logoHelper.make('Primary logo', logoHelper.pivot('#ffffff')),
+			logoHelper.make('Primary logo', logoHelper.pivot('#000000'))
+		];
+
+		allLogos = allLogos ? allLogos : [
+			logoHelper.make('Primary logo', {id: 1}),
+			logoHelper.make('Secondary logo positive', {id: 2}),
+			logoHelper.make('Secondary logo negative', {id: 3})
+		];
+
 		wrapper = mount(LogoEditor, {
 			propsData: { 
 				dataPageLogos: pageLogos, 
-				dataAllLogos: [], 
+				dataAllLogos: allLogos, 
 				dataEndpoint: '/logos'
 			}
 		});
