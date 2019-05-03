@@ -1,6 +1,6 @@
 import expect from 'expect'
 
-class TestUI {
+class TestHelper {
 	constructor(wrapper) {
 		this.wrapper = wrapper;
 	}
@@ -70,6 +70,19 @@ class TestUI {
 		node.element.value = value;
 		node.trigger('input');
 	}
+
+	expectEvent(name) {
+		expect(this.wrapper.emitted()[name]).toBeTruthy();
+	}
+
+	expectEventData(name, data)
+	{
+		expect(this.wrapper.emitted()[name][0]).toEqual(data);
+	}
+
+	notExpectEvent(name) {
+		expect(this.wrapper.emitted()[name]).toBeFalsy();
+	}
 }
 
-export default TestUI;
+export default TestHelper;

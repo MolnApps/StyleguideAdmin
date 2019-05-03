@@ -1,12 +1,13 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
-import TestUI from '@/TestHelpers.js'
+import {TestHelper, AjaxHelper, ColourHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
-import axios from 'axios';
 
 describe('ColourPaletteEditor.vue', () => {
 	let wrapper;
 	let ui;
+	let colourHelper;
+	let ajaxHelper;
 
 	beforeEach(() => {
 		wrapper = mount(ColourPaletteEditor, {
@@ -17,24 +18,26 @@ describe('ColourPaletteEditor.vue', () => {
 			}
 		});
 
-	    ui = new TestUI(wrapper);
+	    ui = new TestHelper(wrapper);
+	    colourHelper = new ColourHelper(ui, wrapper);
+	    ajaxHelper = new AjaxHelper();
 
-	    moxios.install();
+	    ajaxHelper.install();
 	})
 
 	afterEach(() => {
-		moxios.uninstall();
+		ajaxHelper.uninstall();
     })
 
 	it ('displays all colours associated with this page', () => {
-		bootstrapWrapperColours();
+		colourHelper.bootstrapColours();
 
 		ui.see('Red', 'div.page');
 		ui.see('Blue', 'div.page');
 	})
 
 	it ('displays all colours still not associated with the page', () => {
-		bootstrapWrapperColours();
+		colourHelper.bootstrapColours();
 
 		ui.see('Green', 'div.all');
 	})
@@ -80,7 +83,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('persists the colour if the save button is clicked', (done) => {
-		let colour = makeColour('Cyan', '#00ffff');
+		let colour = colourHelper.make('Cyan', '#00ffff');
 
 		mockSuccessfullRequest(colour, {id: 25});
 
@@ -89,27 +92,27 @@ describe('ColourPaletteEditor.vue', () => {
 
 		ui.click('#add');
 
-		fillColourForm(colour);
+		colourHelper.fillForm(colour);
 
 		ui.click('#save');
 
 		moxios.wait(() => {
-			expectRequest('/colours', colour);
-			expectColour('Cyan', 25);
-			expectEvent('success');
+			ajaxHelper.expectRequest('/colours', colour);
+			colourHelper.expect('Cyan', 25);
+			ui.expectEvent('success');
 			done();
 		});
 	})
 
 	it ('does not persist the colour if the cancel button is clicked', () => {
-		let colour = makeColour('Cyan', '#00ffff');
+		let colour = colourHelper.make('Cyan', '#00ffff');
 
 		ui.notSee(colour.title, 'div.page');
 		ui.notSee(colour.title, 'div.all');
 
 		ui.click('#add');
 
-		fillColourForm(colour);
+		colourHelper.fillForm(colour);
 
 		ui.click('#cancelAdd');
 
@@ -141,13 +144,13 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('reset the form when the save button is clicked', (done) => {
-		let colour = makeColour('Cyan', '#00ffff');
+		let colour = colourHelper.make('Cyan', '#00ffff');
 
 		mockSuccessfullRequest(colour);
 
 		ui.click('#add');
 
-		fillColourForm(colour);
+		colourHelper.fillForm(colour);
 
 		ui.click('#save');
 
@@ -162,20 +165,20 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('will not affect a previously added colour when adding another colour', (done) => {
-		let colour1 = makeColour('Cyan', '#00ffff');
-		let colour2 = makeColour('Red', '#ff0000');
+		let colour1 = colourHelper.make('Cyan', '#00ffff');
+		let colour2 = colourHelper.make('Red', '#ff0000');
 
-		addColour(colour1);
+		colourHelper.add(colour1);
 
 		moxios.wait(() => {
 			moxios.requests.mostRecent()
-	        	.respondWith(getSuccessfulResponse(colour1, {id: 25}))
+	        	.respondWith(ajaxHelper.getSuccessfulResponse(colour1, {id: 25}))
 	        	.then(() => {
-	        		addColour(colour2);
+	        		colourHelper.add(colour2);
 
 					moxios.wait(() => {
 						moxios.requests.mostRecent()
-		        			.respondWith(getSuccessfulResponse(colour2, {id: 26}))
+		        			.respondWith(ajaxHelper.getSuccessfulResponse(colour2, {id: 26}))
 		        			.then(() => {
 		        				ui.see('Cyan', 'div.page');
 								ui.see('Red', 'div.page');
@@ -188,7 +191,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('adds a colour from the main colour palette', () => {
-		bootstrapWrapperColours();
+		colourHelper.bootstrapColours();
 
 		ui.notSee('Green', 'div.page');
 		ui.see('Green', 'div.all');
@@ -223,11 +226,11 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('edits an existing colour by creating a new one', (done) => {
-		let newColour = makeColour('Purple', '#ff00ff');
+		let newColour = colourHelper.make('Purple', '#ff00ff');
 		
 		mockSuccessfullRequest(newColour, {id: 25});
 
-		bootstrapWrapperColours();
+		colourHelper.bootstrapColours();
 
 		ui.click('div.page div[data-id="3"] span.edit');
 
@@ -236,13 +239,13 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.seeInput('input[name="title"]', 'Blue');
 		ui.seeInput('input[name="hex"]', '#0000ff');
 
-		fillColourForm(newColour);
+		colourHelper.fillForm(newColour);
 
 		ui.click('#save');
 
 		moxios.wait(() => {
-			expectRequest('/colours', newColour);
-			expectColour('Purple', 25);
+			ajaxHelper.expectRequest('/colours', newColour);
+			colourHelper.expect('Purple', 25);
 
 			ui.see('Red', 'div.page');
 			ui.see('Purple', 'div.page');
@@ -255,17 +258,18 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('persists the changes if the save button is clicked', (done) => {
-		let newColour = makeColour('Cyan', '#00ffff');
+		let newColour = colourHelper.make('Cyan', '#00ffff');
 
-		bootstrapWrapperColours();
+		colourHelper.bootstrapPageEndpoint({id: 12});
+		colourHelper.bootstrapColours();
 
-		addColour(newColour);
+		colourHelper.add(newColour);
 
 		moxios.wait(() => {
 			moxios.requests.mostRecent()
-	        	.respondWith(getSuccessfulResponse(newColour, {id: 25}))
+	        	.respondWith(ajaxHelper.getSuccessfulResponse(newColour, {id: 25}))
 	        	.then(() => {
-	        		removeColour();
+	        		colourHelper.remove();
 
 					ui.click('#persist');
 
@@ -276,7 +280,7 @@ describe('ColourPaletteEditor.vue', () => {
 								responseText: {feedback: ['The page was updated.']}
 							})
 		        			.then(() => {
-		        				expectRequest('/colours', {foo: 'bar'});
+		        				ajaxHelper.expectRequest('/page/12/colours', {colour_id: [3, 25]});
 								done()
 		        			})
 					})
@@ -287,28 +291,29 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('fires an event if the api call is successful', (done) => {
 		mockSuccessfullRequest();
 
-		bootstrapWrapperColours();
+		colourHelper.bootstrapPageEndpoint({id: 12});
+		colourHelper.bootstrapColours();
 		
 		ui.click('#persist');
 		
 		moxios.wait(function () {
-			expectEvent('success');
+			ui.expectEvent('success');
 			done()
 		})
 	})
 
 	it ('does not persist the changes if the cancel button is clicked', (done) => {
-		bootstrapWrapperColours();
+		colourHelper.bootstrapColours();
 
-		let newColour = makeColour('Cyan', '#00ffff');
+		let newColour = colourHelper.make('Cyan', '#00ffff');
 		
-		addColour(newColour);
+		colourHelper.add(newColour);
 
 		moxios.wait(() => {
 			moxios.requests.mostRecent()
-	        	.respondWith(getSuccessfulResponse(newColour, {id: 25}))
+	        	.respondWith(ajaxHelper.getSuccessfulResponse(newColour, {id: 25}))
 	        	.then(() => {
-	        		removeColour();
+	        		colourHelper.remove();
 		
 					ui.click('#cancel');
 					
@@ -321,103 +326,24 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('fires an event if the cancel button is clicked', () => {
-		bootstrapWrapperColours();
+		colourHelper.bootstrapColours();
 		
 		ui.click('#cancel');
 		
-		expectEvent('cancel');
+		ui.expectEvent('cancel');
 	})
 
 	let mockSuccessfullRequest = (record, override) => {
-		moxios.stubRequest(/colours/, getSuccessfulResponse(record, override));
+		ajaxHelper.stubRequest(/colours/, ajaxHelper.getSuccessfulResponse(record, override));
 	}
 
 	let mockRequestWithValidationErrors = () => {
-		moxios.stubRequest(/colours/, {
-			status: 403,
-			responseText: {
-				errors: {
-					title: ['Title is required'],
-					hex: ['Hex value is required'],
-					rgb: ['RGB value is required'],
-					cmyk: ['CMYK value is required'],
-					pantone: ['Pantone is required'],
-				}
-			}
-		});
-	}
-
-	let getSuccessfulResponse = (record, override) => {
-		if (record) {
-			record = JSON.parse(JSON.stringify(record));
-			Object.assign(record, override);
-		}
-
-		return {
-			status: 200,
-			responseText: {
-				feedback: ['The page was updated.'],
-				record: record
-			}
-		};
-	}
-
-	let expectRequest = (url, params) => {
-		let request = moxios.requests.mostRecent();
-		expect(request.config.url).toEqual(url);
-		expect(JSON.parse(request.config.data)).toEqual(params);
-	}
-
-	let expectEvent = (name) => {
-		expect(wrapper.emitted()[name]).toBeTruthy()
-	}
-
-	let expectColour = (title, id) => {
-		ui.see(title, 'div.page');
-		expect(wrapper.find('div.page div[data-id="' + id + '"]').exists()).toBe(true);
-	}
-
-	let bootstrapWrapperColours = () => {
-		wrapper.setData({
-			pageColours: [
-				makeColour('Red', '#ff0000', 1),
-				makeColour('Blue', '#0000ff', 3)
-			],
-			allColours: [
-				makeColour('Red', '#ff0000', 1),
-				makeColour('Green', '#00ff00', 2),
-				makeColour('Blue', '#0000ff', 3)
-			]
-		});
-	}
-
-	let makeColour = (title, hex, id) => {
-		return {
-			title: title, 
-			hex: hex,
-			rgb: '',
-			cmyk: '',
-			pantone: '',
-			id: id ? id : ''
-		};
-	}
-
-	let addColour = (colour) => {
-		if (! colour) {
-			colour = makeColour('Cyan', '#00ffff');
-		}
-		
-		ui.click('#add');
-		fillColourForm(colour);
-		ui.click('#save');
-	}
-
-	let removeColour = () => {
-		ui.click('div.page div[data-id="1"] span.del');
-	}
-
-	let fillColourForm = (colour) => {
-		ui.type('input[name="title"]', colour.title);
-		ui.type('input[name="hex"]', colour.hex);
+		ajaxHelper.stubRequest(/colours/, ajaxHelper.getResponseWithValidationErrors({
+			title: ['Title is required'],
+			hex: ['Hex value is required'],
+			rgb: ['RGB value is required'],
+			cmyk: ['CMYK value is required'],
+			pantone: ['Pantone is required'],
+		}));
 	}
 })

@@ -1,7 +1,7 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import Page from '@/components/Page.vue'
 import PageForm from '@/components/PageForm.vue'
-import TestUI from '@/TestHelpers.js'
+import {TestHelper} from './../helpers/Helpers.js'
 
 describe('Page.vue', () => {
 	let wrapper;
@@ -14,7 +14,7 @@ describe('Page.vue', () => {
 			}
 	    });
 
-	    ui = new TestUI(wrapper);
+	    ui = new TestHelper(wrapper);
 	})
 
 	it('displays a page markup', () => {

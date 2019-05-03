@@ -1,11 +1,11 @@
 import { shallowMount } from '@vue/test-utils'
 import PageForm from '@/components/PageForm.vue'
-import moxios from 'moxios'
-import TestUI from '@/TestHelpers.js'
+import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
 
 describe('PageForm.vue', () => {
 	let wrapper;
 	let ui;
+	let ajaxHelper;
 
 	beforeEach(() => {
 		wrapper = shallowMount(PageForm, {
@@ -15,13 +15,14 @@ describe('PageForm.vue', () => {
 			}
 	    });
 
-	    moxios.install();
+	    ui = new TestHelper(wrapper);
 
-	    ui = new TestUI(wrapper);
+	    ajaxHelper = new AjaxHelper();
+	    ajaxHelper.install();
 	})
 
 	afterEach(() => {
-		moxios.uninstall();
+		ajaxHelper.uninstall();
     })
 
 	it('displays a form', () => {
@@ -38,7 +39,7 @@ describe('PageForm.vue', () => {
 		
 		ui.click('#save');
 
-		expectAfterRequest(() => {
+		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated.');
 		}, done);
 	})
@@ -48,7 +49,7 @@ describe('PageForm.vue', () => {
 
 	    ui.click('#save');
 
-		expectAfterRequest(() => {
+		ajaxHelper.expectAfterRequest(() => {
 			ui.see('Title is required');
 			ui.see('Body is required');
 			ui.seeForm('#pageForm');
@@ -58,13 +59,13 @@ describe('PageForm.vue', () => {
 	it('triggers an event when the form is submitted', (done) => {
 		mockSuccessfullRequest();
 
-		expect(wrapper.emitted().success).toBeFalsy()
+		ui.notExpectEvent('success');
 
 		ui.click('#save');
 
-		expectAfterRequest(() => {
-			expect(wrapper.emitted().success).toBeTruthy()
-			expect(wrapper.emitted().success[0]).toEqual([{ title: 'Foo', body: 'Bar' }])
+		ajaxHelper.expectAfterRequest(() => {
+			ui.expectEvent('success');
+			ui.expectEventData('success', [{ title: 'Foo', body: 'Bar' }]);
 		}, done);
 	})
 
@@ -73,42 +74,31 @@ describe('PageForm.vue', () => {
 
 		ui.click('#save');
 
-		expectAfterRequest(() => {
-			expect(wrapper.emitted().success).toBeFalsy()
+		ajaxHelper.expectAfterRequest(() => {
+			ui.notExpectEvent('success');
 		}, done);
 	})
 
 	it('triggers an event when the cancel button is clicked', () => {
 		ui.click('#cancel');
 
-		expect(wrapper.emitted().cancel).toBeTruthy()
+		ui.expectEvent('cancel');
 	})
 
-	let mockSuccessfullRequest = () => {
-		moxios.stubRequest(/pages\/\d+/, {
-			status: 200,
-			responseText: {
-				feedback: ['The page was updated.']
-			}
-		});
+	let mockSuccessfullRequest = (record, override) => {
+		ajaxHelper.stubRequest(
+			/pages\/\d+/, 
+			ajaxHelper.getSuccessfulResponse(record, override)
+		);
 	}
 
 	let mockRequestWithValidationErrors = () => {
-		moxios.stubRequest(/pages\/\d+/, {
-			status: 403,
-			responseText: {
-				errors: {
-					title: ['Title is required'],
-					body: ['Body is required']
-				}
-			}
-		});
-	}
-
-	let expectAfterRequest = (callback, done) => {
-		moxios.wait(() => {
-			callback();
-			done();
-		});
+		ajaxHelper.stubRequest(
+			/pages\/\d+/, 
+			ajaxHelper.getResponseWithValidationErrors({
+				title: ['Title is required'],
+				body: ['Body is required']
+			})
+		);
 	}
 })

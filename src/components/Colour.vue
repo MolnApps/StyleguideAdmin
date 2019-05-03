@@ -38,7 +38,12 @@ export default {
     }
 }
 </script>
-<style scoped lang="scss">
+<style lang="scss">
+.Colour__container {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
 .Colour {
     background: #fff;
     display: flex;

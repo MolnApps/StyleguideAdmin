@@ -1,6 +1,4 @@
 — Colour palette editor
-—— Define actual request parameters for removing/associating colours
-—— Extract ajax test helper methods
 —— Write test to sort colours
 — Typography editor
 — Logo editor

@@ -48,13 +48,18 @@ import ColourForm from './ColourForm.vue'
 import Colour from './Colour.vue'
 export default {
     components: {ColourForm, Colour},
-    props: ['dataPageColours', 'dataAllColours', 'dataEndpoint'],
+    props: [
+        'dataPageColours', 
+        'dataAllColours', 
+        'dataEndpoint', 
+        'dataPageEndpoint' 
+    ],
     data() {
         return {
             pageColours: this.dataPageColours,
             allColours: this.dataAllColours,
+            pageEndpoint: this.dataPageEndpoint,
             displayForm: false,
-            changesForm: new StyleguideForm({foo: 'bar'}),
             colour: {}
         }
     },
@@ -105,11 +110,17 @@ export default {
             this.toggleForm();
         },
         saveChanges: function() {
-            this.changesForm.on('success', () => {
+            let form = new StyleguideForm({
+                colour_id: this.pageColours.map((c) => {
+                    return c.id;
+                })
+            });
+
+            form.on('success', () => {
                 this.$emit('success');
             });
 
-            this.changesForm.submit(this.dataEndpoint);
+            form.submit(this.pageEndpoint);
         },
         cancelChanges: function() {
             this.$emit('cancel');
@@ -117,12 +128,7 @@ export default {
     }
 }
 </script>
-<style scoped lang="scss">
-.Colour__container {
-    display: flex;
-    justify-content: center;
-    padding: 12px;
-}
+<style lang="scss">
 .Actions {
     display: flex;
 }
