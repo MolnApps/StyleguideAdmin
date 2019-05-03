@@ -44,6 +44,14 @@ class TestUI {
 		}
 	}
 
+	notSeeElement(selector) {
+		this.notSeeInput(selector);
+	}
+
+	seeElement(selector) {
+		this.seeInput(selector);
+	}
+
 	seeForm(selector) {
 		expect(this.wrapper.find('form' + selector).exists()).toBe(true);
 	}

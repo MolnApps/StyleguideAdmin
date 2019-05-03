@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
 import TestUI from '@/TestHelpers.js'
 import moxios from 'moxios';
@@ -9,7 +9,7 @@ describe('ColourPaletteEditor.vue', () => {
 	let ui;
 
 	beforeEach(() => {
-		wrapper = shallowMount(ColourPaletteEditor, {
+		wrapper = mount(ColourPaletteEditor, {
 			propsData: { 
 				dataPageColours: [], 
 				dataAllColours: [], 
@@ -61,6 +61,22 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.seeInput('input[name="cmyk"]', '');
 		ui.seeInput('input[name="pantone"]', '');
 		ui.seeInput('button[id="save"]');
+	})
+
+	it ('hides all other elements when the add form is shown', () => {
+		ui.seeElement('div.page');
+		ui.seeElement('div.all');
+		ui.seeInput('button[id="add"]');
+		ui.seeInput('button[id="persist"]');
+		ui.seeInput('button[id="cancel"]');
+
+		ui.click('#add');
+
+		ui.notSeeElement('div.page');
+		ui.notSeeElement('div.all');
+		ui.notSeeInput('button[id="add"]');
+		ui.notSeeInput('button[id="persist"]');
+		ui.notSeeInput('button[id="cancel"]');
 	})
 
 	it ('persists the colour if the save button is clicked', (done) => {
@@ -171,6 +187,18 @@ describe('ColourPaletteEditor.vue', () => {
 		})
 	})
 
+	it ('adds a colour from the main colour palette', () => {
+		bootstrapWrapperColours();
+
+		ui.notSee('Green', 'div.page');
+		ui.see('Green', 'div.all');
+
+		ui.click('div.all div[data-id="2"]');
+
+		ui.see('Green', 'div.page');
+		ui.notSee('Green', 'div.all');
+	})
+
 	it ('removes a colour from the list', () => {
 		wrapper.setData({
 			pageColours: [
@@ -229,18 +257,30 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('persists the changes if the save button is clicked', (done) => {
 		let newColour = makeColour('Cyan', '#00ffff');
 
-		mockSuccessfullRequest(newColour, {id: 25});
-
 		bootstrapWrapperColours();
 
 		addColour(newColour);
-		removeColour();
 
-		ui.click('#persist');
+		moxios.wait(() => {
+			moxios.requests.mostRecent()
+	        	.respondWith(getSuccessfulResponse(newColour, {id: 25}))
+	        	.then(() => {
+	        		removeColour();
 
-		moxios.wait(function () {
-			expectRequest('/colours', {foo: 'bar'});
-			done()
+					ui.click('#persist');
+
+					moxios.wait(() => {
+						moxios.requests.mostRecent()
+		        			.respondWith({
+								status: 200,
+								responseText: {feedback: ['The page was updated.']}
+							})
+		        			.then(() => {
+		        				expectRequest('/colours', {foo: 'bar'});
+								done()
+		        			})
+					})
+	        	});
 		})
 	})
 
@@ -257,15 +297,27 @@ describe('ColourPaletteEditor.vue', () => {
 		})
 	})
 
-	it ('does not persist the changes if the cancel button is clicked', () => {
+	it ('does not persist the changes if the cancel button is clicked', (done) => {
 		bootstrapWrapperColours();
+
+		let newColour = makeColour('Cyan', '#00ffff');
 		
-		addColour();
-		removeColour();
+		addColour(newColour);
+
+		moxios.wait(() => {
+			moxios.requests.mostRecent()
+	        	.respondWith(getSuccessfulResponse(newColour, {id: 25}))
+	        	.then(() => {
+	        		removeColour();
 		
-		ui.click('#cancel');
-		
-		expect(moxios.requests.mostRecent()).toBeFalsy();
+					ui.click('#cancel');
+					
+					moxios.wait(() => {
+						expect(moxios.requests.count()).toEqual(1);
+						done();
+					})
+	        	});
+		})
 	})
 
 	it ('fires an event if the cancel button is clicked', () => {

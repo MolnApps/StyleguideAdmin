@@ -1,7 +1,4 @@
 — Colour palette editor
-—— Add a colour from the global palette by click
--- Hide #persist and #cancel buttons when #add is clicked
-—— When the form is visible and I click on the edit button of a colour, it should not be toggled.
 —— Define actual request parameters for removing/associating colours
 —— Extract ajax test helper methods
 —— Write test to sort colours

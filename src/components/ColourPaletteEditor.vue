@@ -1,17 +1,33 @@
 <template>
     <div>
         <!-- Page colours -->
-        <div class="page Colour__container">
-            <div v-for="colour in pageColours" :data-id="colour.id" class="Colour">
-                <div v-text="colour.title" :style="'background-color:' + colour.hex" class="Colour__fill"></div>
+        <div class="page Colour__container" v-if="! displayForm">
+            <div 
+                v-for="colour in pageColours" 
+                :data-id="colour.id" 
+                class="Colour"
+            >
+                <div 
+                    v-text="colour.title" 
+                    :style="'background-color:' + colour.hex" 
+                    class="Colour__fill"
+                ></div>
                 <div class="Colour__actions">
-                    <span href="#" @click.prevent="removeColour(colour.id)" class="del Colour__action">Remove</span>
-                    <span href="#" @click.prevent="editColour(colour)" class="edit Colour__action">Edit</span>
+                    <span 
+                        href="#" 
+                        @click.prevent="removeColour(colour.id)" 
+                        class="del Colour__action"
+                    >Remove</span>
+                    <span 
+                        href="#" 
+                        @click.prevent="editColour(colour)" 
+                        class="edit Colour__action"
+                    >Edit</span>
                 </div>
             </div>
         </div>
         <!-- Form -->
-        <form id="colourForm" @submit.prevent="submit" v-if="displayForm" class="Form">
+        <form id="colourForm" v-if="displayForm" class="Form">
             <h3 class="Form__title">Colour</h3>
             <input 
                 type="text" 
@@ -49,18 +65,41 @@
                 class="Form__input" />
             <p v-if="form.errors.pantone" v-for="error in form.errors.pantone" v-text="error"></p>
             <div class="Actions">
-                <button id="cancelAdd" @click="resetFormAndClose" class="Button Button--secondary">Cancel</button>
-                <button id="save" @click="saveColour" class="Button Button--primary">Save</button>
+                <button 
+                    id="cancelAdd" 
+                    @click="resetFormAndClose" 
+                    class="Button Button--secondary"
+                >Cancel</button>
+                <button 
+                    id="save" 
+                    @click="saveColour" 
+                    class="Button Button--primary"
+                >Save</button>
             </div>
         </form>
         <!-- All colours -->
-        <div class="all Colour__container">
-            <div v-for="colour in allColours" v-if="! isInPalette(colour)" class="Colour Colour--small">
-                <div v-text="colour.title" :style="'background-color:' + colour.hex" class="Colour__fill"></div>
+        <div class="all Colour__container" v-if="! displayForm">
+            <div 
+                v-for="colour in allColours" 
+                :data-id="colour.id" 
+                v-if="! isInPalette(colour)" 
+                class="Colour Colour--small"
+                @click="addColour(colour)"
+            >
+                <div 
+                    v-text="colour.title" 
+                    :style="'background-color:' + colour.hex" 
+                    class="Colour__fill"
+                ></div>
             </div>
-            <button id="add" @click="toggleForm" v-if="! displayForm" class="Button Button--primary">Add</button>
+            <button 
+                id="add" 
+                @click="toggleForm" 
+                v-if="! displayForm" 
+                class="Button Button--primary"
+            >Add</button>
         </div>
-        <div class="Actions">
+        <div class="Actions" v-if="! displayForm">
             <button id="cancel" @click="cancelChanges" class="Button Button--secondary">Cancel</button>
             <button id="persist" @click="saveChanges" class="Button Button--primary">Save changes</button>
         </div>
@@ -70,7 +109,9 @@
 <script>
 import axios from 'axios'
 import StyleguideForm from './../StyleguideForm.js'
+import ColourForm from './ColourForm.vue'
 export default {
+    components: {ColourForm},
     props: ['dataPageColours', 'dataAllColours', 'dataEndpoint'],
     data() {
         return {
@@ -92,6 +133,9 @@ export default {
         },
         toggleForm: function() {
             this.displayForm = ! this.displayForm;
+        },
+        addColour: function(colour) {
+            this.pageColours.push(colour);
         },
         saveColour: function() {
             let originalColourId = this.eraseFormId();
