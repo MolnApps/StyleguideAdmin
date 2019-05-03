@@ -35,7 +35,7 @@ describe('LogoEditor.vue', () => {
 		ui.seeElement('div.all div[data-id="3"]');
 	})
 
-	it ('can arrange logos in a different order', () => {
+	xit ('can arrange logos in a different order', () => {
 		
 	})
 
@@ -134,7 +134,7 @@ describe('LogoEditor.vue', () => {
 		ui.notSeeForm('#logoForm');
 	})
 
-	it ('will not affect previously added logos when multiple logos are added', () => {
+	xit ('will not affect previously added logos when multiple logos are added', () => {
 		
 	})
 
@@ -242,6 +242,18 @@ describe('LogoEditor.vue', () => {
 		ui.click('#cancelChanges');
 
 		ui.expectEvent('cancel');
+	})
+
+	xit ('logos in the library can be edited through a form', () => {
+		
+	})
+
+	xit ('an api call is performed if the save logo button is pressed', () => {
+		
+	})
+
+	xit ('no api call is performed if the cancel logo button is pressed', () => {
+		
 	})
 
 	let bootstrapWrapper = (pageLogos, allLogos) => {

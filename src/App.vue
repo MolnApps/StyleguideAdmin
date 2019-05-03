@@ -3,13 +3,13 @@
     <logo-editor 
     	:dataEndpoint="'/logos'" 
     	:dataPageLogos="[
-        {id: 1, title: 'Primary', url: 'storage/logo.svg', pivot: {preferences: {'background-color': '#00ff00'}}},
-        {id: 1, title: 'Primary', url: 'storage/logo.svg', pivot: {preferences: {'background-color': '#ff0000'}}}
+        {id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}},
+        {id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#ff0000'}}}
       ]" 
     	:dataAllLogos="[
-    		{id: 1, title: 'Primary', url: 'storage/logo.svg'}, 
-    		{id: 2, title: 'Secondary positive', url: 'storage/logo-black.svg'}, 
-    		{id: 3, title: 'Secondary negative', url: 'storage/logo-white.svg'}
+    		{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1'}, 
+    		{id: 2, title: 'Secondary positive', url: 'http://lorempixel.com/100/100/sports/2'}, 
+    		{id: 3, title: 'Secondary negative', url: 'http://lorempixel.com/100/100/sports/3'}
     	]"
     ></logo-editor>
   </div>

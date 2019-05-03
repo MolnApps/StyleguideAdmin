@@ -125,6 +125,6 @@ export default {
 	display: flex;
     border: 1px solid #ccc;
     padding: 24px;
-    margin-bottom: 24px;
+    margin: 24px 0px;
 }
 </style>
