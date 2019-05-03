@@ -3,7 +3,8 @@
         <!-- Page colours -->
         <div class="page Colour__container" v-if="! displayForm">
             <colour 
-                v-for="colour in pageColours" 
+                v-for="(colour, index) in pageColours" 
+                :key="index"
                 :data-colour="colour"
                 :data-editable="true"
                 @remove="removeColour"
@@ -21,8 +22,9 @@
         <!-- All colours -->
         <div class="all Colour__container" v-if="! displayForm">
             <colour
-                v-for="colour in allColours"
+                v-for="(colour, index) in allColours"
                 v-if="! isInPalette(colour)"
+                :key="index"
                 :data-colour="colour"
                 :data-editable="false"
                 data-mod="small"

@@ -7,7 +7,7 @@ class LogoHelper {
 	make(title, override)
 	{
 		let logo = {
-			id: 1, 
+			id: '', 
 			title: 'Primary logo', 
 			url: 'storage/logo.svg'
 		};
@@ -17,6 +17,13 @@ class LogoHelper {
 		}
 
 		return logo;
+	}
+
+	merge(object1, object2)
+	{
+		Object.assign(object1, object2);
+
+		return object1;
 	}
 
 	specs()

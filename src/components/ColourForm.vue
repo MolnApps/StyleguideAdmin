@@ -102,7 +102,7 @@ export default {
     }
 }
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 .Form {
     display: flex;
     flex-flow: column;

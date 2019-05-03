@@ -17,11 +17,12 @@
 
 <script>
 import LogoEditor from './components/LogoEditor.vue'
+import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
 
 export default {
   name: 'app',
   components: {
-    LogoEditor
+    LogoEditor, ColourPaletteEditor
   }
 }
 </script>
