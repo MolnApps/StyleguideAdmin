@@ -3,13 +3,47 @@ import EventEmitter from 'events';
 
 class StyleguideForm extends EventEmitter
 {
-	constructor(data)
+	constructor(data, constraints)
 	{
 		super();
-		this.originalData = JSON.parse(JSON.stringify(data));
-		Object.assign(this, data);
+		
+		data = this.filterData(data, constraints);
+		
+		this.cacheOriginalData(data);
+		this.transferDataToProperties(data);
+		
 		this.feedback = [];
 		this.errors = {};
+	}
+
+	filterData(data, constraints)
+	{
+		if (constraints) {
+			let tmp = {}
+			
+			constraints.forEach((key) => {
+				tmp[key] = data[key];
+			})
+			
+			data = tmp;
+		}
+
+		return data;
+	}
+
+	cacheOriginalData(data)
+	{
+		this.originalData = this.deepCloneData(data);
+	}
+
+	deepCloneData(data)
+	{
+		return JSON.parse(JSON.stringify(data));
+	}
+
+	transferDataToProperties(data)
+	{
+		Object.assign(this, data);
 	}
 
 	data()

@@ -25,11 +25,6 @@ export default {
             logo: this.dataLogo
         }
     },
-    created() {
-        if ( ! this.logo.pivot) {
-            throw new Error('Logo pivot data is required.');
-        }
-    },
     methods: {
         save: function(data) {
             this.$emit('success');

@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div v-if="! displayForm && ! displayBgForm">
+        <div v-if="! displayForm && ! displayBgForm && ! displaySpecForm">
         	<div class="page Logo__container">
             	<logo 
                     v-for="(logo, index) in pageLogos" 
                     :logo="logo" 
-                    :editable="true" 
+                    :editable-bg="true" 
                     :key="index"
                     @remove="removeLogo"
                     @edit="editLogoBackground"
@@ -19,13 +19,22 @@
                     v-for="(logo, index) in allLogos" 
                     :logo="logo" 
                     :key="index"
-                    :editable="false"
+                    :editable-spec="true"
                     @click="addLogo"
+                    @edit-spec="editLogoSpecs"
                 ></logo>
             </div>
             <div class="Actions">
-                <button id="cancelChanges" @click="cancelChanges" class="Button Button--secondary">Cancel changes</button>
-                <button id="saveChanges" @click="saveChanges" class="Button Button--primary">Save changes</button>
+                <button 
+                    id="cancelChanges" 
+                    @click="cancelChanges" 
+                    class="Button Button--secondary"
+                >Cancel changes</button>
+                <button 
+                    id="saveChanges" 
+                    @click="saveChanges" 
+                    class="Button Button--primary"
+                >Save changes</button>
             </div>
         </div>
         <logo-form 
@@ -40,6 +49,13 @@
             :data-logo="logo" 
             @success="toggleBgForm"
         ></logo-bg-form>
+        <logo-spec-form 
+            v-if="displaySpecForm" 
+            :data-logo="logo" 
+            :data-endpoint="'/logos/' + logo.id"
+            @success="toggleSpecForm"
+            @cancel="toggleSpecForm"
+        ></logo-spec-form>
     </div>
 </template>
 
@@ -48,8 +64,9 @@ import StyleguideForm from './../StyleguideForm.js';
 import Logo from './Logo.vue';
 import LogoForm from './LogoForm.vue';
 import LogoBgForm from './LogoBgForm.vue';
+import LogoSpecForm from './LogoSpecForm.vue';
 export default {
-    components: {Logo, LogoForm, LogoBgForm},
+    components: {Logo, LogoForm, LogoBgForm, LogoSpecForm},
     props: ['dataPageLogos', 'dataAllLogos', 'dataEndpoint'],
     data() {
     	return {
@@ -57,7 +74,8 @@ export default {
     		allLogos: this.dataAllLogos,
             logo: {},
             displayForm: false,
-            displayBgForm: false
+            displayBgForm: false,
+            displaySpecForm: false
     	}
     },
     created() {
@@ -101,20 +119,31 @@ export default {
             this.logo = logo;
             this.toggleBgForm();
         },
+        editLogoSpecs(logo) {
+            this.logo = logo;
+            this.toggleSpecForm();
+        },
         toggleBgForm() {
             this.displayBgForm = ! this.displayBgForm;
+        },
+        toggleSpecForm() {
+            this.displaySpecForm = ! this.displaySpecForm;
         },
         cancelChanges() {
             this.$emit('cancel');
         },
         saveChanges() {
-            let form = new StyleguideForm({foo: 'bar'});
+            let params = this.pageLogos.map((l) => {
+                return {id: l.id, hex: l.pivot.preferences['background-color']};
+            });
+
+            let form = new StyleguideForm({logo: params});
 
             form.on('success', () => {
                 this.$emit('success');
             });
 
-            form.submit('/pages/1/logos');
+            form.submit(this.dataEndpoint);
         }
     }
 }

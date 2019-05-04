@@ -31,7 +31,6 @@ export default {
     data() {
         return {
             logo: this.dataLogo,
-            logoId: null,
             form: null
         }
     },
@@ -44,31 +43,19 @@ export default {
             this.$emit('cancel');
         },
         save() {
-            this.logoId = this.eraseFormId();
-
             this.form.on('success', this.onSuccess.bind(this));
 
             this.form.submit(this.dataEndpoint);
-        },
-        eraseFormId: function() {
-            let id;
-
-            if (this.form.id) {
-                id = this.form.id;
-                this.form.id = '';
-            }
-            
-            return id;
         },
         onSuccess: function(data) {
             this.resetForm();
             this.$emit('success', {
                 data: data, 
-                id: this.colourId
+                id: this.logo.id
             });
         },
         resetForm: function() {
-            this.form = new StyleguideForm(this.logo);
+            this.form = new StyleguideForm(this.logo, ['title']);
         }
     }
 }

@@ -10,7 +10,7 @@ describe('LogoEditor.vue', () => {
 	let ajaxHelper;
 
 	beforeEach(() => {
-		logoHelper = new LogoHelper(ui, wrapper);
+		logoHelper = new LogoHelper();
 	    ajaxHelper = new AjaxHelper();
 
 	    ajaxHelper.install();
@@ -20,14 +20,14 @@ describe('LogoEditor.vue', () => {
 		ajaxHelper.uninstall();
     })
 
-	it ('it shows all page logos and their background', () => {
+	it ('shows all page logos and their background', () => {
 		bootstrapWrapper()
 
-		ui.seeElement('div.page div[data-id="1"][data-background="#ffffff"]');
-		ui.seeElement('div.page div[data-id="1"][data-background="#000000"]');
+		logoHelper.seePageLogo(1, '#ffffff');
+		logoHelper.seePageLogo(1, '#000000');
 	})
 
-	it ('it shows all logos including the ones already associate with the page', () => {
+	it ('shows all logos including the ones already associate with the page', () => {
 		bootstrapWrapper()
 
 		ui.seeElement('div.all div[data-id="1"]');
@@ -39,21 +39,18 @@ describe('LogoEditor.vue', () => {
 		
 	})
 
-	it ('it presents a button to add a new logo', () => {
+	it ('presents a button to add a new logo', () => {
 		bootstrapWrapper()
 
 		ui.seeInput('button[id="add"]');
 	})
 
-	it ('presents a form when the add button is clicked', () => {
+	it ('shows logo form when the add button is clicked', () => {
 		bootstrapWrapper()
 
 		ui.click('#add');
 
 		ui.seeForm('#logoForm');
-		ui.seeInput('input[name="title"]', '');
-		ui.seeInput('input[type="file"][name="file"]', '');
-		ui.seeInput('button[id="save"]', '');
 	})
 
 	it ('hides all other elements when the form is shown', () => {
@@ -66,7 +63,7 @@ describe('LogoEditor.vue', () => {
 		ui.notSeeElement('#add');
 	})
 
-	it ('if the form save button is clicked the logo is added to the page', (done) => {
+	it ('adds the logo to the page if the form save button is clicked', (done) => {
 		bootstrapWrapper();
 
 		let logo = logoHelper.make('My logo', {url: ''});
@@ -74,19 +71,14 @@ describe('LogoEditor.vue', () => {
 		mockSuccessfullRequest(logo, {id: 25});
 
 		ui.click('#add');
-
-		ui.type('input[name="title"]', logo.title);
-		// *** Here we must fake a file upload ***
-
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ajaxHelper.expectRequest('/logos', logo);
-			ui.seeElement('div[data-id="25"]');
+			logoHelper.seePageLogo(25, '');
 		}, done);
 	})
 
-	it ('it displays validation errors for the form', (done) => {
+	it ('does not hide logo form with validation errors', (done) => {
 		bootstrapWrapper();
 
 		mockRequestWithValidationErrors();
@@ -96,33 +88,10 @@ describe('LogoEditor.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeForm('#logoForm');
-
-			ui.see('Title is required');
-			ui.see('Please provide a file');
 		}, done);
 	})
 
-	it ('resets the form when the save button is clicked', (done) => {
-		bootstrapWrapper();
-
-		let logo = logoHelper.make('My logo', {url: ''});
-
-		mockSuccessfullRequest(logo, {id: 25});
-
-		ui.click('#add');
-
-		ui.type('input[name="title"]', logo.title);
-		// *** Here we must fake a file upload ***
-
-		ui.click('#save');
-
-		ajaxHelper.expectAfterRequest(() => {
-			ui.click('#add');
-			ui.seeInput('input[name="title"]', '');
-		}, done);
-	})
-
-	it ('hides the form when the cancel button is clicked', () => {
+	it ('hides the logo form when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
 		ui.click('#add');
@@ -134,52 +103,40 @@ describe('LogoEditor.vue', () => {
 		ui.notSeeForm('#logoForm');
 	})
 
-	xit ('will not affect previously added logos when multiple logos are added', () => {
-		
-	})
-
-	it ('it edits a logo background', () => {
+	it ('edits a logo background', () => {
 		bootstrapWrapper();
 
-		ui.seeElement('div.page div[data-id="1"][data-background="#ffffff"]');
-		ui.seeElement('div.page div[data-id="1"][data-background="#000000"]');
-
-		ui.click('div.page div[data-id="1"][data-background="#000000"] span.edit');
+		logoHelper.seePageLogo(1, '#ffffff');
+		logoHelper.seePageLogo(1, '#000000');
+		
+		logoHelper.clickEditLogoBg();
 
 		ui.seeForm('#logoBgForm');
-		ui.seeInput('input[name="hex"]');
-		ui.seeInput('button[id="save"]');
-
 		ui.type('input[name="hex"]', '#ff0000');
-
 		ui.click('#save');
 
 		ui.notSeeForm('#logoBgForm');
 
-		ui.seeElement('div.page div[data-id="1"][data-background="#ffffff"]');
-		ui.seeElement('div.page div[data-id="1"][data-background="#ff0000"]');
+		logoHelper.seePageLogo(1, '#ffffff');
+		logoHelper.seePageLogo(1, '#ff0000');
 	})
 
 	it ('removes a logo', () => {
 		bootstrapWrapper();
 
-		ui.seeElement('div.page div[data-id="1"][data-background="#ffffff"]');
-		ui.seeElement('div.page div[data-id="1"][data-background="#000000"]');
+		logoHelper.seePageLogo(1, '#ffffff');
+		logoHelper.seePageLogo(1, '#000000');
 
-		ui.click('div.page div[data-id="1"][data-background="#000000"] span.del');
+		logoHelper.removeLogoFromPage();
 
-		ui.seeElement('div.page div[data-id="1"][data-background="#ffffff"]');
-		ui.notSeeElement('div.page div[data-id="1"][data-background="#000000"]');
+		logoHelper.seePageLogo(1, '#ffffff');
+		logoHelper.notSeePageLogo(1, '#000000');
 	})
 
 	it ('adds a logo from the library on click', () => {
 		bootstrapWrapper();
 
-		ui.click('div.all div[data-id="2"]');
-		
-		ui.seeForm('#logoBgForm');
-		ui.type('input[name="hex"]', '#0099ff');
-		ui.click('#save');
+		logoHelper.addLogoFromLibrary();
 		
 		ui.seeElement('div.page div[data-id="2"][data-background="#0099ff"]');
 	})
@@ -189,20 +146,18 @@ describe('LogoEditor.vue', () => {
 
 		mockSuccessfullRequest();
 
-		// Assuming I add a logo from the library
-		ui.click('div.all div[data-id="2"]');
+		logoHelper.addLogoFromLibrary();
+		logoHelper.removeLogoFromPage();
 
-		ui.type('input[name="hex"]', '#0099ff');
-		ui.click('#save');
-
-		// And I remove a logo from the page
-		ui.click('div.page div[data-id="1"][data-background="#000000"] span.del');
-
-		// When I click the save changes button
 		ui.click('#saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ajaxHelper.expectRequest('/pages/1/logos', {foo: 'bar'});
+			ajaxHelper.expectRequest('/pages/1/logos', {
+				logo: [
+					{id: 1, hex: '#ffffff'}, 
+					{id: 2, hex: '#0099ff'}
+				] 
+			});
 		}, done);
 	})
 
@@ -221,16 +176,9 @@ describe('LogoEditor.vue', () => {
 	it ('does not call the api when the cancel changes button is clicked', () => {
 		bootstrapWrapper();
 
-		// Assuming I add a logo from the library
-		ui.click('div.all div[data-id="2"]');
+		logoHelper.addLogoFromLibrary();
+		logoHelper.removeLogoFromPage();
 
-		ui.type('input[name="hex"]', '#0099ff');
-		ui.click('#save');
-
-		// And I remove a logo from the page
-		ui.click('div.page div[data-id="1"][data-background="#000000"] span.del');
-
-		// When I click the save changes button
 		ui.click('#cancelChanges');
 
 		ajaxHelper.expectNoRequests();
@@ -244,16 +192,51 @@ describe('LogoEditor.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
-	xit ('logos in the library can be edited through a form', () => {
+	it ('shows the logo spec form when library logo edit button is clicked', () => {
+		bootstrapWrapper();
+
+		logoHelper.clickEditLogo();
 		
+		ui.seeForm('#logoSpecForm');
 	})
 
-	xit ('an api call is performed if the save logo button is pressed', () => {
-		
+	it ('hides the logo spec form when the save button is pressed', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest(logoHelper.make('Foobar', {id: 2}), {});
+
+		logoHelper.clickEditLogo();
+
+		ui.click('button[id="save"]');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.notSeeForm('#logoSpecForm');
+		}, done);
 	})
 
-	xit ('no api call is performed if the cancel logo button is pressed', () => {
-		
+	it ('does not hide the logo spec form with validation errors', (done) => {
+		bootstrapWrapper();
+
+		mockRequestWithValidationErrors();
+
+		logoHelper.clickEditLogo();
+
+		ui.click('button[id="save"]');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeForm('#logoSpecForm');
+		}, done);
+	})
+
+	it ('hides the logo spec form when the cancel button is pressed', () => {
+		bootstrapWrapper();
+
+		logoHelper.clickEditLogo();
+
+		ui.click('button[id="cancel"]');
+
+		ajaxHelper.expectNoRequests();
+		ui.notSeeForm('#logoSpecForm');
 	})
 
 	let bootstrapWrapper = (pageLogos, allLogos) => {
@@ -272,11 +255,13 @@ describe('LogoEditor.vue', () => {
 			propsData: { 
 				dataPageLogos: pageLogos, 
 				dataAllLogos: allLogos, 
-				dataEndpoint: '/logos'
+				dataEndpoint: '/pages/1/logos'
 			}
 		});
 
 	    ui = new TestHelper(wrapper);
+
+	    logoHelper.setWrapper(wrapper).setTestHelper(ui);
 	}
 
 	let mockSuccessfullRequest = (record, override) => {
@@ -284,9 +269,6 @@ describe('LogoEditor.vue', () => {
 	}
 
 	let mockRequestWithValidationErrors = () => {
-		ajaxHelper.stubRequest(/logos/, ajaxHelper.getResponseWithValidationErrors({
-			title: ['Title is required'],
-			file: ['Please provide a file'],
-		}));
+		ajaxHelper.stubRequest(/logos/, ajaxHelper.getResponseWithValidationErrors({}));
 	}
 })
