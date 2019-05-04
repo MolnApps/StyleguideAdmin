@@ -45,6 +45,94 @@ describe('LogoEditor.vue', () => {
 		ui.seeInput('button[id="add"]');
 	})
 
+	it ('removes a logo', () => {
+		bootstrapWrapper();
+
+		logoHelper.seePageLogo(1, '#ffffff');
+		logoHelper.seePageLogo(1, '#000000');
+
+		logoHelper.removeLogoFromPage();
+
+		logoHelper.seePageLogo(1, '#ffffff');
+		logoHelper.notSeePageLogo(1, '#000000');
+	})
+
+	it ('adds a logo from the library on click', () => {
+		bootstrapWrapper();
+
+		logoHelper.addLogoFromLibrary();
+		
+		logoHelper.seePageLogo(2, '#0099ff');
+	})
+
+	it ('allows to cancel adding a logo', () => {
+		bootstrapWrapper();
+
+		ui.click('div.all div[data-id="2"]');
+
+		ui.seeForm('#logoBgForm');
+		ui.type('input[name="hex"]', '#0099ff');
+		ui.click('#cancel');
+		
+		logoHelper.notSeePageLogo(2, '');
+		logoHelper.notSeePageLogo(2, '#0099ff');
+	})
+
+	// Changes form methods
+
+	it ('calls the api when the save changes button is clicked', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+
+		logoHelper.addLogoFromLibrary();
+		logoHelper.removeLogoFromPage();
+
+		ui.click('#saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ajaxHelper.expectRequest('/pages/1/logos', {
+				logo: [
+					{id: 1, hex: '#ffffff'}, 
+					{id: 2, hex: '#0099ff'}
+				] 
+			});
+		}, done);
+	})
+
+	it ('emits an event if changes are saved successfully', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+
+		ui.click('#saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.expectEvent('success');
+		}, done);
+	})
+
+	it ('does not call the api when the cancel changes button is clicked', () => {
+		bootstrapWrapper();
+
+		logoHelper.addLogoFromLibrary();
+		logoHelper.removeLogoFromPage();
+
+		ui.click('#cancelChanges');
+
+		ajaxHelper.expectNoRequests();
+	})
+
+	it ('emits an event if changes are cancelled', () => {
+		bootstrapWrapper();
+
+		ui.click('#cancelChanges');
+
+		ui.expectEvent('cancel');
+	})
+
+	// Logo form tests
+
 	it ('shows logo form when the add button is clicked', () => {
 		bootstrapWrapper()
 
@@ -103,6 +191,8 @@ describe('LogoEditor.vue', () => {
 		ui.notSeeForm('#logoForm');
 	})
 
+	// Logo Background tests
+
 	it ('edits a logo background', () => {
 		bootstrapWrapper();
 
@@ -121,76 +211,25 @@ describe('LogoEditor.vue', () => {
 		logoHelper.seePageLogo(1, '#ff0000');
 	})
 
-	it ('removes a logo', () => {
+	it ('allows the user to cancel editing a logo background', () => {
 		bootstrapWrapper();
 
 		logoHelper.seePageLogo(1, '#ffffff');
 		logoHelper.seePageLogo(1, '#000000');
+		
+		logoHelper.clickEditLogoBg();
 
-		logoHelper.removeLogoFromPage();
+		ui.seeForm('#logoBgForm');
+		ui.type('input[name="hex"]', '#ff0000');
+		ui.click('#cancel');
+
+		ui.notSeeForm('#logoBgForm');
 
 		logoHelper.seePageLogo(1, '#ffffff');
-		logoHelper.notSeePageLogo(1, '#000000');
+		logoHelper.seePageLogo(1, '#000000');
 	})
 
-	it ('adds a logo from the library on click', () => {
-		bootstrapWrapper();
-
-		logoHelper.addLogoFromLibrary();
-		
-		ui.seeElement('div.page div[data-id="2"][data-background="#0099ff"]');
-	})
-
-	it ('calls the api when the save changes button is clicked', (done) => {
-		bootstrapWrapper();
-
-		mockSuccessfullRequest();
-
-		logoHelper.addLogoFromLibrary();
-		logoHelper.removeLogoFromPage();
-
-		ui.click('#saveChanges');
-
-		ajaxHelper.expectAfterRequest(() => {
-			ajaxHelper.expectRequest('/pages/1/logos', {
-				logo: [
-					{id: 1, hex: '#ffffff'}, 
-					{id: 2, hex: '#0099ff'}
-				] 
-			});
-		}, done);
-	})
-
-	it ('emits an event if changes are saved successfully', (done) => {
-		bootstrapWrapper();
-
-		mockSuccessfullRequest();
-
-		ui.click('#saveChanges');
-
-		ajaxHelper.expectAfterRequest(() => {
-			ui.expectEvent('success');
-		}, done);
-	})
-
-	it ('does not call the api when the cancel changes button is clicked', () => {
-		bootstrapWrapper();
-
-		logoHelper.addLogoFromLibrary();
-		logoHelper.removeLogoFromPage();
-
-		ui.click('#cancelChanges');
-
-		ajaxHelper.expectNoRequests();
-	})
-
-	it ('emits an event if changes are cancelled', () => {
-		bootstrapWrapper();
-
-		ui.click('#cancelChanges');
-
-		ui.expectEvent('cancel');
-	})
+	// Logo Spec Form tests
 
 	it ('shows the logo spec form when library logo edit button is clicked', () => {
 		bootstrapWrapper();
@@ -238,6 +277,8 @@ describe('LogoEditor.vue', () => {
 		ajaxHelper.expectNoRequests();
 		ui.notSeeForm('#logoSpecForm');
 	})
+
+	// Utility methods
 
 	let bootstrapWrapper = (pageLogos, allLogos) => {
 		pageLogos = pageLogos ? pageLogos : [

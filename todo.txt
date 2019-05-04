@@ -1,8 +1,5 @@
 — Logo editor
 —— When I click on a logo, I should be able to cancel the operation when the background form shows up
-—— Replace hardcoded endpoint for changes
-—— In LogoBgForm there is still a this.colourId (which is not picked by tests btw)
-—— Refactor tests according to tested behaviour
 — Typography editor
 — Moodboard editor
 — Video editor

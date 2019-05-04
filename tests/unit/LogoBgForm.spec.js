@@ -32,7 +32,7 @@ describe('LogoBgForm.vue', () => {
     it ('emits an event if the save button is clicked', () => {
     	bootstrapWrapper(logoHelper.pivot('#0099ff'));
 
-    	ui.click('button[id="save"]');
+    	ui.click('#save');
 
     	ui.expectEvent('success');
     })
@@ -40,9 +40,27 @@ describe('LogoBgForm.vue', () => {
     it ('does not perform any api call when the save button is clicked', () => {
     	bootstrapWrapper(logoHelper.pivot('#0099ff'));
 
-    	ui.click('button[id="save"]');
+    	ui.click('#save');
 
     	ajaxHelper.expectNoRequests();
+    })
+
+    it ('resets the original background colour when the cancel button is clicked', () => {
+    	bootstrapWrapper(logoHelper.pivot('#0099ff'));
+
+    	ui.type('input[name="hex"]', '#ff0000');
+
+    	ui.click('#cancel');
+
+    	ui.seeInput('input[name="hex"]', '#0099ff');
+    })
+
+    it ('emits an event when the cancel button is clicked', () => {
+    	bootstrapWrapper(logoHelper.pivot('#0099ff'));
+
+    	ui.click('#cancel');
+
+    	ui.expectEvent('cancel');
     })
 
 	let bootstrapWrapper = (pivot) => {

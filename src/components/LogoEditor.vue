@@ -48,6 +48,7 @@
             v-if="displayBgForm"
             :data-logo="logo" 
             @success="toggleBgForm"
+            @cancel="cancelEditLogoBackground"
         ></logo-bg-form>
         <logo-spec-form 
             v-if="displaySpecForm" 
@@ -75,7 +76,8 @@ export default {
             logo: {},
             displayForm: false,
             displayBgForm: false,
-            displaySpecForm: false
+            displaySpecForm: false,
+            addingLogo: false
     	}
     },
     created() {
@@ -93,6 +95,7 @@ export default {
             let logoCopy = JSON.parse(JSON.stringify(logo));
             Object.assign(logoCopy, {pivot: {preferences: {'background-color': ''}}});
             this.pageLogos.push(logoCopy);
+            this.addingLogo = true;
             this.editLogoBackground(logoCopy);
         },
         removeLogo: function(logo) {
@@ -117,6 +120,14 @@ export default {
         },
         editLogoBackground(logo) {
             this.logo = logo;
+            this.toggleBgForm();
+        },
+        cancelEditLogoBackground() {
+            if (this.addingLogo) {
+                this.removeLogo(this.logo);
+                this.addingLogo = false;
+            }
+            
             this.toggleBgForm();
         },
         editLogoSpecs(logo) {
