@@ -67,7 +67,7 @@ class LogoHelper {
 		}
 	}
 
-	fillForm()
+	fillSpecForm()
 	{
 		this.ui.type('input[name="display_width"]', '300px');
 		this.ui.type('input[name="display_height"]', '200px');

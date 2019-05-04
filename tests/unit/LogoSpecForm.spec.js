@@ -40,7 +40,7 @@ describe('LogoSpecForm.vue', () => {
 
 		mockSuccessfullRequest(logoHelper.make('Foobar', {id: 2}), {});
 
-		logoHelper.fillForm();
+		logoHelper.fillSpecForm();
 
 		ui.click('button[id="save"]');
 
@@ -61,7 +61,7 @@ describe('LogoSpecForm.vue', () => {
 
 		mockSuccessfullRequest(logoHelper.make('Foobar', {id: 2}), {});
 
-		logoHelper.fillForm();
+		logoHelper.fillSpecForm();
 
 		ui.click('button[id="save"]');
 
@@ -90,7 +90,7 @@ describe('LogoSpecForm.vue', () => {
 	it ('does not perform any api call when the cancel button is pressed', () => {
 		bootstrapWrapper();
 
-		logoHelper.fillForm();
+		logoHelper.fillSpecForm();
 
 		ui.click('button[id="cancel"]');
 
@@ -100,7 +100,7 @@ describe('LogoSpecForm.vue', () => {
 	it ('fires an event when the cancel button is pressed', () => {
 		bootstrapWrapper();
 
-		logoHelper.fillForm();
+		logoHelper.fillSpecForm();
 
 		ui.click('button[id="cancel"]');
 
