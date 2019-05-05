@@ -4,6 +4,7 @@
             <div class="page TypefaceFamily__container">
                 <typeface-weight 
                     v-for="family in pageTypefaceFamilies" 
+                    v-if="pivotWeightExists(family)"
                     :key="'page' + family.id + '.' + family.pivot.preferences.weight"
                     :data-typeface-family="family"
                     :data-editable="true"
@@ -52,6 +53,15 @@ export default {
         }
     },
     methods: {
+        pivotWeightExists(family) {
+            return this.allTypefaceFamilies.filter((t) => {
+                return t.id == family.id;
+            }).filter((t) => {
+                return t.weights.filter((w) => {
+                    return w.weight == family.pivot.preferences.weight;
+                }).length > 0;
+            }).length > 0;
+        },
         weightNotInPage: function(id, weight) {
             return this.pageTypefaceFamilies.filter((f) => {
                 return f.id == id && f.pivot.preferences.weight == weight.weight;

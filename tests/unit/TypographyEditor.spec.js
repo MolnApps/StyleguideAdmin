@@ -204,8 +204,16 @@ describe('TypographyEditor.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
-	let bootstrapWrapper = () => {
-		let pageTypefaceFamilies = [
+	it ('will not break if the pivot contains a weight that does not exist', () => {
+		bootstrapWrapper([
+			typographyHelper.makeWithPivot('1', 'Rubik', [700, 400, 300], 500)
+		]);
+
+		expect(wrapper.find('div.page div').exists()).toBe(false);
+	})
+
+	let bootstrapWrapper = (pageTypefaceFamilies) => {
+		pageTypefaceFamilies = pageTypefaceFamilies ? pageTypefaceFamilies : [
 			typographyHelper.makeWithPivot(1, 'Rubik', [700, 400, 300], 700),
 			typographyHelper.makeWithPivot(2, 'Roboto', [400, 300], 300)
 		];
