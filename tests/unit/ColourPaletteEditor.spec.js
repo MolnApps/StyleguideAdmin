@@ -2,6 +2,7 @@ import { mount, shallowMount } from '@vue/test-utils'
 import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
 import {TestHelper, AjaxHelper, ColourHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
+import Draggable from 'vuedraggable';
 
 describe('ColourPaletteEditor.vue', () => {
 	let wrapper;
@@ -42,8 +43,8 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.see('Green', 'div.all');
 	})
 
-	it ('can arrange colours in a different orders', () => {
-		
+	it.only ('can arrange colours in a different orders', () => {
+		expect(wrapper.find(Draggable).exists()).toBe(true);
 	})
 
 	it ('displays a button to add new colour', () => {

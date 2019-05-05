@@ -108,14 +108,8 @@ export default {
     flex-flow: column;
     padding: 50px;
     border: 1px solid #ccc;
-    max-width: 360px;
     margin: 0 auto;
     border-radius: 5px;
-    position: absolute;
-    top: 24px;
-    left: 0;
-    right: 0;
-    background: #fff;
 }
 .Form__title {
     text-align: center;

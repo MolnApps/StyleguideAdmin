@@ -3,8 +3,3 @@
 — Video editor
 — Contacts editor
 — Index editor
-
-— Logo editor
-—— Write test to sort colours
-— Colour palette editor
-—— Write test to sort colours

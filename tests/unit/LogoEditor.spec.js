@@ -2,6 +2,7 @@ import { mount, shallowMount } from '@vue/test-utils'
 import LogoEditor from '@/components/LogoEditor.vue'
 import {TestHelper, AjaxHelper, LogoHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
+import Draggable from 'vuedraggable';
 
 describe('LogoEditor.vue', () => {
 	let wrapper;
@@ -35,8 +36,8 @@ describe('LogoEditor.vue', () => {
 		ui.seeElement('div.all div[data-id="3"]');
 	})
 
-	xit ('can arrange logos in a different order', () => {
-		
+	it ('can arrange logos in a different order', () => {
+		expect(wrapper.find(Draggable).exists()).toBe(true);
 	})
 
 	it ('presents a button to add a new logo', () => {
