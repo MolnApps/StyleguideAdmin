@@ -1,16 +1,19 @@
 <template>
     <div>
         <div v-if="! displayForm && ! displayBgForm && ! displaySpecForm">
-        	<div class="page Logo__container">
-            	<logo 
+        	<draggable 
+                :list="pageLogos" 
+                class="page Logo__container"
+            >
+                <logo 
                     v-for="(logo, index) in pageLogos" 
                     :logo="logo" 
                     :editable-bg="true" 
-                    :key="index"
+                    :key="logo.id + logo.pivot.preferences['background-color']"
                     @remove="removeLogo"
                     @edit="editLogoBackground"
                 ></logo>
-            </div>
+            </draggable>
             <div class="Actions">
                 <button id="add" class="Button Button--primary" @click="toggleForm">Add new logo</button>
             </div>
@@ -66,8 +69,9 @@ import Logo from './Logo.vue';
 import LogoForm from './LogoForm.vue';
 import LogoBgForm from './LogoBgForm.vue';
 import LogoSpecForm from './LogoSpecForm.vue';
+import Draggable from 'vuedraggable';
 export default {
-    components: {Logo, LogoForm, LogoBgForm, LogoSpecForm},
+    components: {Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable},
     props: ['dataPageLogos', 'dataAllLogos', 'dataEndpoint'],
     data() {
     	return {
@@ -86,17 +90,24 @@ export default {
     methods: {
         onSaveLogo(data)
         {
+            let logoPage = JSON.parse(JSON.stringify(data.data.record));
+            let logoAll = JSON.parse(JSON.stringify(data.data.record));
+            this.assignDefaultBackground(logoPage);
             this.removeLogo({id: data.id});
-            this.pageLogos.push(data.data.record);
-            this.allLogos.push(data.data.record);
+            this.pageLogos.push(logoPage);
+            this.allLogos.push(logoAll);
             this.resetLogoAndClose();
         },
         addLogo: function(logo) {
             let logoCopy = JSON.parse(JSON.stringify(logo));
-            Object.assign(logoCopy, {pivot: {preferences: {'background-color': ''}}});
+            this.assignDefaultBackground(logoCopy);
             this.pageLogos.push(logoCopy);
             this.addingLogo = true;
             this.editLogoBackground(logoCopy);
+        },
+        assignDefaultBackground: function(logo)
+        {
+            Object.assign(logo, {pivot: {preferences: {'background-color': ''}}});
         },
         removeLogo: function(logo) {
             this.pageLogos = this.pageLogos.filter((l) => {

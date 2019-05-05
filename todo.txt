@@ -1,9 +1,10 @@
-— Logo editor
-—— When I click on a logo, I should be able to cancel the operation when the background form shows up
 — Typography editor
 — Moodboard editor
 — Video editor
 — Contacts editor
 — Index editor
+
+— Logo editor
+—— Write test to sort colours
 — Colour palette editor
 —— Write test to sort colours

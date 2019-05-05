@@ -1,15 +1,41 @@
 <template>
     <div>
-        <!-- Page colours -->
-        <div class="page Colour__container" v-if="! displayForm">
-            <colour 
-                v-for="(colour, index) in pageColours" 
-                :key="index"
-                :data-colour="colour"
-                :data-editable="true"
-                @remove="removeColour"
-                @edit="editColour"
-            ></colour>
+        <div v-if="! displayForm">
+            <!-- Page colours -->
+            <draggable 
+                :list="pageColours" 
+                class="page Colour__container"
+            >
+                <colour 
+                    v-for="(colour, index) in pageColours" 
+                    :key="colour.id"
+                    :data-colour="colour"
+                    :data-editable="true"
+                    @remove="removeColour"
+                    @edit="editColour"
+                ></colour>
+            </draggable>
+            <!-- All colours -->
+            <div class="all Colour__container">
+                <colour
+                    v-for="(colour, index) in allColours"
+                    v-if="! isInPalette(colour)"
+                    :key="index"
+                    :data-colour="colour"
+                    :data-editable="false"
+                    data-mod="small"
+                    @click="addColour"
+                ></colour>
+                <button 
+                    id="add" 
+                    @click="toggleForm" 
+                    class="Button Button--primary"
+                >Add</button>
+            </div>
+            <div class="Actions">
+                <button id="cancel" @click="cancelChanges" class="Button Button--secondary">Cancel</button>
+                <button id="persist" @click="saveChanges" class="Button Button--primary">Save changes</button>
+            </div>
         </div>
         <!-- Form -->
         <colour-form 
@@ -19,28 +45,6 @@
             @success="onSaveColour"
             @cancel="resetColourAndClose"
         ></colour-form>
-        <!-- All colours -->
-        <div class="all Colour__container" v-if="! displayForm">
-            <colour
-                v-for="(colour, index) in allColours"
-                v-if="! isInPalette(colour)"
-                :key="index"
-                :data-colour="colour"
-                :data-editable="false"
-                data-mod="small"
-                @click="addColour"
-            ></colour>
-            <button 
-                id="add" 
-                @click="toggleForm" 
-                v-if="! displayForm" 
-                class="Button Button--primary"
-            >Add</button>
-        </div>
-        <div class="Actions" v-if="! displayForm">
-            <button id="cancel" @click="cancelChanges" class="Button Button--secondary">Cancel</button>
-            <button id="persist" @click="saveChanges" class="Button Button--primary">Save changes</button>
-        </div>
     </div>
 </template>
 
@@ -48,8 +52,9 @@
 import StyleguideForm from './../StyleguideForm.js'
 import ColourForm from './ColourForm.vue'
 import Colour from './Colour.vue'
+import Draggable from 'vuedraggable'
 export default {
-    components: {ColourForm, Colour},
+    components: {ColourForm, Colour, Draggable},
     props: [
         'dataPageColours', 
         'dataAllColours', 

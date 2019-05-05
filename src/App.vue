@@ -12,6 +12,17 @@
     		{id: 3, title: 'Secondary negative', url: 'http://lorempixel.com/100/100/sports/3'}
     	]"
     ></logo-editor>
+    <colour-palette-editor 
+      :dataPageColours="[
+        {id: 1, title: 'Red', hex: '#ff0000'},
+        {id: 3, title: 'Blue', hex: '#0000ff'}
+      ]"
+      :dataAllColours="[
+        {id: 1, title: 'Red', hex: '#ff0000'},
+        {id: 2, title: 'Green', hex: '#00ff00'},
+        {id: 3, title: 'Blue', hex: '#0000ff'}
+      ]"
+    ></colour-palette-editor>
   </div>
 </template>
 

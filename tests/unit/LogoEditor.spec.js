@@ -154,7 +154,7 @@ describe('LogoEditor.vue', () => {
 	it ('adds the logo to the page if the form save button is clicked', (done) => {
 		bootstrapWrapper();
 
-		let logo = logoHelper.make('My logo', {url: ''});
+		let logo = logoHelper.make('My logo');
 
 		mockSuccessfullRequest(logo, {id: 25});
 
