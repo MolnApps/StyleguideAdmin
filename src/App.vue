@@ -1,5 +1,14 @@
 <template>
   <div id="app" class="container mx-auto leading-normal">
+    <typography-editor
+      :dataPageTypefaceFamilies="[
+        {id: 1, title: 'Rubik', weights: [{name: 'Rubik bold', weight: 700}, {name: 'Rubik regular', weight: 400}], pivot: {preferences: {weight: 700}}},
+      ]"
+      :dataAllTypefaceFamilies="[
+        {id: 1, title: 'Rubik', weights: [{name: 'Rubik bold', weight: 700}, {name: 'Rubik regular', weight: 400}, {name: 'Rubik light', weight: 300}]},
+        {id: 2, title: 'Roboto', weights: [{name: 'Roboto bold', weight: 700},{name: 'Roboto regular', weight: 400}, {name: 'Roboto light', weight: 300}]},
+      ]"
+    ></typography-editor>
     <logo-editor 
     	:dataEndpoint="'/logos'" 
     	:dataPageLogos="[
@@ -29,11 +38,14 @@
 <script>
 import LogoEditor from './components/LogoEditor.vue'
 import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
+import TypographyEditor from './components/TypographyEditor.vue'
 
 export default {
   name: 'app',
   components: {
-    LogoEditor, ColourPaletteEditor
+    ColourPaletteEditor, 
+    LogoEditor, 
+    TypographyEditor
   }
 }
 </script>
