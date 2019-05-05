@@ -120,5 +120,18 @@ export default {
     margin-bottom: 12px;
     padding: 12px;
     border-radius: 5px;
+    display: block;
+    width: 100%;
+}
+.Form__group {
+    display: flex;
+    margin-bottom: 12px;
+}
+.Form__group .Form__input {
+    margin-bottom: 0;
+    margin-right: 12px;
+}
+.Form__group button {
+    
 }
 </style>

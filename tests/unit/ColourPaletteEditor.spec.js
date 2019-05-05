@@ -43,7 +43,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.see('Green', 'div.all');
 	})
 
-	it.only ('can arrange colours in a different orders', () => {
+	it ('can arrange colours in a different orders', () => {
 		expect(wrapper.find(Draggable).exists()).toBe(true);
 	})
 

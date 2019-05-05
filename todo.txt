@@ -1,5 +1,3 @@
-— Typography editor
-—— Typeface Family Form
 — Moodboard editor
 — Video editor
 — Contacts editor

@@ -12,7 +12,7 @@
                 ></typeface-weight>
             </div>
             <div class="Actions">
-                <button id="add" @click="toggleTypefaceFamilyForm" class="Button Button--primary">Add</button>
+                <button id="add" @click="addTypefaceFamily" class="Button Button--primary">Add</button>
             </div>
             <div class="all TypefaceFamily__container">
                 <div v-for="family in allTypefaceFamilies">
@@ -30,6 +30,7 @@
         </div>
         <typeface-family-form 
             v-if="display.typefaceFamilyForm" 
+            :data-typeface-family="this.typefaceFamily"
             @success="toggleTypefaceFamilyForm"
             @cancel="toggleTypefaceFamilyForm"
         ></typeface-family-form>
@@ -47,6 +48,7 @@ export default {
         return {
             pageTypefaceFamilies: this.dataPageTypefaceFamilies,
             allTypefaceFamilies: this.dataAllTypefaceFamilies,
+            typefaceFamily: null,
             display: {
                 typefaceFamilyForm: false
             }
@@ -69,6 +71,17 @@ export default {
         },
         toggleTypefaceFamilyForm: function() {
             this.display.typefaceFamilyForm = ! this.display.typefaceFamilyForm;
+        },
+        addTypefaceFamily()
+        {
+            this.typefaceFamily = {
+                id: '', 
+                title: '', 
+                webfont_url: '', 
+                foundry_url: '', 
+                weights: [{name: '', weigth: ''}]
+            };
+            this.toggleTypefaceFamilyForm();
         },
         addWeight(data)
         {
