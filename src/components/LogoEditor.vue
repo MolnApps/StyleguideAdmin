@@ -170,12 +170,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.Logo__container {
-    justify-content: center;
-	display: flex;
-    border: 1px solid #ccc;
-    padding: 24px;
-    margin: 24px 0px;
-}
-</style>

@@ -1,0 +1,23 @@
+.Actions {
+    display: flex;
+}
+.Actions .Button {
+    flex: 1;
+    margin: 0px 12px;
+}
+.Actions .Button:first-child {
+    margin-left: 0px;
+}
+.Actions .Button:last-child {
+    margin-right: 0px;
+}
+.Button {
+    border-radius: 5px;
+    padding: 12px 25px;
+}
+.Button--primary {
+    background: magenta;
+}
+.Button--secondary {
+    background: #ccc;
+}

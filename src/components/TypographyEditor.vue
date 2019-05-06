@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="! display.typefaceFamilyForm">
-            <div class="page TypefaceFamily__container">
+            <div class="page Typeface__container">
                 <typeface-weight 
                     v-for="family in pageTypefaceFamilies" 
                     v-if="pivotWeightExists(family)"
@@ -14,7 +14,7 @@
             <div class="Actions">
                 <button id="add" @click="addTypefaceFamily" class="Button Button--primary">Add</button>
             </div>
-            <div class="all TypefaceFamily__container">
+            <div class="all Typeface__container">
                 <div v-for="family in allTypefaceFamilies">
                     <typeface-weight 
                         :display-callback="weightNotInPage"
@@ -121,12 +121,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.TypefaceFamily__container {
-    display: flex;
-    justify-content: center;
-    padding: 25px;
-    margin: 25px;
-    border: 1px solid #ccc;
-}
-</style>

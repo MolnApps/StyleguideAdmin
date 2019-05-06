@@ -1,3 +1,9 @@
+— Typography Editor
+—— Implement editing of an existing typeface
+—— Do not render typeface family if all weights are added to the page
+
+— Extract CSS into dedicates scss classes
+
 — Moodboard editor
 — Video editor
 — Contacts editor

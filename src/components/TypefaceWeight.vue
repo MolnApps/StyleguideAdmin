@@ -46,26 +46,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.Typeface__family {
-    display: flex;
-    border: 1px solid #ccc;
-    margin: 0px 12px;
-    padding: 5px;
-}
-.Typeface__weight {
-    display: flex;
-    flex-flow: column;
-    background: #f6f6f6;
-    margin: 5px;
-    padding: 25px;
-    text-align: center;
-}
-.Typeface__name {
-    text-align: center;
-}
-.Typeface__sample {
-    font-size: 72px;
-    line-height: 72px;
-}
-</style>

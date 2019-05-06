@@ -42,25 +42,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.Logo {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    padding: 0px 6px;
-    width: 160px;
-}
-.Logo__background {
-    padding: 24px;
-    background-color: #f6f6f6;
-}
-.Logo img {
-    width: 100px;
-    height: 100px;
-    display: block;
-}
-.Logo span {
-    text-align: center;
-    word-wrap: wrap;
-}
-</style>
