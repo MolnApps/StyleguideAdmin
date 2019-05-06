@@ -1,21 +1,27 @@
-var { src, dest, parallel } = require('gulp');
+'use strict';
+ 
+var {src, dest, watch, parallel} = require('gulp');
+var sass = require('gulp-sass');
 var postcss = require('gulp-postcss');
-var atImport = require('postcss-import');
 var tailwindcss = require('tailwindcss');
-
-function serve() {
-	gulp.watch('./src/scss/*.css', ['css']);
-};
-
-function css() {
-	var plugin = [
+ 
+sass.compiler = require('node-sass');
+ 
+function scss() {
+	return src('./src/scss/app.scss')
+		.pipe(sass().on('error', sass.logError))
+		.pipe(postcss([
 		tailwindcss('./tailwind.js'),
-		atImport()
-	];
-	return src('./src/scss/*.css')
-		.pipe(postcss(plugin))
-		.pipe(dest('./public/'))
+		require('autoprefixer')
+		]))
+		.pipe(dest('./public'));
 };
+ 
+watch('./src/**/*.scss', { events: 'all' }, scss);
 
-exports.css = css;
-exports.default = parallel(css);
+function defaultTask(cb) {
+	scss();
+	cb();
+}
+
+exports.default = defaultTask;
