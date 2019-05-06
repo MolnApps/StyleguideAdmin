@@ -1,7 +1,3 @@
-— Typography Editor
-—— Implement editing of an existing typeface
-—— Do not render typeface family if all weights are added to the page
-
 — Moodboard editor
 — Video editor
 — Contacts editor

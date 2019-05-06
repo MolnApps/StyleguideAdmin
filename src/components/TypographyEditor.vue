@@ -15,12 +15,13 @@
                 <button id="add" @click="addTypefaceFamily" class="Button Button--primary">Add</button>
             </div>
             <div class="all Typeface__container">
-                <div v-for="family in allTypefaceFamilies">
+                <div v-for="family in allTypefaceFamilies" v-if="hasWeightsNotInPage(family)">
                     <typeface-weight 
                         :display-callback="weightNotInPage"
                         :data-typeface-family="family"
                          @add="addWeight"
                     ></typeface-weight>
+                    <span class="edit" @click="editTypefaceFamily(family)">Edit</span>
                 </div>
             </div>
             <div class="Actions">
@@ -31,7 +32,8 @@
         <typeface-family-form 
             v-if="display.typefaceFamilyForm" 
             :data-typeface-family="this.typefaceFamily"
-            @success="toggleTypefaceFamilyForm"
+            :data-endpoint="'/typography/' + this.typefaceFamily.id"
+            @success="onSaveTypefaceFamilyForm"
             @cancel="toggleTypefaceFamilyForm"
         ></typeface-family-form>
     </div>
@@ -64,16 +66,29 @@ export default {
                 }).length > 0;
             }).length > 0;
         },
+        hasWeightsNotInPage: function(family) {
+            return family.weights.filter((w) => {
+                return this.weightNotInPage(family.id, w);
+            }).length > 0;
+        },
         weightNotInPage: function(id, weight) {
             return this.pageTypefaceFamilies.filter((f) => {
                 return f.id == id && f.pivot.preferences.weight == weight.weight;
             }).length == 0;
         },
+        onSaveTypefaceFamilyForm: function(data) {
+            let typeface = data.data.record;
+            
+            this.allTypefaceFamilies = this.allTypefaceFamilies.map((t) => {
+                return t.id == typeface.id ? typeface : t;
+            });
+            
+            this.toggleTypefaceFamilyForm();
+        },
         toggleTypefaceFamilyForm: function() {
             this.display.typefaceFamilyForm = ! this.display.typefaceFamilyForm;
         },
-        addTypefaceFamily()
-        {
+        addTypefaceFamily() {
             this.typefaceFamily = {
                 id: '', 
                 title: '', 
@@ -83,8 +98,11 @@ export default {
             };
             this.toggleTypefaceFamilyForm();
         },
-        addWeight(data)
-        {
+        editTypefaceFamily(family) {
+            this.typefaceFamily = JSON.parse(JSON.stringify(family)); 
+            this.toggleTypefaceFamilyForm();
+        },
+        addWeight(data) {
             let typeface = this.allTypefaceFamilies.filter((t) => {
                 return t.id == data.id;
             })[0];
@@ -95,14 +113,12 @@ export default {
 
             this.pageTypefaceFamilies.push(typeface);
         },
-        removeWeight(data)
-        {
+        removeWeight(data) {
             this.pageTypefaceFamilies = this.pageTypefaceFamilies.filter((t) => {
                 return ! (t.id == data.id && t.pivot.preferences.weight == data.weight);
             });
         },
-        saveChanges()
-        {
+        saveChanges() {
             let data = this.pageTypefaceFamilies.map((t) => {
                 return {id: t.id, weight: t.pivot.preferences.weight};
             });
@@ -114,8 +130,7 @@ export default {
             });
             form.submit(this.endpoint);
         },
-        cancelChanges()
-        {
+        cancelChanges() {
             this.$emit('cancel');
         }
     }

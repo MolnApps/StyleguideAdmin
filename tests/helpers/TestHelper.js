@@ -75,9 +75,9 @@ class TestHelper {
 		expect(this.wrapper.emitted()[name]).toBeTruthy();
 	}
 
-	emitEvent(component, eventName)
+	emitEvent(component, eventName, eventParams)
 	{
-		this.wrapper.find(component).vm.$emit(eventName);
+		this.wrapper.find(component).vm.$emit(eventName, eventParams);
 	}
 
 	expectEventData(name, data)

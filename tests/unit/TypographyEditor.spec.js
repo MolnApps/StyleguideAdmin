@@ -43,6 +43,15 @@ describe('TypographyEditor.vue', () => {
 		ui.notSee('Roboto light', 'div.all');
 	})
 
+	it ('will not display a typeface family if all weights are associated with the page', () => {
+		bootstrapWrapper(
+			[typographyHelper.makeWithPivot(1, 'Rubik', [700], 700)], 
+			[typographyHelper.make(1, 'Rubik', [700])]
+		);
+
+		ui.notSeeElement('div.all div');
+	})
+
 	it ('provides a way to remove typeface weights from the page', () => {
 		bootstrapWrapper();
 
@@ -86,7 +95,11 @@ describe('TypographyEditor.vue', () => {
 
 		ui.seeForm('#typefaceFamilyForm');
 
-		ui.emitEvent(TypefaceFamilyForm, 'success');
+		ui.emitEvent(TypefaceFamilyForm, 'success', {
+			data: {
+				record: typographyHelper.make(1, 'Rubik', [700, 300])
+			}
+		});
 
 		ui.notSeeForm('#typefaceFamilyForm');
 	})
@@ -145,6 +158,55 @@ describe('TypographyEditor.vue', () => {
 		ui.click('div.page div:nth-child(1) span.del');
 
 		ui.notSee('Rubik bold', 'div.page');
+	})
+
+	it ('library typeface families are editable', () => {
+		bootstrapWrapper();
+
+		ui.seeElement('div.all span.edit');
+	})
+
+	it ('displays a form when a library typeface family edit button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.click('div.all span.edit');
+
+		ui.seeForm('#typefaceFamilyForm');
+	})
+
+	it ('will disable reactivity when editing a typeface family', () => {
+		bootstrapWrapper();
+
+		ui.see('Rubik regular', 'div.all');
+
+		ui.click('div.all span.edit');
+
+		ui.click('button.del');
+		ui.click('button.del');
+
+		ui.click('#cancel');
+
+		ui.see('Rubik regular', 'div.all');
+	})
+
+	it ('will update the typeface family when the form is saved', (done) => {
+		bootstrapWrapper();
+
+		mockSaveSuccessfullRequest(typographyHelper.make(1, 'Rubik', [700, 300]));
+
+		ui.notSee('Rubik bold', 'div.all');
+		ui.see('Rubik regular', 'div.all');
+		ui.see('Rubik light', 'div.all');
+
+		ui.click('div.all span.edit');
+
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.notSee('Rubik bold', 'div.all');
+			ui.notSee('Rubik regular', 'div.all');
+			ui.see('Rubik light', 'div.all');
+		}, done);
 	})
 
 	it ('displays a button to save the changes', () => {
@@ -212,13 +274,13 @@ describe('TypographyEditor.vue', () => {
 		expect(wrapper.find('div.page div').exists()).toBe(false);
 	})
 
-	let bootstrapWrapper = (pageTypefaceFamilies) => {
+	let bootstrapWrapper = (pageTypefaceFamilies, allTypefaceFamilies) => {
 		pageTypefaceFamilies = pageTypefaceFamilies ? pageTypefaceFamilies : [
 			typographyHelper.makeWithPivot(1, 'Rubik', [700, 400, 300], 700),
 			typographyHelper.makeWithPivot(2, 'Roboto', [400, 300], 300)
 		];
 
-		let allTypefaceFamilies = [
+		allTypefaceFamilies = allTypefaceFamilies ? allTypefaceFamilies : [
 			typographyHelper.make(1, 'Rubik', [700, 400, 300]),
 			typographyHelper.make(2, 'Roboto', [400, 300])
 		];
@@ -238,6 +300,10 @@ describe('TypographyEditor.vue', () => {
 
 	let mockSuccessfullRequest = (record, override) => {
 		ajaxHelper.stubRequest(/typefaces/, ajaxHelper.getSuccessfulResponse(record, override));
+	}
+
+	let mockSaveSuccessfullRequest = (record, override) => {
+		ajaxHelper.stubRequest(/typography/, ajaxHelper.getSuccessfulResponse(record, override));
 	}
 
 	let mockRequestWithValidationErrors = () => {
