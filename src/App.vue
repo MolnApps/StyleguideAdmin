@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="container mx-auto leading-normal">
+    <index-editor :data-index="getIndex()"></index-editor>
     <typography-editor
       :dataPageTypefaceFamilies="[
         {id: 1, title: 'Rubik', weights: [{name: 'Rubik bold', weight: 700}, {name: 'Rubik regular', weight: 400}], pivot: {preferences: {weight: 700}}},
@@ -36,16 +37,25 @@
 </template>
 
 <script>
-import LogoEditor from './components/LogoEditor.vue'
 import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
+import IndexEditor from './components/IndexEditor.vue'
+import LogoEditor from './components/LogoEditor.vue'
 import TypographyEditor from './components/TypographyEditor.vue'
+import {IndexHelper} from './../tests/helpers/Helpers.js'
 
 export default {
   name: 'app',
   components: {
     ColourPaletteEditor, 
+    IndexEditor,
     LogoEditor, 
     TypographyEditor
+  },
+  methods: {
+    getIndex: function() {
+      let indexHelper = new IndexHelper;
+      return indexHelper.makeStructure();
+    }
   }
 }
 </script>

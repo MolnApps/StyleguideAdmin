@@ -65,6 +65,7 @@ class StyleguideForm extends EventEmitter
                 this.emit('success', data);
             })
             .catch((error) => {
+            	this.feedback = error.response.data.feedback;
             	this.errors = error.response.data.errors;
             	this.emit('fail');
             });

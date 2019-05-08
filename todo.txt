@@ -1,4 +1,5 @@
-— Moodboard editor
-— Video editor
-— Contacts editor
 — Index editor
+—— Implement api call
+— Video editor
+— Moodboard editor
+— Contacts editor

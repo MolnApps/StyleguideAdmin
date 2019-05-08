@@ -42,6 +42,15 @@ class AjaxHelper {
 		}
 	}
 
+	getResponseWithErrors(feedback) {
+		return {
+			status: 403,
+			responseText: {
+				feedback: [feedback]
+			}
+		}
+	}
+
 	expectRequest(url, params) {
 		let request = moxios.requests.mostRecent();
 		expect(request.config.url).toEqual(url);
