@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container mx-auto leading-normal">
-    <index-editor :data-index="getIndex()"></index-editor>
+    <index-editor :data-index="getIndex()" data-endpoint="/index"></index-editor>
     <typography-editor
       :dataPageTypefaceFamilies="[
         {id: 1, title: 'Rubik', weights: [{name: 'Rubik bold', weight: 700}, {name: 'Rubik regular', weight: 400}], pivot: {preferences: {weight: 700}}},
