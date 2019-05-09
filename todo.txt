@@ -1,4 +1,3 @@
+— Contacts editor
 — Moodboard editor
 —— Finish implementation with a response from our server
-— Video editor
-— Contacts editor

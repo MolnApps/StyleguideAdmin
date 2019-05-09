@@ -1,5 +1,10 @@
 <template>
   <div id="app" class="container mx-auto leading-normal">
+    <video-editor :data-page-video="getVideo()"></video-editor>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
     <moodboard-editor 
       :data-page-images="getImages()" 
       data-upload-endpoint="https://httpbin.org/post"
@@ -46,6 +51,7 @@ import IndexEditor from './components/IndexEditor.vue'
 import LogoEditor from './components/LogoEditor.vue'
 import MoodboardEditor from './components/MoodboardEditor.vue'
 import TypographyEditor from './components/TypographyEditor.vue'
+import VideoEditor from './components/VideoEditor.vue'
 import {IndexHelper, MoodboardHelper} from './../tests/helpers/Helpers.js'
 
 export default {
@@ -55,7 +61,8 @@ export default {
     IndexEditor,
     LogoEditor, 
     MoodboardEditor, 
-    TypographyEditor
+    TypographyEditor,
+    VideoEditor
   },
   methods: {
     getIndex: function() {
@@ -65,6 +72,12 @@ export default {
     getImages: function() {
       let moodboardHelper = new MoodboardHelper;
       return moodboardHelper.getImages();
+    },
+    getVideo: function() {
+      return [
+        {id: 1, provider: 'vimeo', provider_id: '50719582'},
+        {id: 2, provider: 'youtube', provider_id: 'Pq3hQ--Hbss'},
+      ];
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <draggable tag="div" class="page Image__container">
+        <draggable tag="div" :list="pageImages" class="page Image__container">
             <div v-for="(image, index) in pageImages" :data-id="image.id" :key="image.id" class="image Image">
                 <img :src="image.src" :width="image.width" :height="image.height" />
                 <span class="del" @click="onRemove(index)">Remove</span>
