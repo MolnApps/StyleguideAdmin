@@ -1,13 +1,18 @@
 <template>
     <div>
         <draggable :list="pageVideo" >
-            <div v-for="(video, index) in pageVideo" :key="video.id" :data-id="video.id">
-                Video {{ video.id }}
+            <div v-for="(v, index) in pageVideo" :key="v.id" :data-id="v.id">
+                Video {{ v.id }}
                 <span class="del" @click="onRemove(index)">Remove</span>
-                <span class="edit" @click="onEdit(video)">Edit</span>
+                <span class="edit" @click="onEdit(v)">Edit</span>
             </div>
         </draggable>
-        <video-form :data-endpoint="this.dataCreateEndpoint" :data-video="video" @success="onAdd"></video-form>
+        <video-form 
+            :data-endpoint="this.dataCreateEndpoint" 
+            :data-video="video" 
+            :key="video.id"
+            @success="onAdd"
+        ></video-form>
         <div class="Actions">
             <button class="Button Button--secondary" id="cancelChanges" @click="onCancelChanges">Cancel changes</button>
             <button class="Button Button--primary" id="saveChanges" @click="onSaveChanges">Save changes</button>
