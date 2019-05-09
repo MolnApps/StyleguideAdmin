@@ -115,7 +115,8 @@ describe('MoodboardEditor.vue', () => {
 		wrapper = mount(MoodboardEditor, {
 			propsData: { 
 				dataPageImages: moodboardHelper.getImages(), 
-				dataEndpoint: '/pages/1/images'
+				dataEndpoint: '/pages/1/images',
+				dataUploadEndpoint: '/images'
 			}
 		});
 

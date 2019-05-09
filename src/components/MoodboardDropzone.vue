@@ -11,19 +11,16 @@
 import Dropzone from 'vue2-dropzone';
 export default {
     components: {Dropzone},
-    props: [
-        'dataEndpoint'
-    ],
+    props: ['dataEndpoint', 'dataOptions'],
     data() {
         return {
-            dropzoneOptions: {
+            dropzoneOptions: Object.assign({
                 url: this.dataEndpoint,
                 thumbnailWidth: 150,
                 maxFilesize: 0.5,
                 acceptedFiles: 'image/*',
                 headers: { "My-Awesome-Header": "header value" }
-            },
-            callback: () => {}
+            }, this.dataOptions)
         }
     },
     methods: {
@@ -37,8 +34,6 @@ export default {
             };
             this.$emit('success', image);
             this.$refs.dropzone.removeFile(file);
-
-            this.callback();
         }
     }
 }
