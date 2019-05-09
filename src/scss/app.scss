@@ -21,8 +21,10 @@
 @import "Form.scss";
 @import "Button.scss";
 @import "Colour.scss";
+@import "Image.scss";
 @import "Logo.scss";
 @import "Typeface.scss";
+@import "./../../node_modules/vue2-dropzone/dist/vue2Dropzone.min";
 
  .btn {
   @apply font-bold py-2 px-4 rounded;

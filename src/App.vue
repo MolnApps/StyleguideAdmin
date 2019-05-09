@@ -1,5 +1,9 @@
 <template>
   <div id="app" class="container mx-auto leading-normal">
+    <moodboard-editor 
+      :data-page-images="getImages()" 
+      data-upload-endpoint="https://httpbin.org/post"
+    ></moodboard-editor>
     <index-editor :data-index="getIndex()" data-endpoint="/index"></index-editor>
     <typography-editor
       :dataPageTypefaceFamilies="[
@@ -40,8 +44,9 @@
 import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
 import IndexEditor from './components/IndexEditor.vue'
 import LogoEditor from './components/LogoEditor.vue'
+import MoodboardEditor from './components/MoodboardEditor.vue'
 import TypographyEditor from './components/TypographyEditor.vue'
-import {IndexHelper} from './../tests/helpers/Helpers.js'
+import {IndexHelper, MoodboardHelper} from './../tests/helpers/Helpers.js'
 
 export default {
   name: 'app',
@@ -49,12 +54,17 @@ export default {
     ColourPaletteEditor, 
     IndexEditor,
     LogoEditor, 
+    MoodboardEditor, 
     TypographyEditor
   },
   methods: {
     getIndex: function() {
       let indexHelper = new IndexHelper;
       return indexHelper.makeStructure();
+    },
+    getImages: function() {
+      let moodboardHelper = new MoodboardHelper;
+      return moodboardHelper.getImages();
     }
   }
 }

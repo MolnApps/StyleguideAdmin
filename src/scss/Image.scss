@@ -1,0 +1,11 @@
+.Image__container{
+    display: flex;
+}
+.Image {
+    display: flex;
+    flex-flow: column;
+}
+.Image img {
+    width: auto;
+    height: 100px;
+}
