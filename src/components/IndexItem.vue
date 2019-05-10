@@ -9,7 +9,7 @@
         class="list-reset"
     >
         <li 
-            v-for="i in index" 
+            v-for="(i, k) in index" 
             :key="i.id" 
             :class="'index_' + i.id"
             class="pl-4"
@@ -18,13 +18,28 @@
                 class="List__item Page pl-4" 
                 :class="'Page--' + i.page.type"
             >
-                <div class="List__left">{{ i.page.title }}</div>
+                <div class="List__left">
+                    <span class="flex-1">{{ i.page.title }}</span>
+                    <span>{{ i.page.type }}</span>
+                    <span>{{ i.page.component || 'none' }}</span>
+                </div>
                 <div class="List__right">
-                    <span class="edit Button Button--secondary Button--xs">Edit</span>
-                    <span class="del Button Button--secondary Button--xs">Remove</span>
+                    <span 
+                        class="edit Button Button--secondary Button--xs" 
+                        @click="onEdit(i)"
+                    >Edit</span>
+                    <span 
+                        class="del Button Button--secondary Button--xs"
+                        @click="onRemove(k)"
+                    >Remove</span>
                 </div>
             </div>
-            <index-item :index="i.children" :owner="i" @end="onEnd"></index-item>
+            <index-item 
+                :index="i.children" 
+                :owner="i" 
+                @end="onEnd" 
+                @edit="onEdit" 
+            ></index-item>
         </li>
     </draggable>
 </template>
@@ -47,6 +62,12 @@ export default {
         },
         onEnd: function() {
             this.$emit('end');
+        },
+        onEdit: function(index) {
+            this.$emit('edit', index);
+        },
+        onRemove: function(index) {
+            this.index.splice(index, 1);
         }
     }
 }

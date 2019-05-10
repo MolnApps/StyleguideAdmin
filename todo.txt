@@ -1,8 +1,4 @@
 — Index editor
-—— Changes should be made only on save changes button click
-—— Add page
--- Edit page
-—— Remove page
 —— Add numbers
 — Logo Bg Form
 —— Add colour picker for user friendlyness

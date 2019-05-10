@@ -94,6 +94,29 @@ describe('IndexItem.vue', () => {
 		expect(index[0].children[1].position).toBe(1);
 	})
 
+	it ('displays a button to edit the page', () => {
+		bootstrapWrapper();
+
+		ui.seeElement('li.index_1 span.edit');
+	})
+
+	it ('displays a button to remove the page', () => {
+		bootstrapWrapper();
+
+		ui.seeElement('li.index_1 span.del');
+	})
+
+	it ('emits an event when the edit button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.notExpectEvent('edit');
+
+		ui.click('li.index_1 span.edit');
+
+		ui.expectEvent('edit');
+		ui.expectEventData('edit', [index[0]]);
+	})
+
 	let bootstrapWrapper = () => {
 		wrapper = mount(IndexItem, {
 			propsData: {

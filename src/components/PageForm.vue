@@ -1,6 +1,6 @@
 <template>
     <div class="Container">
-        <form id="pageForm" @submit.prevent="save" class="Form">
+        <form id="pageForm" @submit.prevent="" :data-id="dataPage.id" class="Form">
             <h2 class="Title" v-text="title"></h2>
             <div class="Form__row">
                 <input 

@@ -16,7 +16,13 @@
 }
 
 .List__left {
-	@apply flex-1 p-2 pr-0 m-0;
+	@apply  flex-1 p-2 pr-0 m-0 flex;
+}
+.List__left span:first-child {
+	@apply flex-1;
+}
+.List__left span {
+	@apply mr-4;
 }
 
 .List__right {
