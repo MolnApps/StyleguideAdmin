@@ -102,6 +102,7 @@ describe('VideoForm.vue', () => {
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
+			ui.expectEventData('success', [{id: 1, provider: 'youtube', provider_id: '1eMg23jjR_c'}]);
 		}, done);
 	})
 

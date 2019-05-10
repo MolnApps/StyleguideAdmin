@@ -61,7 +61,7 @@ export default {
             this.video = data.record; 
             this.resetForm();
             
-            this.$emit('success');
+            this.$emit('success', this.video);
         },
         onEmbed: function(record) {
             Object.assign(this.form, record);
