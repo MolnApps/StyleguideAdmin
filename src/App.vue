@@ -1,10 +1,14 @@
 <template>
   <div id="app" class="container mx-auto leading-normal">
+    <people-editor 
+      :data-page-people="getPeople()" 
+      data-endpoint="/pages/1/people"
+    ></people-editor>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
     <video-editor :data-page-video="getVideo()"></video-editor>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
     <moodboard-editor 
       :data-page-images="getImages()" 
       data-upload-endpoint="https://httpbin.org/post"
@@ -50,6 +54,7 @@ import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
 import IndexEditor from './components/IndexEditor.vue'
 import LogoEditor from './components/LogoEditor.vue'
 import MoodboardEditor from './components/MoodboardEditor.vue'
+import PeopleEditor from './components/PeopleEditor.vue'
 import TypographyEditor from './components/TypographyEditor.vue'
 import VideoEditor from './components/VideoEditor.vue'
 import {IndexHelper, MoodboardHelper} from './../tests/helpers/Helpers.js'
@@ -61,6 +66,7 @@ export default {
     IndexEditor,
     LogoEditor, 
     MoodboardEditor, 
+    PeopleEditor, 
     TypographyEditor,
     VideoEditor
   },
@@ -77,6 +83,18 @@ export default {
       return [
         {id: 1, provider: 'vimeo', provider_id: '50719582'},
         {id: 2, provider: 'youtube', provider_id: 'Pq3hQ--Hbss'},
+      ];
+    },
+    getPeople: function() {
+      return [
+        {id: 1, first_name: 'John', middle_name: '', last_name: 'Doe', full_name: 'John Doe', job_title: 'Founder', contacts: [
+            {id: 1, type: 'email', value: {value: 'info@example.com'}},
+            {id: 2, type: 'telephone', value: {prefix: '+39', number: '000 00 00 000'}}
+          ]},
+        {id: 2, first_name: 'Jane', middle_name: '', last_name: 'Doe', full_name: 'Jane Doe', job_title: 'SVP Marketing', contacts: [
+            {id: 1, type: 'email', value: {value: 'info@example.com'}},
+            {id: 2, type: 'telephone', value: {prefix: '+39', number: '000 00 00 000'}}
+          ]}
       ];
     }
   }
