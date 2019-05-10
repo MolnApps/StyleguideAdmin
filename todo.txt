@@ -1,3 +1,5 @@
+— Colour Palette Editor
+—— Colour should be set automagically if not set by hand
 — Video editor
 —— When I click edit and then cancel, the form should be reset
 — Index editor
@@ -6,5 +8,12 @@
 -- Edit page
 —— Remove page
 —— Add numbers
+— Logo Bg Form
+—— Add colour picker for user friendlyness
+—— Add logo with reactive background
+- Logo Form
+—— Implement actual file upload
+— Logo Specs Form
+—— Add logos that responsively adapt to modifications
 — Moodboard editor
 —— Finish implementation with a response from our server

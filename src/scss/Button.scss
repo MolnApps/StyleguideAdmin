@@ -18,6 +18,9 @@
 .Button {
 	@apply font-bold p-3 rounded cursor-pointer align-text-bottom leading-normal;
 }
+.Button:focus {
+    @apply outline-none;
+}
 .Button--primary {
     @apply bg-blue text-white;
 }

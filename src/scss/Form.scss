@@ -6,10 +6,13 @@
     flex-flow: column;
 }
 .Form__row {
-    @apply flex flex-col mb-4;
+    @apply flex flex-col mb-4 flex-1;
 }
 .Form__row--noMargin {
     @apply mb-0;
+}
+.Form__label {
+    @apply leading-normal; 
 }
 .Form__input {
     @apply border rounded p-3 rounded border-grey leading-normal outline-none;
@@ -24,13 +27,14 @@
     @apply border-blue-dark;
 }
 .Form__group {
-    display: flex;
-    margin-bottom: 12px;
+    @apply flex items-center py-2;
 }
-.Form__group .Form__input {
-    margin-bottom: 0;
-    margin-right: 12px;
+.Form__group--border {
+    @apply border-t;
 }
-.Form__group button {
-    
+.Form__group .Form__row {
+    @apply mr-2;
+}
+.Form__group .Form__row:last-child {
+    @apply mr-0;
 }

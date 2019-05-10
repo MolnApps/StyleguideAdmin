@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="Container">
         <form id="logoBgForm" class="Form" @submit.prevent="">
-            <h3 class="Form__title">Background</h3>
+            <h3 class="Title">Background</h3>
             <input 
                 type="text" 
                 name="hex" 
@@ -10,8 +10,16 @@
                 class="Form__input" 
             />
             <div class="Actions">
-                <button id="cancel" @click="cancel" class="Button Button--secondary">Cancel</button>
-                <button id="save" @click="save" class="Button Button--primary">Save</button>
+                <button 
+                    id="cancel" 
+                    @click="cancel" 
+                    class="Button Button--secondary Button--xl"
+                >Cancel</button>
+                <button 
+                    id="save" 
+                    @click="save" 
+                    class="Button Button--primary Button--xl"
+                >Save</button>
             </div>
         </form>
     </div>

@@ -1,24 +1,36 @@
 <template>
-    <div>
-        <form id="logoForm" class="Form">
-            <h3 class="Form__title">Logo</h3>
-            <input 
-                type="text" 
-                name="title" 
-                v-model="form.title" 
-                placeholder="Title" 
-                class="Form__input" 
-            />
-            <p v-if="form.errors.title" v-for="error in form.errors.title" v-text="error"></p>
-            <input 
-                type="file" 
-                name="file" 
-                class="Form__input" 
-            />
-            <p v-if="form.errors.file" v-for="error in form.errors.file" v-text="error"></p>
-            <div class="Actions">
-                <button id="cancel" @click="cancel" class="Button Button--secondary">Cancel</button>
-                <button id="save" @click="save" class="Button Button--primary">Save</button>
+    <div class="Container">
+        <form id="logoForm" class="Form" @submit.prevent="">
+            <h3 class="Title">Logo</h3>
+            <div class="Form__row">
+                <input 
+                    type="text" 
+                    name="title" 
+                    v-model="form.title" 
+                    placeholder="Title" 
+                    class="Form__input" 
+                />
+                <p v-for="error in form.errors.title" v-text="error"></p>
+            </div>
+            <div class="Form__row">
+                <input 
+                    type="file" 
+                    name="file" 
+                    class="Form__input" 
+                />
+                <p v-for="error in form.errors.file" v-text="error"></p>
+            </div>
+            <div class="Actions Actions--noMargin">
+                <button 
+                    id="cancel" 
+                    @click="cancel" 
+                    class="Button Button--secondary Button--xl"
+                >Cancel</button>
+                <button 
+                    id="save" 
+                    @click="save" 
+                    class="Button Button--primary Button--xl"
+                >Save</button>
             </div>
         </form>
     </div>
