@@ -1,17 +1,24 @@
 <template>
     <div>
-        <div v-if="! displayForm">
-            <div v-for="(person, index) in pagePeople" :key="person.id" :data-id="person.id">
-                {{person.full_name}} ({{person.job_title}})
-                <span class="edit" @click="onEdit(person)">Edit</span>
-                <span class="del" @click="onRemove(index)">Remove</span>
+        <div v-if="! displayForm" class="Container">
+            <h3 class="Title">People</h3>
+            <div class="List">
+                <div v-for="(person, index) in pagePeople" :key="person.id" :data-id="person.id" class="List__item">
+                    <div class="List__left">
+                        {{person.full_name}} ({{person.job_title}})
+                    </div>
+                    <div class="List__right">
+                        <span class="edit Button Button--secondary Button--xs" @click="onEdit(person)">Edit</span>
+                        <span class="del Button Button--secondary Button--xs" @click="onRemove(index)">Remove</span>
+                    </div>
+                </div>
+                <div class="List__actions">
+                    <button id="add" @click="onAdd" class="Button Button--primary">Add</button>
+                </div>
             </div>
             <div class="Actions">
-                <button id="add" @click="onAdd" class="Button Button--primary">Add</button>
-            </div>
-            <div class="Actions">
-                <button id="cancelChanges" @click="onCancelChanges" class="Button Button--secondary">Cancel changes</button>
-                 <button id="saveChanges" @click="onSaveChanges" class="Button Button--primary">Save changes</button>
+                <button id="cancelChanges" @click="onCancelChanges" class="Button Button--secondary Button--xl">Cancel changes</button>
+                 <button id="saveChanges" @click="onSaveChanges" class="Button Button--primary Button--xl">Save changes</button>
             </div>
         </div>
         <person-form v-if="displayForm" :data-person="person" @cancel="toggleForm" @success="toggleForm"></person-form>

@@ -541,21 +541,80 @@ table {
   }
 }
 
-/**
- * Here you would add any of your custom component classes; stuff that you'd
- * want loaded *before* the utilities so that the utilities could still
- * override them.
- *
- * Example:
- *
- * .btn { ... }
- * .form-input { ... }
- *
- * Or if using a preprocessor or `postcss-import`:
- *
- * @import "components/buttons";
- * @import "components/forms";
- */
+.Container {
+  min-height: 100vh;
+  border-bottom-width: 1px;
+  padding: 3rem;
+  line-height: 1.5;
+  background: -webkit-gradient(linear, left bottom, left top, from(#ebebeb), to(white));
+  background: linear-gradient(0deg, #ebebeb 0%, white 100%);
+}
+
+.Page--chapter {
+  font-weight: 700;
+}
+
+.Title {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.Title--small {
+  font-size: 1.5rem;
+}
+
+.List {
+  border-width: 1px;
+  border-radius: .25rem;
+  list-style: none;
+  padding: 0;
+}
+
+.List__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom-width: 1px;
+  margin: 0;
+}
+
+.List__item:last-child {
+  border-width: 0;
+}
+
+.List__actions {
+  padding: .5rem;
+}
+
+.List__actions * {
+  margin-right: .5rem;
+}
+
+.List__left {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0%;
+          flex: 1 1 0%;
+  padding: .5rem;
+  padding-right: 0;
+  margin: 0;
+}
+
+.List__right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: .5rem;
+}
+
+.List__right * {
+  margin-left: .5rem;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.List__right *:first-child {
+  margin-left: 0;
+}
 
 .body {
   background-color: red;
@@ -569,24 +628,43 @@ table {
   -webkit-box-direction: normal;
       -ms-flex-flow: column;
           flex-flow: column;
-  padding: 50px;
-  border: 1px solid #ccc;
-  margin: 0 auto;
-  border-radius: 5px;
 }
 
-.Form__title {
-  text-align: center;
-  padding: 0px 12px 12px;
+.Form__row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.Form__row--noMargin {
+  margin-bottom: 0;
 }
 
 .Form__input {
-  border: 1px solid #ccc;
-  margin-bottom: 12px;
-  padding: 12px;
-  border-radius: 5px;
-  display: block;
-  width: 100%;
+  border-width: 1px;
+  border-radius: .25rem;
+  padding: .75rem;
+  border-radius: .25rem;
+  border-color: #b8c2cc;
+  line-height: 1.5;
+  outline: 0;
+}
+
+.Form__input--textarea {
+  height: 16rem;
+}
+
+.Form__input:hover {
+  border-color: #3490dc;
+}
+
+.Form__input:focus {
+  border-color: #2779bd;
 }
 
 .Form__group {
@@ -605,6 +683,11 @@ table {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  margin-top: 1rem;
+}
+
+.Actions--noMargin {
+  margin-top: 0;
 }
 
 .Actions .Button {
@@ -623,19 +706,51 @@ table {
 }
 
 .Button {
-  border-radius: 5px;
-  padding: 12px 25px;
+  font-weight: 700;
+  padding: .75rem;
+  border-radius: .25rem;
+  cursor: pointer;
+  vertical-align: text-bottom;
+  line-height: 1.5;
 }
 
 .Button--primary {
-  background: magenta;
+  background-color: #3490dc;
+  color: #fff;
+}
+
+.Button--primary:hover {
+  background-color: #2779bd;
 }
 
 .Button--secondary {
-  background: #ccc;
+  background-color: #dae1e7;
+  color: #3d4852;
 }
 
-.Colour__container {
+.Button--secondary:hover {
+  background-color: #b8c2cc;
+}
+
+.Button--xs {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  padding-left: .5rem;
+  padding-right: .5rem;
+  font-size: .75rem;
+  height: 1.5rem;
+}
+
+.Button--xl {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-size: 1.25rem;
+  height: 4rem;
+}
+
+.PageItem__container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -645,26 +760,29 @@ table {
   padding: 12px;
 }
 
-.Colour {
-  background: #fff;
+.PageItem {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-          flex-flow: column;
-  margin: 0px 12px;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: .5rem;
+  margin-right: .5rem;
+  border-radius: .25rem;
 }
 
-.Colour--small {
+.PageItem--small {
   margin: 0px 6px;
 }
 
-.Colour__fill {
-  width: 100px;
-  height: 100px;
-  border-radius: 50px;
+.PageItem__fill {
+  border-radius: .25rem;
+  min-width: 100px;
+  min-height: 100px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -676,13 +794,38 @@ table {
           justify-content: center;
 }
 
-.Colour--small .Colour__fill {
-  width: 50px;
-  height: 50px;
+.PageItem__fill--circle {
+  border-radius: 50px;
+}
+
+.PageItem__fill--noWidth {
+  min-width: auto;
+}
+
+.PageItem__fill--withPadding {
+  padding: 24px;
+}
+
+.PageItem--small .PageItem__fill {
+  min-width: 50px;
+  min-height: 50px;
   font-size: 10px;
 }
 
-.Colour__actions {
+.PageItem__title {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.PageItem__image {
+  width: auto;
+  height: 100px;
+  display: block;
+}
+
+.PageItem__actions {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -691,114 +834,33 @@ table {
           justify-content: center;
 }
 
-.Colour__action {
+.PageItem__action {
   font-size: 10px;
   color: #ccc;
   margin: 6px;
   cursor: pointer;
 }
 
-.Image__container {
+.Contact__telephone {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-.Image {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-          flex-flow: column;
+.Contact__prefix {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0%;
+          flex: 1 1 0%;
+  margin-right: .5rem;
+  width: 4rem;
 }
 
-.Image img {
-  width: auto;
-  height: 100px;
+.Contact__number {
+  width: 100%;
 }
 
-.Logo__container {
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  border: 1px solid #ccc;
-  padding: 24px;
-  margin: 24px 0px;
-}
-
-.Logo {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-          flex-flow: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 0px 6px;
-  width: 160px;
-}
-
-.Logo__background {
-  padding: 24px;
-  background-color: #f6f6f6;
-}
-
-.Logo img {
-  width: 100px;
-  height: 100px;
-  display: block;
-}
-
-.Logo span {
-  text-align: center;
-  word-wrap: wrap;
-}
-
-.Typeface__container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  padding: 25px;
-  margin: 25px;
-  border: 1px solid #ccc;
-}
-
-.Typeface__family {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  border: 1px solid #ccc;
-  margin: 0px 12px;
-  padding: 5px;
-}
-
-.Typeface__weight {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-          flex-flow: column;
-  background: #f6f6f6;
-  margin: 5px;
-  padding: 25px;
-  text-align: center;
-}
-
-.Typeface__name {
-  text-align: center;
+.Contact__email {
+  width: 100%;
 }
 
 .Typeface__sample {
@@ -1309,52 +1371,6 @@ table {
 
 .vue-dropzone > .dz-preview .dz-error-message:after {
   display: none;
-}
-
-.btn {
-  font-weight: 700;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  border-radius: .25rem;
-}
-
-.btn-blue {
-  background-color: #3490dc;
-  color: #fff;
-}
-
-.btn-blue:hover {
-  background-color: #2779bd;
-}
-
-.btn-grey {
-  background-color: #dae1e7;
-  color: #3d4852;
-}
-
-.btn-grey:hover {
-  background-color: #b8c2cc;
-}
-
-.input {
-  border-width: 1px;
-  border-radius: .25rem;
-  padding: .75rem;
-  border-radius: .25rem;
-  margin-bottom: 1rem;
-  border-color: #b8c2cc;
-  line-height: 1.5;
-  outline: 0;
-}
-
-.input:hover {
-  border-color: #3490dc;
-}
-
-.input:focus {
-  border-color: #2779bd;
 }
 
 .list-reset {

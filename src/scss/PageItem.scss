@@ -1,0 +1,51 @@
+.PageItem__container {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
+.PageItem {
+    @apply flex flex-col my-0 mx-2 rounded;
+}
+.PageItem--small {
+    margin: 0px 6px;
+}
+.PageItem__fill {
+    @apply rounded;
+    min-width: 100px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.PageItem__fill--circle {
+    border-radius: 50px;
+}
+.PageItem__fill--noWidth {
+    min-width: auto;
+}
+.PageItem__fill--withPadding {
+    padding: 24px;
+}
+.PageItem--small .PageItem__fill {
+    min-width: 50px;
+    min-height: 50px;
+    font-size: 10px;
+}
+.PageItem__title {
+    @apply text-center truncate;
+}
+.PageItem__image {
+    width: auto;
+    height: 100px;
+    display: block;
+}
+.PageItem__actions {
+    display: flex;
+    justify-content: center;
+}
+.PageItem__action {
+    font-size: 10px;
+    color: #ccc;
+    margin: 6px;
+    cursor: pointer;
+}

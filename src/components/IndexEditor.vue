@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="Container">
+        <h3 class="Title">Index</h3>
         <p v-for="message in form.feedback" v-text="message"></p>
         <index-item :index="index" :owner="{id: 0}" @end="onEnd"></index-item>
     </div>

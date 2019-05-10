@@ -1,13 +1,11 @@
 <template>
-  <div id="app" class="container mx-auto leading-normal">
+  <div id="app" class="">
+    <page-form :data-page="{title:'Foo', body: 'Bar'}"></page-form>
     <people-editor 
       :data-page-people="getPeople()" 
       data-endpoint="/pages/1/people"
     ></people-editor>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
+    <person-form :data-person="getPeople()[0]"></person-form>
     <video-editor :data-page-video="getVideo()"></video-editor>
     <moodboard-editor 
       :data-page-images="getImages()" 
@@ -54,6 +52,8 @@ import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
 import IndexEditor from './components/IndexEditor.vue'
 import LogoEditor from './components/LogoEditor.vue'
 import MoodboardEditor from './components/MoodboardEditor.vue'
+import PageForm from './components/PageForm.vue'
+import PersonForm from './components/PersonForm.vue'
 import PeopleEditor from './components/PeopleEditor.vue'
 import TypographyEditor from './components/TypographyEditor.vue'
 import VideoEditor from './components/VideoEditor.vue'
@@ -66,6 +66,8 @@ export default {
     IndexEditor,
     LogoEditor, 
     MoodboardEditor, 
+    PageForm,
+    PersonForm, 
     PeopleEditor, 
     TypographyEditor,
     VideoEditor

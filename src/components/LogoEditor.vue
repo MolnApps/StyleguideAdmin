@@ -1,9 +1,10 @@
 <template>
-    <div>
+    <div class="Container">
         <div v-if="! displayForm && ! displayBgForm && ! displaySpecForm">
+            <h3 class="Title">Logos</h3>
         	<draggable 
                 :list="pageLogos" 
-                class="page Logo__container"
+                class="page PageItem__container"
             >
                 <logo 
                     v-for="(logo, index) in pageLogos" 
@@ -13,11 +14,10 @@
                     @remove="removeLogo"
                     @edit="editLogoBackground"
                 ></logo>
-            </draggable>
-            <div class="Actions">
                 <button id="add" class="Button Button--primary" @click="toggleForm">Add new logo</button>
-            </div>
-            <div class="all Logo__container">
+            </draggable>
+            <h3 class="Title Title--small">Library</h3>
+            <div class="all PageItem__container">
             	<logo 
                     v-for="(logo, index) in allLogos" 
                     :logo="logo" 
@@ -31,12 +31,12 @@
                 <button 
                     id="cancelChanges" 
                     @click="cancelChanges" 
-                    class="Button Button--secondary"
+                    class="Button Button--secondary Button--xl"
                 >Cancel changes</button>
                 <button 
                     id="saveChanges" 
                     @click="saveChanges" 
-                    class="Button Button--primary"
+                    class="Button Button--primary Button--xl"
                 >Save changes</button>
             </div>
         </div>

@@ -1,17 +1,38 @@
 <template>
-    <div>
-        <draggable tag="div" :list="pageImages" class="page Image__container">
-            <div v-for="(image, index) in pageImages" :data-id="image.id" :key="image.id" class="image Image">
-                <img :src="image.src" :width="image.width" :height="image.height" />
-                <span class="del" @click="onRemove(index)">Remove</span>
+    <div class="Container">
+        <h3 class="Title">Moodboard</h3>
+        <draggable 
+            tag="div" 
+            :list="pageImages" 
+            class="page PageItem__container"
+        >
+            <div 
+                v-for="(image, index) in pageImages" 
+                :data-id="image.id" 
+                :key="image.id" 
+                class="image PageItem"
+            >
+                <div class="PageItem__fill PageItem__fill--noWidth">
+                    <img 
+                        :src="image.src" 
+                        :width="image.width" 
+                        :height="image.height" 
+                        class="PageItem__image"
+                    />
+                </div>
+                <div class="PageItem__actions">
+                    <span class="del PageItem__action" @click="onRemove(index)">Remove</span>
+                </div>
             </div>
         </draggable>
         <moodboard-dropzone 
             :data-endpoint="dataUploadEndpoint"
             @success="onUploadSuccess"
         ></moodboard-dropzone>
-        <button id="saveChanges" @click="onSave">Save changes</button>
-        <button id="cancelChanges" @click="onCancel">Cancel changes</button>
+        <div class="Actions">
+            <button id="cancelChanges" @click="onCancel" class="Button Button--secondary Button--xl">Cancel changes</button>
+            <button id="saveChanges" @click="onSave" class="Button Button--primary Button--xl">Save changes</button>
+        </div>
     </div>
 </template>
 

@@ -1,10 +1,21 @@
 <template>
-    <div>
-        <draggable :list="pageVideo" >
-            <div v-for="(v, index) in pageVideo" :key="v.id" :data-id="v.id">
-                Video {{ v.id }}
-                <span class="del" @click="onRemove(index)">Remove</span>
-                <span class="edit" @click="onEdit(v)">Edit</span>
+    <div class="Container">
+        <h3 class="Title">Video</h3>
+        <draggable :list="pageVideo" class="List">
+            <div v-for="(v, index) in pageVideo" :key="v.id" :data-id="v.id" class="List__item">
+                <div class="List__left">
+                    Video {{ v.id }}
+                </div>
+                <div class="List__right">
+                    <span 
+                        class="del Button Button--secondary Button--xs" 
+                        @click="onRemove(index)"
+                    >Remove</span>
+                    <span 
+                        class="edit Button Button--secondary Button--xs" 
+                        @click="onEdit(v)"
+                    >Edit</span>
+                </div>
             </div>
         </draggable>
         <video-form 
@@ -14,8 +25,16 @@
             @success="onAdd"
         ></video-form>
         <div class="Actions">
-            <button class="Button Button--secondary" id="cancelChanges" @click="onCancelChanges">Cancel changes</button>
-            <button class="Button Button--primary" id="saveChanges" @click="onSaveChanges">Save changes</button>
+            <button 
+                class="Button Button--secondary Button--xl" 
+                id="cancelChanges" 
+                @click="onCancelChanges"
+            >Cancel changes</button>
+            <button 
+                class="Button Button--primary Button--xl" 
+                id="saveChanges" 
+                @click="onSaveChanges"
+            >Save changes</button>
         </div>
     </div>
 </template>

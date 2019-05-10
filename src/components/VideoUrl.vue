@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="Form__row Form__row--noMargin">
         <input 
             :placeholder="getRandomPlaceholder()" 
             v-model="urlForm.url" 

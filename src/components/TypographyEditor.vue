@@ -1,7 +1,8 @@
 <template>
-    <div>
+    <div class="Container">
         <div v-if="! display.typefaceFamilyForm">
-            <div class="page Typeface__container">
+            <h3 class="Title">Typefaces</h3>
+            <div class="page PageItem__container">
                 <typeface-weight 
                     v-for="family in pageTypefaceFamilies" 
                     v-if="pivotWeightExists(family)"
@@ -12,21 +13,45 @@
                 ></typeface-weight>
             </div>
             <div class="Actions">
-                <button id="add" @click="addTypefaceFamily" class="Button Button--primary">Add</button>
+
             </div>
-            <div class="all Typeface__container">
-                <div v-for="family in allTypefaceFamilies" v-if="hasWeightsNotInPage(family)">
+            <h3 class="Title Title--small">Library</h3>
+            <div class="all PageItem__container">
+                <div 
+                    v-for="family in allTypefaceFamilies" 
+                    :key="family.id"
+                    v-if="hasWeightsNotInPage(family)"
+                    class="PageItem"
+                >
                     <typeface-weight 
                         :display-callback="weightNotInPage"
                         :data-typeface-family="family"
                          @add="addWeight"
                     ></typeface-weight>
-                    <span class="edit" @click="editTypefaceFamily(family)">Edit</span>
+                    <div class="PageItem__actions">
+                        <span 
+                            class="edit PageItem__action" 
+                            @click="editTypefaceFamily(family)"
+                        >Edit</span>
+                    </div>
                 </div>
+                <button 
+                    id="add" 
+                    @click="addTypefaceFamily" 
+                    class="Button Button--primary"
+                >Add</button>
             </div>
             <div class="Actions">
-                <button id="cancelChanges" @click="cancelChanges" class="Button Button--secondary">Cancel changes</button>
-                <button id="saveChanges" @click="saveChanges" class="Button Button--primary">Save changes</button>
+                <button 
+                    id="cancelChanges" 
+                    @click="cancelChanges" 
+                    class="Button Button--secondary Button-xl"
+                >Cancel changes</button>
+                <button 
+                    id="saveChanges" 
+                    @click="saveChanges" 
+                    class="Button Button--primary Button--xl"
+                >Save changes</button>
             </div>
         </div>
         <typeface-family-form 

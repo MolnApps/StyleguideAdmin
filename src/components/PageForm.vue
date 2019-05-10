@@ -1,14 +1,37 @@
 <template>
-    <div>
-        <form id="pageForm" @submit.prevent="save" class="p-16 flex flex-col">
-            <h2 class="mb-4 text-center" v-text="title"></h2>
-            <input type="text" name="title" v-model="form.title" class="input" />
-            <p v-if="form.errors.title" v-for="error in form.errors.title" v-text="error"></p>
-            <textarea name="body" v-model="form.body" class="input h-64"></textarea>
-            <p v-if="form.errors.body" v-for="error in form.errors.body" v-text="error"></p>
-            <div class="flex">
-                <button type="button" id="cancel" @click="cancel" class="btn btn-grey flex-1 mr-2">Cancel</button>
-                <button type="submit" id="save" @click="save" class="btn btn-blue flex-1 ml-2">Save</button>
+    <div class="Container">
+        <form id="pageForm" @submit.prevent="save" class="Form">
+            <h2 class="Title" v-text="title"></h2>
+            <div class="Form__row">
+                <input 
+                    type="text" 
+                    name="title" 
+                    v-model="form.title" 
+                    class="Form__input" 
+                />
+                <p v-if="form.errors.title" v-for="error in form.errors.title" v-text="error"></p>
+            </div>
+            <div class="Form__row">
+                <textarea 
+                    name="body" 
+                    v-model="form.body" 
+                    class="Form__input Form__input--textarea"
+                ></textarea>
+                <p v-if="form.errors.body" v-for="error in form.errors.body" v-text="error"></p>
+            </div>
+            <div class="Actions Actions--noMargin">
+                <button 
+                    type="button" 
+                    id="cancel" 
+                    @click="cancel" 
+                    class="Button Button--secondary Button--xl"
+                >Cancel</button>
+                <button 
+                    type="submit" 
+                    id="save" 
+                    @click="save" 
+                    class="Button Button--primary Button--xl"
+                >Save</button>
             </div>
         </form>
         <p v-for="message in this.form.feedback" v-text="message"></p>

@@ -1,10 +1,11 @@
 <template>
-    <div>
+    <div class="Container">
         <div v-if="! displayForm">
+            <h3 class="Title">Colour palette</h3>
             <!-- Page colours -->
             <draggable 
                 :list="pageColours" 
-                class="page Colour__container"
+                class="page PageItem__container"
             >
                 <colour 
                     v-for="(colour, index) in pageColours" 
@@ -16,7 +17,7 @@
                 ></colour>
             </draggable>
             <!-- All colours -->
-            <div class="all Colour__container">
+            <div class="all PageItem__container">
                 <colour
                     v-for="(colour, index) in allColours"
                     v-if="! isInPalette(colour)"
@@ -33,8 +34,8 @@
                 >Add</button>
             </div>
             <div class="Actions">
-                <button id="cancel" @click="cancelChanges" class="Button Button--secondary">Cancel</button>
-                <button id="persist" @click="saveChanges" class="Button Button--primary">Save changes</button>
+                <button id="cancel" @click="cancelChanges" class="Button Button--secondary Button-xl">Cancel</button>
+                <button id="persist" @click="saveChanges" class="Button Button--primary Button--xl">Save changes</button>
             </div>
         </div>
         <!-- Form -->

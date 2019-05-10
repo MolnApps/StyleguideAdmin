@@ -4,22 +4,24 @@
 .Form {
     display: flex;
     flex-flow: column;
-    padding: 50px;
-    border: 1px solid #ccc;
-    margin: 0 auto;
-    border-radius: 5px;
 }
-.Form__title {
-    text-align: center;
-    padding: 0px 12px 12px;
+.Form__row {
+    @apply flex flex-col mb-4;
+}
+.Form__row--noMargin {
+    @apply mb-0;
 }
 .Form__input {
-    border: 1px solid #ccc;
-    margin-bottom: 12px;
-    padding: 12px;
-    border-radius: 5px;
-    display: block;
-    width: 100%;
+    @apply border rounded p-3 rounded border-grey leading-normal outline-none;
+}
+.Form__input--textarea {
+    @apply h-64;
+}
+.Form__input:hover {
+    @apply border-blue;
+}
+.Form__input:focus {
+    @apply border-blue-dark;
 }
 .Form__group {
     display: flex;

@@ -1,0 +1,12 @@
+.Contact__telephone {
+	@apply flex;
+}
+.Contact__prefix {
+	@apply flex-1 mr-2 w-16;
+}
+.Contact__number {
+	@apply w-full;
+}
+.Contact__email {
+	@apply w-full;
+}

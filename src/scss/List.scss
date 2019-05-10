@@ -1,0 +1,30 @@
+.List {
+	@apply border rounded list-reset;
+}
+
+.List__item {
+	@apply flex border-b m-0;
+}
+.List__item:last-child {
+	@apply border-0;
+}
+.List__actions {
+	@apply p-2;
+}
+.List__actions * {
+	@apply mr-2;
+}
+
+.List__left {
+	@apply flex-1 p-2 pr-0 m-0;
+}
+
+.List__right {
+	@apply flex p-2;
+}
+.List__right * {
+	@apply ml-2 my-auto;
+}
+.List__right *:first-child {
+	@apply ml-0;
+}

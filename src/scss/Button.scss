@@ -1,5 +1,8 @@
 .Actions {
-    display: flex;
+    @apply flex mt-4;
+}
+.Actions--noMargin {
+    @apply mt-0;
 }
 .Actions .Button {
     flex: 1;
@@ -11,13 +14,25 @@
 .Actions .Button:last-child {
     margin-right: 0px;
 }
+
 .Button {
-    border-radius: 5px;
-    padding: 12px 25px;
+	@apply font-bold p-3 rounded cursor-pointer align-text-bottom leading-normal;
 }
 .Button--primary {
-    background: magenta;
+    @apply bg-blue text-white;
+}
+.Button--primary:hover {
+    @apply bg-blue-dark;
 }
 .Button--secondary {
-    background: #ccc;
+    @apply bg-grey-light text-grey-darkest;
+}
+.Button--secondary:hover {
+    @apply bg-grey;
+}
+.Button--xs {
+	@apply py-1 px-2 text-xs h-6;
+}
+.Button--xl {
+	@apply py-4 px-6 text-xl h-16;
 }

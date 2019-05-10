@@ -3,18 +3,21 @@
         :data-id="logo.id" 
         :data-background="background" 
         @click="$emit('click', logo)"
-        class="Logo" 
+        class="PageItem" 
     >
-        <div :style="'background-color: ' + background" class="Logo__background">
-            <img :src="logo.url" />
+        <div 
+            :style="'background-color: ' + background" 
+            class="PageItem__fill PageItem__fill--withPadding"
+        >
+            <img :src="logo.url" class="PageItem__image" />
         </div>
-        <span v-text="logo.title"></span>
-        <div class="Logo__actions" v-if="editableBg">
-            <span class="del" @click="$emit('remove', logo)">Remove</span>
-            <span class="edit" @click="$emit('edit', logo)">Edit</span>
+        <span v-text="logo.title" class="PageItem__title"></span>
+        <div class="PageItem__actions" v-if="editableBg">
+            <span class="del PageItem__action" @click="$emit('remove', logo)">Remove</span>
+            <span class="edit PageItem__action" @click="$emit('edit', logo)">Edit</span>
         </div>
-        <div class="Logo__actions" v-if="editableSpec">
-            <span class="edit" @click="$emit('edit-spec', logo)">Edit</span>
+        <div class="PageItem__actions" v-if="editableSpec">
+            <span class="edit PageItem__action" @click="$emit('edit-spec', logo)">Edit</span>
         </div>
     </div>
 </template>

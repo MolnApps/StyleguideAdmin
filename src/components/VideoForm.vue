@@ -1,16 +1,33 @@
 <template>
-    <div>
-        <form id="videoForm" class="Form" @submit.prevent="">
+    <form id="videoForm" @submit.prevent="">
+        <div class="w-1/3 mx-auto mt-4">
             <component v-bind:is="form.provider" :id="form.provider_id"></component>
-            <video-url :data-endpoint="dataEndpoint + '/url'" @success="onEmbed"></video-url>
-            <input type="hidden" name="provider" v-model="form.provider" />
-            <input type="hidden" name="provider_id" v-model="form.provider_id" />
-            <div class="Actions">
-                <button id="cancel" @click="cancel" class="Button Button--secondary">Cancel</button>
-                <button id="save" @click="save" class="Button Button--primary">Save</button>
+        </div>
+        <div class="List mt-4">
+            <div class="List__item">
+                <div class="List__left">
+                    <video-url 
+                        :data-endpoint="dataEndpoint + '/url'" 
+                        @success="onEmbed"
+                    ></video-url>
+                    <input type="hidden" name="provider" v-model="form.provider" />
+                    <input type="hidden" name="provider_id" v-model="form.provider_id" />
+                </div>
+                <div class="List__right">
+                    <button 
+                        id="cancel" 
+                        @click="cancel" 
+                        class="Button Button--secondary"
+                    >Cancel</button>
+                    <button 
+                        id="save" 
+                        @click="save" 
+                        class="Button Button--primary"
+                    >Save</button>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </template>
 
 <script>

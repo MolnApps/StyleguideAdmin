@@ -1,3 +1,10 @@
-— Contacts editor
+— Video editor
+—— When I click edit and then cancel, the form should be reset
+— Index editor
+—— Changes should be made only on save changes button click
+—— Add page
+-- Edit page
+—— Remove page
+—— Add numbers
 — Moodboard editor
 —— Finish implementation with a response from our server
