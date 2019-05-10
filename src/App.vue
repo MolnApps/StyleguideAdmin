@@ -13,6 +13,7 @@
     <person-form :data-person="getPeople()[0]"></person-form>
     
     <video-editor :data-page-video="getVideo()"></video-editor>
+    <video-form :data-video="getVideo()[0]"></video-form>
     
     <moodboard-editor 
       :data-page-images="getImages()" 

@@ -1,41 +1,52 @@
 <template>
-    <div class="Container">
-        <h3 class="Title">Video</h3>
-        <draggable :list="pageVideo" class="List">
-            <div v-for="(v, index) in pageVideo" :key="v.id" :data-id="v.id" class="List__item">
-                <div class="List__left">
-                    Video {{ v.id }}
+    <div>
+        <div class="Container" id="editor" v-if="! displayForm">
+            <h3 class="Title">Video</h3>
+            <draggable :list="pageVideo" class="List">
+                <div v-for="(v, index) in pageVideo" :key="v.id" :data-id="v.id" class="List__item">
+                    <div class="List__left">
+                        Video {{ v.id }}
+                    </div>
+                    <div class="List__right">
+                        <span 
+                            class="del Button Button--secondary Button--xs" 
+                            @click="onRemove(index)"
+                        >Remove</span>
+                        <span 
+                            class="edit Button Button--secondary Button--xs" 
+                            @click="onEdit(v)"
+                        >Edit</span>
+                    </div>
                 </div>
-                <div class="List__right">
-                    <span 
-                        class="del Button Button--secondary Button--xs" 
-                        @click="onRemove(index)"
-                    >Remove</span>
-                    <span 
-                        class="edit Button Button--secondary Button--xs" 
-                        @click="onEdit(v)"
-                    >Edit</span>
+                <div class="List__actions">
+                    <button 
+                        id="add" 
+                        class="Button Button--primary"
+                        @click="onAdd"
+                    >Add</button>
                 </div>
+            </draggable>
+            <div class="Actions">
+                <button 
+                    class="Button Button--secondary Button--xl" 
+                    id="cancelChanges" 
+                    @click="onCancelChanges"
+                >Cancel changes</button>
+                <button 
+                    class="Button Button--primary Button--xl" 
+                    id="saveChanges" 
+                    @click="onSaveChanges"
+                >Save changes</button>
             </div>
-        </draggable>
+        </div>
         <video-form 
+            v-if="displayForm"
             :data-endpoint="this.dataCreateEndpoint" 
             :data-video="video" 
             :key="video.id"
-            @success="onAdd"
+            @success="onSuccess"
+            @cancel="onCancel"
         ></video-form>
-        <div class="Actions">
-            <button 
-                class="Button Button--secondary Button--xl" 
-                id="cancelChanges" 
-                @click="onCancelChanges"
-            >Cancel changes</button>
-            <button 
-                class="Button Button--primary Button--xl" 
-                id="saveChanges" 
-                @click="onSaveChanges"
-            >Save changes</button>
-        </div>
     </div>
 </template>
 
@@ -49,7 +60,8 @@ export default {
     data() {
         return {
             pageVideo: this.dataPageVideo,
-            video: {}
+            video: {},
+            displayForm: false
         };
     },
     methods: {
@@ -58,9 +70,18 @@ export default {
         },
         onEdit: function(video) {
             this.video = video;
+            this.toggleForm();
         },
-        onAdd: function(video) {
+        onAdd: function() {
+            this.video = {};
+            this.toggleForm();
+        },
+        onSuccess: function(video) {
             this.pageVideo.push(video);
+            this.toggleForm();
+        },
+        onCancel: function() {
+            this.toggleForm();
         },
         onSaveChanges: function() {
             let ids = this.pageVideo.map((v) => { return v.id; });
@@ -70,6 +91,9 @@ export default {
         },
         onCancelChanges: function() {
             this.$emit('cancel');
+        },
+        toggleForm: function() {
+            this.displayForm = ! this.displayForm;
         }
     }
 }

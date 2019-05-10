@@ -1,6 +1,7 @@
 <template>
-    <form id="videoForm" @submit.prevent="">
-        <div class="w-1/3 mx-auto mt-4">
+    <form id="videoForm" @submit.prevent="" class="Container">
+        <h3 class="Title">Video</h3>
+        <div class="w-1/2 mx-auto mt-4">
             <component v-bind:is="form.provider" :id="form.provider_id"></component>
         </div>
         <div class="List mt-4">

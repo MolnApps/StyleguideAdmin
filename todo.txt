@@ -1,5 +1,3 @@
-— Colour Palette Editor
-—— Colour should be set automagically if not set by hand
 — Video editor
 —— When I click edit and then cancel, the form should be reset
 — Index editor
@@ -15,5 +13,7 @@
 —— Implement actual file upload
 — Logo Specs Form
 —— Add logos that responsively adapt to modifications
+— Colour Palette Editor
+—— Colour should be set automagically if not set by hand
 — Moodboard editor
 —— Finish implementation with a response from our server

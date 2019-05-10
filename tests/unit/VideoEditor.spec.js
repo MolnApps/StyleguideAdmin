@@ -1,6 +1,7 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import VideoEditor from '@/components/VideoEditor.vue'
 import VideoForm from '@/components/VideoForm.vue'
+import Vimeo from '@/components/Vimeo.vue'
 import Draggable from 'vuedraggable'
 import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
 
@@ -42,22 +43,53 @@ describe('VideoEditor.vue', () => {
 		ui.notSeeElement('div[data-id="2"]');
 	})
 
+	it ('displays a button to add a video', () => {
+		ui.seeInput('button[id="add"]');
+	})
+
 	it ('displays a button to edit a video', () => {
 		ui.seeElement('div[data-id="1"] span.edit');
 		ui.seeElement('div[data-id="2"] span.edit');
 	})
 
 	it ('displays the form when the edit video is clicked', () => {
+		ui.notSeeForm('#videoForm');
+
 		ui.click('div[data-id="1"] span.edit');
+
+		ui.seeForm('#videoForm');
 	})
 
 	it ('displays a form to add a new video', () => {
+		ui.notSeeForm('#videoForm');
+
+		ui.click('#add');
+
 		ui.seeForm('#videoForm');
+	})
+
+	it ('hides the editor when the form is visible', () => {
+		ui.seeElement('#editor');
+		
+		ui.click('#add');
+
+		ui.notSeeElement('#editor');
+	})
+
+	it ('hides the form when the user cancels', () => {
+		ui.click('#add');
+
+		ui.seeForm('#videoForm');
+
+		wrapper.find(VideoForm).vm.$emit('cancel');
+
+		ui.notSeeForm('#videoForm');
 	})
 
 	it ('when the form submission is successful it will add the video to the page', () => {
 		ui.notSeeElement('div[data-id="3"]');	
 		
+		ui.click('#add');
 		wrapper.find(VideoForm).vm.$emit('success', {id: 3, provider: 'vimeo', provider_id: '123456'});
 
 		ui.seeElement('div[data-id="3"]');	
