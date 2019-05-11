@@ -1,3 +1,6 @@
+// Prevent an error to display in the console.
+HTMLCanvasElement.prototype.getContext = jest.fn()
+
 import { mount, shallowMount } from '@vue/test-utils'
 import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
 import {TestHelper, AjaxHelper, ColourHelper} from './../helpers/Helpers.js'
@@ -11,16 +14,21 @@ describe('ColourPaletteEditor.vue', () => {
 	let ajaxHelper;
 
 	beforeEach(() => {
-		wrapper = mount(ColourPaletteEditor, {
+		colourHelper = new ColourHelper();
+
+	    wrapper = mount(ColourPaletteEditor, {
 			propsData: { 
 				dataPageColours: [], 
 				dataAllColours: [], 
-				dataEndpoint: '/colours'
+				dataEndpoint: '/colours',
+				dataLiveUpdate: false
 			}
 		});
 
 	    ui = new TestHelper(wrapper);
-	    colourHelper = new ColourHelper(ui, wrapper);
+
+	    colourHelper.setTestHelper(ui).setWrapper(wrapper);
+	    
 	    ajaxHelper = new AjaxHelper();
 
 	    ajaxHelper.install();
@@ -52,35 +60,27 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('displays a form when the add button is clicked', () => {
-		ui.seeInput('button[id="add"]');
 		ui.notSeeForm('#colourForm');
 
 		ui.click('#add');
 
-		ui.notSeeInput('button[id="add"]');
 		ui.seeForm('#colourForm');
-		ui.seeInput('input[name="title"]', '');
-		ui.seeInput('input[name="hex"]', '');
-		ui.seeInput('input[name="rgb"]', '');
-		ui.seeInput('input[name="cmyk"]', '');
-		ui.seeInput('input[name="pantone"]', '');
-		ui.seeInput('button[id="save"]');
 	})
 
 	it ('hides all other elements when the add form is shown', () => {
 		ui.seeElement('div.page');
 		ui.seeElement('div.all');
 		ui.seeInput('button[id="add"]');
-		ui.seeInput('button[id="persist"]');
-		ui.seeInput('button[id="cancel"]');
+		ui.seeInput('button[id="saveChanges"]');
+		ui.seeInput('button[id="cancelChanges"]');
 
 		ui.click('#add');
 
 		ui.notSeeElement('div.page');
 		ui.notSeeElement('div.all');
 		ui.notSeeInput('button[id="add"]');
-		ui.notSeeInput('button[id="persist"]');
-		ui.notSeeInput('button[id="cancel"]');
+		ui.notSeeInput('button[id="saveChanges"]');
+		ui.notSeeInput('button[id="cancelChanges"]');
 	})
 
 	it ('persists the colour if the save button is clicked', (done) => {
@@ -114,7 +114,7 @@ describe('ColourPaletteEditor.vue', () => {
 
 		colourHelper.fillForm(colour);
 
-		ui.click('#cancelAdd');
+		ui.click('#cancel');
 
 		ui.notSeeForm('#colourForm');
 		ui.notSee(colour.title, 'div.page');
@@ -265,7 +265,7 @@ describe('ColourPaletteEditor.vue', () => {
 	        	.then(() => {
 	        		colourHelper.remove();
 
-					ui.click('#persist');
+					ui.click('#saveChanges');
 
 					moxios.wait(() => {
 						moxios.requests.mostRecent()
@@ -288,7 +288,7 @@ describe('ColourPaletteEditor.vue', () => {
 		colourHelper.bootstrapPageEndpoint({id: 12});
 		colourHelper.bootstrapColours();
 		
-		ui.click('#persist');
+		ui.click('#saveChanges');
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -308,7 +308,7 @@ describe('ColourPaletteEditor.vue', () => {
 	        	.then(() => {
 	        		colourHelper.remove();
 		
-					ui.click('#cancel');
+					ui.click('#cancelChanges');
 					
 					moxios.wait(() => {
 						expect(moxios.requests.count()).toEqual(1);
@@ -321,7 +321,7 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('fires an event if the cancel button is clicked', () => {
 		colourHelper.bootstrapColours();
 		
-		ui.click('#cancel');
+		ui.click('#cancelChanges');
 		
 		ui.expectEvent('cancel');
 	})

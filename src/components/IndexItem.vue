@@ -19,7 +19,7 @@
                 :class="'Page--' + i.page.type"
             >
                 <div class="List__left">
-                    <span class="flex-1">{{ i.page.title }}</span>
+                    <span class="flex-1">{{ number }}{{k + 1 }} {{ i.page.title }}</span>
                     <span>{{ i.page.type }}</span>
                     <span>{{ i.page.component || 'none' }}</span>
                 </div>
@@ -37,6 +37,7 @@
             <index-item 
                 :index="i.children" 
                 :owner="i" 
+                :number="k + 1 + '.'"
                 @end="onEnd" 
                 @edit="onEdit" 
             ></index-item>
@@ -49,7 +50,11 @@ import Draggable from 'vuedraggable'
 export default {
     name: 'IndexItem',
     components: {Draggable},
-    props: ['index', 'owner'],
+    props: {
+        index: {type: Array}, 
+        owner: {type: Object},
+        number: {type: String, default: ''}
+    },
     methods: {
         onChange: function(data) {
             if (data.added) {

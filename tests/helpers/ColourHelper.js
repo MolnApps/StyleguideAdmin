@@ -1,7 +1,20 @@
 class ColourHelper {
-	constructor (ui, wrapper) {
+	constructor () {
+		
+	}
+
+	setTestHelper(ui)
+	{
 		this.ui = ui;
+
+		return this;
+	}
+
+	setWrapper(wrapper)
+	{
 		this.wrapper = wrapper;
+
+		return this;
 	}
 
 	bootstrapPageEndpoint (page) {
@@ -25,14 +38,13 @@ class ColourHelper {
 	}
 
 	make (title, hex, id) {
-		return {
+		return Object.assign({
 			title: title, 
 			hex: hex,
 			rgb: '',
 			cmyk: '',
-			pantone: '',
-			id: id ? id : ''
-		};
+			pantone: ''
+		}, id ? {id: id} : null);
 	}
 
 	add (colour) {

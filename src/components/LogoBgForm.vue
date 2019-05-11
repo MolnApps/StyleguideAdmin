@@ -11,7 +11,6 @@
                     ></logo>
                     <sketch-picker 
                         v-model="logo.pivot.preferences['background-color']" 
-                        value="#0099ff"
                         :presetColors="[ '#ff0000', '#00ff00', '#0000ff']" 
                         @input="onPickColour"
                     ></sketch-picker>

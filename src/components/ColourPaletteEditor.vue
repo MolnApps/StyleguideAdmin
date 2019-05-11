@@ -35,8 +35,16 @@
                 >Add</button>
             </div>
             <div class="Actions">
-                <button id="cancel" @click="cancelChanges" class="Button Button--secondary Button-xl">Cancel</button>
-                <button id="persist" @click="saveChanges" class="Button Button--primary Button--xl">Save changes</button>
+                <button 
+                    id="cancelChanges" 
+                    @click="cancelChanges" 
+                    class="Button Button--secondary Button-xl"
+                >Cancel</button>
+                <button 
+                    id="saveChanges" 
+                    @click="saveChanges" 
+                    class="Button Button--primary Button--xl"
+                >Save changes</button>
             </div>
         </div>
         <!-- Form -->
@@ -44,6 +52,7 @@
             v-if="displayForm" 
             :data-endpoint="dataEndpoint" 
             :data-colour="colour"
+            :data-live-update="dataLiveUpdate"
             @success="onSaveColour"
             @cancel="resetColourAndClose"
         ></colour-form>
@@ -57,19 +66,21 @@ import Colour from './Colour.vue'
 import Draggable from 'vuedraggable'
 export default {
     components: {ColourForm, Colour, Draggable},
-    props: [
-        'dataPageColours', 
-        'dataAllColours', 
-        'dataEndpoint', 
-        'dataPageEndpoint' 
-    ],
+    props: {
+        dataPageColours: {type: Array}, 
+        dataAllColours: {type: Array}, 
+        dataEndpoint: {type: String}, 
+        dataPageEndpoint: {type: String},
+        dataLiveUpdate: {type:Boolean, default: true}
+    },
     data() {
         return {
             pageColours: this.dataPageColours,
             allColours: this.dataAllColours,
             pageEndpoint: this.dataPageEndpoint,
             displayForm: false,
-            colour: {}
+            colour: {},
+            colourId: null
         }
     },
     created() {
@@ -81,31 +92,6 @@ export default {
                 return c.id == colour.id;
             }).length > 0;
         },
-        toggleForm: function() {
-            this.displayForm = ! this.displayForm;
-        },
-        onSaveColour: function(data) {
-            this.removeColour({id: data.id});
-            this.pageColours.push(data.data.record);
-            this.allColours.push(data.data.record);
-            this.resetColourAndClose();
-
-            this.$emit('success', data);
-        },
-        resetColourAndClose: function() {
-            this.resetColour();
-            this.toggleForm();
-        },
-        resetColour: function() {
-            this.colour = {
-                title: '',
-                hex: '',
-                rgb: '',
-                cmyk: '',
-                pantone: '',
-                id: ''
-            };
-        },
         addColour: function(colour) {
             this.pageColours.push(colour);
         },
@@ -115,8 +101,19 @@ export default {
             });
         },
         editColour: function(colour) {
-            this.colour = colour;
+            this.colourId = colour.id;
+            let newColour = JSON.parse(JSON.stringify(colour));
+            newColour.id = null;
+            this.colour = newColour;
             this.toggleForm();
+        },
+        onSaveColour: function(record) {
+            this.removeColour({id: this.colourId});
+            this.pageColours.push(record);
+            this.allColours.push(record);
+            this.resetColourAndClose();
+
+            this.$emit('success', record);
         },
         saveChanges: function() {
             let form = new StyleguideForm({
@@ -133,7 +130,25 @@ export default {
         },
         cancelChanges: function() {
             this.$emit('cancel');
-        }
+        },
+        resetColourAndClose: function() {
+            this.resetColour();
+            this.colourId = null;
+            this.toggleForm();
+        },
+        resetColour: function() {
+            this.colour = {
+                title: '',
+                hex: '',
+                rgb: '',
+                cmyk: '',
+                pantone: '',
+                id: ''
+            };
+        },
+        toggleForm: function() {
+            this.displayForm = ! this.displayForm;
+        },
     }
 }
 </script>
