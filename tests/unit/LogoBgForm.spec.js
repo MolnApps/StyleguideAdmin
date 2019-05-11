@@ -1,7 +1,8 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import LogoBgForm from '@/components/LogoBgForm.vue'
+import Logo from '@/components/Logo.vue'
+import { Sketch } from 'vue-color'
 import {TestHelper, AjaxHelper, LogoHelper} from './../helpers/Helpers.js'
-import moxios from 'moxios';
 
 describe('LogoBgForm.vue', () => {
 	let wrapper;
@@ -10,7 +11,7 @@ describe('LogoBgForm.vue', () => {
 	let ajaxHelper;
 
 	beforeEach(() => {
-		logoHelper = new LogoHelper();
+        logoHelper = new LogoHelper();
 
 		ajaxHelper = new AjaxHelper();
 
@@ -61,6 +62,14 @@ describe('LogoBgForm.vue', () => {
     	ui.click('#cancel');
 
     	ui.expectEvent('cancel');
+    })
+
+    it ('displays a logo with the background', () => {
+    	expect(wrapper.find(Logo).exists()).toBe(true);
+    })
+
+    it ('displays a colour picker', () => {
+    	expect(wrapper.find(Sketch).exists()).toBe(true);
     })
 
 	let bootstrapWrapper = (pivot) => {

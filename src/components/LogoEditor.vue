@@ -23,6 +23,7 @@
                     :logo="logo" 
                     :key="index"
                     :editable-spec="true"
+                    class="PageItem--small"
                     @click="addLogo"
                     @edit-spec="editLogoSpecs"
                 ></logo>

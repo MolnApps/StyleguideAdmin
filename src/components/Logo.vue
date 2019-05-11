@@ -7,11 +7,11 @@
     >
         <div 
             :style="'background-color: ' + background" 
-            class="PageItem__fill PageItem__fill--withPadding"
+            class="PageItem__fill PageItem__fill--noHeight PageItem__fill--withPadding"
         >
             <img :src="logo.url" class="PageItem__image" />
         </div>
-        <span v-text="logo.title" class="PageItem__title"></span>
+        <span v-if="displayTitle" v-text="logo.title" class="PageItem__title"></span>
         <div class="PageItem__actions" v-if="editableBg">
             <span class="del PageItem__action" @click="$emit('remove', logo)">Remove</span>
             <span class="edit PageItem__action" @click="$emit('edit', logo)">Edit</span>
@@ -35,6 +35,10 @@ export default {
         },
         editableSpec: {
             default: false,
+            type: Boolean
+        },
+        displayTitle: {
+            default: true,
             type: Boolean
         }
     },

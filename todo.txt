@@ -1,13 +1,10 @@
-— Index editor
-—— Add numbers
-— Logo Bg Form
-—— Add colour picker for user friendlyness
-—— Add logo with reactive background
 - Logo Form
 —— Implement actual file upload
 — Logo Specs Form
 —— Add logos that responsively adapt to modifications
 — Colour Palette Editor
 —— Colour should be set automagically if not set by hand
+— Index editor
+—— Add numbers
 — Moodboard editor
 —— Finish implementation with a response from our server

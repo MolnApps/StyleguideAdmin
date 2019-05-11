@@ -16,6 +16,7 @@
                     @edit="editColour"
                 ></colour>
             </draggable>
+            <h3 class="Title Title--small">Library</h3>
             <!-- All colours -->
             <div class="all PageItem__container">
                 <colour

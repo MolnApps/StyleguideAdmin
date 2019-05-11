@@ -249,6 +249,10 @@ describe('IndexEditor.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
+	xit ('asks for confirmation before removing a page with children', () => {
+		
+	})
+
 	let bootstrapWrapper = () => {
 		let index = indexHelper.makeStructure();
 

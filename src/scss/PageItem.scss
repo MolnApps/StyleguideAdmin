@@ -1,27 +1,31 @@
 .PageItem__container {
-    display: flex;
-    justify-content: center;
-    padding: 12px;
+    @apply flex justify-center p-0;
 }
 .PageItem {
     @apply flex flex-col my-0 mx-2 rounded;
 }
+.PageItem--full {
+    @apply flex-1;
+}
+.PageItem--noMargin {
+    @apply mx-0;
+}
 .PageItem--small {
-    margin: 0px 6px;
+    @apply mx-1;
 }
 .PageItem__fill {
-    @apply rounded;
+    @apply rounded flex flex-1 items-center justify-center;
     min-width: 100px;
     min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .PageItem__fill--circle {
     border-radius: 50px;
 }
 .PageItem__fill--noWidth {
     min-width: auto;
+}
+.PageItem__fill--noHeight {
+    min-height: auto;
 }
 .PageItem__fill--withPadding {
     padding: 24px;
@@ -38,6 +42,9 @@
     width: auto;
     height: 100px;
     display: block;
+}
+.PageItem--small .PageItem__image {
+    height: 50px;
 }
 .PageItem__actions {
     display: flex;

@@ -1,3 +1,6 @@
+// Prevent an error to display in the console.
+HTMLCanvasElement.prototype.getContext = jest.fn()
+
 import { mount, shallowMount } from '@vue/test-utils'
 import LogoEditor from '@/components/LogoEditor.vue'
 import {TestHelper, AjaxHelper, LogoHelper} from './../helpers/Helpers.js'
