@@ -2,6 +2,10 @@
     <div class="Container">
         <form id="logoSpecForm" class="Form" @submit.prevent="">
             <h3 class="Title">Logo Specs</h3>
+            <div class="flex">
+                <logo-safety :logo="logo" :logo-specs="form" class="flex-1"></logo-safety>
+                <logo-size :logo="logo" :logo-specs="form" class="flex-1"></logo-size>
+            </div>
             <div class="Form__group Form__group--border">
                 <div class="Form__row Form__row--noMargin">
                     <strong>Display size</strong>
@@ -119,7 +123,10 @@
 
 <script>
 import StyleguideForm from './../StyleguideForm.js'
+import LogoSafety from './LogoSafety.vue'
+import LogoSize from './LogoSize.vue'
 export default {
+    components: {LogoSafety, LogoSize},
     props: ['dataLogo', 'dataEndpoint'],
     data() {
         return {

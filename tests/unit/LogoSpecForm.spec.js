@@ -1,5 +1,7 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import LogoSpecForm from '@/components/LogoSpecForm.vue'
+import LogoSafety from '@/components/LogoSafety.vue'
+import LogoSize from '@/components/LogoSize.vue'
 import {TestHelper, AjaxHelper, LogoHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
 
@@ -105,6 +107,18 @@ describe('LogoSpecForm.vue', () => {
 		ui.click('button[id="cancel"]');
 
 		ui.expectEvent('cancel');
+	})
+
+	it ('displays logo safety component', () => {
+		bootstrapWrapper();
+
+		expect(wrapper.find(LogoSafety).exists()).toBe(true);
+	})
+
+	it ('displays logo size component', () => {
+		bootstrapWrapper();
+
+		expect(wrapper.find(LogoSize).exists()).toBe(true);
 	})
 
 	let bootstrapWrapper = (pageLogos, allLogos) => {

@@ -1,7 +1,5 @@
 - Logo Form
 —— Implement actual file upload
-— Logo Specs Form
-—— Add logos that responsively adapt to modifications
 — Colour Palette Editor
 —— Colour should be set automagically if not set by hand
 — Index editor
