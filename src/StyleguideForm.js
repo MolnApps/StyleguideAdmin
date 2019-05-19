@@ -59,7 +59,20 @@ class StyleguideForm extends EventEmitter
 
 	submit(endpoint)
 	{
-		return axios.post(endpoint, this.data())
+		let apiToken = (document.head.querySelector('[name="api-token"]')) 
+			? document.head.querySelector('[name="api-token"]').content
+			: '';
+
+		return axios
+			.post(
+				endpoint, 
+				this.data(),
+				{
+					headers: {
+						'Authorization': 'Bearer ' + apiToken
+					}
+				}
+			)
             .then(({data}) => {
             	this.feedback = data.feedback;
                 this.emit('success', data);

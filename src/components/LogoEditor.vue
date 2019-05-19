@@ -157,7 +157,7 @@ export default {
         },
         saveChanges() {
             let params = this.pageLogos.map((l) => {
-                return {id: l.id, hex: l.pivot.preferences['background-color']};
+                return {id: l.id, 'background-color': l.pivot.preferences['background-color']};
             });
 
             let form = new StyleguideForm({logo: params});

@@ -65,7 +65,9 @@ describe('PageForm.vue', () => {
 	it('triggers an event when the form is submitted', (done) => {
 		bootstrapWrapper();
 
-		mockSuccessfullRequest();
+		let record = { id: '12', title: 'Foobar', body: '' };
+
+		mockSuccessfullRequest(record);
 
 		ui.notExpectEvent('success');
 
@@ -73,7 +75,7 @@ describe('PageForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
-			ui.expectEventData('success', [{ id: '1', title: 'Foo', body: 'Bar' }]);
+			ui.expectEventData('success', [record]);
 		}, done);
 	})
 

@@ -32,7 +32,7 @@ describe('ChapterForm.vue', () => {
 		ui.seeInput('input[name="title"]', 'Foo');
 	})
 
-	it('calls the api when the save button is clicked', (done) => {
+	it ('calls the api when the save button is clicked', (done) => {
 		bootstrapWrapper();
 
 	    ui.type('input[name="title"]', 'Foobar');
@@ -58,10 +58,12 @@ describe('ChapterForm.vue', () => {
 		}, done);
 	})
 
-	it('triggers an event when the form is submitted', (done) => {
+	it ('triggers an event when the form is submitted', (done) => {
 		bootstrapWrapper();
 
-		mockSuccessfullRequest();
+		let record = { id: '12', title: 'Foobar', body: '' };
+
+		mockSuccessfullRequest(record);
 
 		ui.notExpectEvent('success');
 
@@ -69,7 +71,7 @@ describe('ChapterForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
-			ui.expectEventData('success', [{ id: '1', title: 'Foo', body: '' }]);
+			ui.expectEventData('success', [record]);
 		}, done);
 	})
 

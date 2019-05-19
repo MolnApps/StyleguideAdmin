@@ -97,8 +97,8 @@ describe('LogoEditor.vue', () => {
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1/logos', {
 				logo: [
-					{id: 1, hex: '#ffffff'}, 
-					{id: 2, hex: '#0099ff'}
+					{id: 1, 'background-color': '#ffffff'}, 
+					{id: 2, 'background-color': '#0099ff'}
 				] 
 			});
 		}, done);

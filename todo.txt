@@ -1,4 +1,6 @@
 - Logo Form
 —— Implement actual file upload
+- Index
+—— When I remove an item with children it should ask for confirmation
 — Moodboard editor
 —— Finish implementation with a response from our server

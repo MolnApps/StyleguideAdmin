@@ -2,7 +2,7 @@
   <div id="app" class="">
     <index-editor :data-index="getIndex()" data-endpoint="/index"></index-editor>
 
-    <chapter-form :data-page="{title:'Foo'}"></chapter-form>
+    <chapter-form :data-page="{id: 1, title:'Foo', body: 'Bar'}" data-endpoint="http://styleguide-api.test/api/v1/1/pages/1"></chapter-form>
 
     <page-form :data-page="{title:'Foo', body: 'Bar'}"></page-form>
 
@@ -57,9 +57,14 @@
         {id: 2, title: 'Green', hex: '#00ff00'},
         {id: 3, title: 'Blue', hex: '#0000ff'}
       ]"
+      data-endpoint="http://styleguide-api.test/api/v1/1/colours"
+      data-page-endpoint="http://styleguide-api.test/api/v1/1/pages/14/colours"
     ></colour-palette-editor>
 
-    <colour-form :data-colour="{id: 1, title: 'Red', hex: '#ff0000'}"></colour-form>
+    <colour-form 
+      :data-colour="{id: 1, title: 'Red', hex: '#ff0000'}"
+      data-endpoint="http://styleguide-api.test/api/v1/1/colours"
+    ></colour-form>
   </div>
 </template>
 
@@ -82,6 +87,8 @@ import PageForm from './components/PageForm.vue'
 import PersonForm from './components/PersonForm.vue'
 import TypefaceFamilyForm from './components/TypefaceFamilyForm.vue'
 import VideoForm from './components/VideoForm.vue'
+
+import axios from 'axios';
 
 export default {
   name: 'app',

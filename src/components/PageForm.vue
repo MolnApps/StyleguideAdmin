@@ -55,8 +55,8 @@ export default {
     },
     methods: {
         save: function() {
-            this.form.on('success', () => {
-                this.$emit('success', this.form.data());
+            this.form.on('success', (response) => {
+                this.$emit('success', response.record);
             });
 
             this.form.submit(this.dataEndpoint);
