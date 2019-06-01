@@ -1,19 +1,35 @@
 <template>
   <div id="app" class="">
-    <index-editor :data-index="getIndex()" data-endpoint="/index"></index-editor>
+    <index-editor 
+      :data-index="getIndex()" 
+      data-endpoint="/index"
+    ></index-editor>
 
-    <chapter-form :data-page="{id: 1, title:'Foo', body: 'Bar'}" data-endpoint="http://styleguide-api.test/api/v1/1/pages/1"></chapter-form>
+    <chapter-form 
+      :data-page="{id: 1, title:'Foo', body: 'Bar'}" 
+      data-endpoint="http://styleguide-api.test/api/v1/1/pages/1"
+    ></chapter-form>
 
-    <page-form :data-page="{title:'Foo', body: 'Bar'}"></page-form>
+    <page-form 
+      :data-page="{title:'Foo', body: 'Bar'}" 
+      data-endpoint="http://styleguide-api.test/api/v1/1/pages/2"
+    ></page-form>
 
     <people-editor 
       :data-page-people="getPeople()" 
       data-endpoint="/pages/1/people"
     ></people-editor>
-    <person-form :data-person="getPeople()[0]"></person-form>
+
+    <person-form 
+      :data-person="getPeople()[0]" 
+      data-endpoint="http://styleguide-api.test/api/v1/1/people"
+    ></person-form>
     
     <video-editor :data-page-video="getVideo()"></video-editor>
-    <video-form :data-video="getVideo()[0]"></video-form>
+    <video-form 
+      :data-video="getVideo()[0]" 
+      data-endpoint="http://styleguide-api.text/api/v1/1/videos"
+    ></video-form>
     
     <moodboard-editor 
       :data-page-images="getImages()" 
@@ -29,7 +45,11 @@
         {id: 2, title: 'Roboto', weights: [{name: 'Roboto bold', weight: 700},{name: 'Roboto regular', weight: 400}, {name: 'Roboto light', weight: 300}]},
       ]"
     ></typography-editor>
-    <typeface-family-form :data-typeface-family="{id: 1, title: 'Rubik', weights: [{name: 'Rubik bold', weight: 700}, {name: 'Rubik regular', weight: 400}, {name: 'Rubik light', weight: 300}]}"></typeface-family-form>
+
+    <typeface-family-form 
+      :data-typeface-family="{id: 1, title: 'Helvetica', weights: [{name: 'Helvetica bold', weight: 700}, {name: 'Helvetica regular', weight: 400}, {name: 'Helvetica light', weight: 300}]}"
+      data-endpoint="http://styleguide-api.test/api/v1/1/typefaces/1"
+    ></typeface-family-form>
     
     <logo-editor 
     	:dataEndpoint="'/logos'" 
@@ -43,9 +63,16 @@
     		{id: 3, title: 'Secondary negative', url: 'http://lorempixel.com/100/100/sports/3'}
     	]"
     ></logo-editor>
-    <logo-bg-form :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}}"></logo-bg-form>
-    <logo-form :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}}"></logo-form>
-    <logo-spec-form :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}}"></logo-spec-form>
+    <logo-bg-form 
+      :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}}"
+    ></logo-bg-form>
+    <logo-form 
+      :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}}"
+    ></logo-form>
+    <logo-spec-form 
+      :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', display_width: '200px', display_height: '250px', space_x: '30%', space_y: '25%', min_width: '30px', min_width_text: '3mm', pivot: {preferences: {'background-color': '#00ff00'}}}"
+      data-endpoint="http://styleguide-api.test/api/v1/1/logos/2"
+    ></logo-spec-form>
     
     <colour-palette-editor 
       :dataPageColours="[
@@ -129,7 +156,7 @@ export default {
     },
     getPeople: function() {
       return [
-        {id: 1, first_name: 'John', middle_name: '', last_name: 'Doe', full_name: 'John Doe', job_title: 'Founder', contacts: [
+        {id: 1, first_name: 'John', middle_name: 'Johnathan', last_name: 'Doe', full_name: 'John Doe', job_title: 'Founder', contacts: [
             {id: 1, type: 'email', value: {value: 'info@example.com'}},
             {id: 2, type: 'telephone', value: {prefix: '+39', number: '000 00 00 000'}}
           ]},

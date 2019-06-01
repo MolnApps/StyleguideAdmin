@@ -4,3 +4,9 @@
 —— When I remove an item with children it should ask for confirmation
 — Moodboard editor
 —— Finish implementation with a response from our server
+
+
+— Bugs
+—— When I add/remove contacts from a person, reactivity is lost.
+—— Streamline the url creation with ID. All endpoints should contain no resource ID.
+——— TypefaceFamilyForm

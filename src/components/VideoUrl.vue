@@ -18,7 +18,6 @@ export default {
     props: ['dataEndpoint'],
     data() {
         return {
-            url: '',
             urlForm: null
         }
     },

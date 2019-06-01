@@ -56,6 +56,7 @@
                 >Save</button>
             </div>
         </form>
+        <p v-for="message in this.form.feedback" v-text="message"></p>
     </div>
 </template>
 
