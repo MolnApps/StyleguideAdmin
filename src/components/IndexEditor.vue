@@ -3,12 +3,14 @@
         <div v-if="! displayPageForm" class="Container" id="editor">
             <h3 class="Title">Index</h3>
             <p v-for="message in indexForm.feedback" v-text="message"></p>
+            <p v-for="message in toggleForm.feedback" v-text="message"></p>
             <div class="List">
                 <index-item 
                     :index="index" 
                     :owner="{id: 0}" 
                     @end="onEnd" 
                     @edit="onEdit" 
+                    @toggle="onToggle"
                 ></index-item>
                 <div class="List__actions">
                     <button 
@@ -46,11 +48,12 @@ import IndexItem from './IndexItem.vue';
 import PageForm from './PageForm.vue';
 export default {
     components: {IndexItem, PageForm},
-    props: ['dataIndex', 'dataEndpoint'],
+    props: ['dataIndex', 'dataEndpoint', 'dataToggleEndpoint'],
     data() {
         return {
             index: this.dataIndex,
             indexForm: null,
+            toggleForm: null,
             displayPageForm: false,
             currentIndex: {page: {}},
             adding: false,
@@ -58,6 +61,7 @@ export default {
     },
     created() {
         this.indexForm = new StyleguideForm({});
+        this.toggleForm = new StyleguideForm({});
     },
     methods: {
         onAdd: function(index) {
@@ -68,6 +72,13 @@ export default {
         onEdit: function(index) {
             this.currentIndex = index;
             this.togglePageForm();
+        },
+        onToggle: function(index) {
+            this.toggleForm = new StyleguideForm({id: index.page.id});
+            this.toggleForm.on('success', () => {
+                this.$emit('toggleSuccess');
+            })
+            this.toggleForm.submit(this.dataToggleEndpoint);
         },
         onCancel: function() {
             this.togglePageForm();

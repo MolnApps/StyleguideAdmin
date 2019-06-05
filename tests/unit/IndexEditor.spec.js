@@ -155,6 +155,29 @@ describe('IndexEditor.vue', () => {
 		ui.notSee('About us');
 	})
 
+	it ('changes the button label when the visibility button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.notSee('Publish');
+
+		ui.click('li.index_1 span.visibility');
+
+		ui.see('Publish', 'li.index_1');
+	})
+
+	it.only ('makes an api call when the visibility button is clicked', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullToggleRequest();
+
+		ui.click('li.index_1 span.visibility');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.expectEvent('toggleSuccess');
+			ui.see('The page was updated');
+		}, done);
+	})
+
 	it ('adds a page to the list after a successful api call', () => {
 		bootstrapWrapper();
 
@@ -259,7 +282,8 @@ describe('IndexEditor.vue', () => {
 		wrapper = mount(IndexEditor, {
 			propsData: {
 				dataIndex: index,
-				dataEndpoint: '/index'
+				dataEndpoint: '/index',
+				dataToggleEndpoint: '/pages/toggle'
 			}
 		});
 
@@ -271,6 +295,13 @@ describe('IndexEditor.vue', () => {
 	let mockSuccessfullRequest = (record, override) => {
 		ajaxHelper.stubRequest(
 			/index/, 
+			ajaxHelper.getSuccessfulResponse(record, override)
+		);
+	}
+
+	let mockSuccessfullToggleRequest = (record, override) => {
+		ajaxHelper.stubRequest(
+			/pages/, 
 			ajaxHelper.getSuccessfulResponse(record, override)
 		);
 	}

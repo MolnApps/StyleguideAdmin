@@ -106,6 +106,13 @@ describe('IndexItem.vue', () => {
 		ui.seeElement('li.index_1 span.del');
 	})
 
+	it ('displays a button to toggle page visibility', () => {
+		bootstrapWrapper();
+
+		ui.seeElement('li.index_1 span.visibility');
+		ui.see('Hide', 'li.index_1');
+	})
+
 	it ('emits an event when the edit button is clicked', () => {
 		bootstrapWrapper();
 
@@ -115,6 +122,17 @@ describe('IndexItem.vue', () => {
 
 		ui.expectEvent('edit');
 		ui.expectEventData('edit', [index[0]]);
+	})
+
+	it ('emits an event when the visibility button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.notExpectEvent('toggle');
+
+		ui.click('li.index_1 span.visibility');
+
+		ui.expectEvent('toggle');
+		ui.expectEventData('toggle', [index[0]]);
 	})
 
 	let bootstrapWrapper = () => {

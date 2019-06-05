@@ -25,6 +25,11 @@
                 </div>
                 <div class="List__right">
                     <span 
+                        class="visibility Button Button--secondary Button--xs"
+                        @click="onToggle(i)"
+                        v-text="getVisibilityLabel(i)"
+                    ></span>
+                    <span 
                         class="edit Button Button--secondary Button--xs" 
                         @click="onEdit(i)"
                     >Edit</span>
@@ -56,6 +61,9 @@ export default {
         number: {type: String, default: ''}
     },
     methods: {
+        getVisibilityLabel: function(index) {
+            return index.page.visible ? 'Hide' : 'Publish';
+        },
         onChange: function(data) {
             if (data.added) {
                 data.added.element.parent_id = this.owner.id ? this.owner.id : null;
@@ -73,6 +81,10 @@ export default {
         },
         onRemove: function(index) {
             this.index.splice(index, 1);
+        },
+        onToggle: function(index) {
+            index.page.visible = ! index.page.visible;
+            this.$emit('toggle', index);
         }
     }
 }

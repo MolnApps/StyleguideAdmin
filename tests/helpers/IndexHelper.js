@@ -32,7 +32,7 @@ class IndexHelper {
 			id: id,
 			parent_id: null,
 			position: id - 1,
-			page: {id: id, title: title, body: '', type: type, component: ''},
+			page: {id: id, title: title, body: '', type: type, component: '', visible: true},
 			parent: null,
 			children: []
 		}, override);
