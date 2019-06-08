@@ -165,7 +165,7 @@ describe('IndexEditor.vue', () => {
 		ui.see('Publish', 'li.index_1');
 	})
 
-	it.only ('makes an api call when the visibility button is clicked', (done) => {
+	it ('makes an api call when the visibility button is clicked', (done) => {
 		bootstrapWrapper();
 
 		mockSuccessfullToggleRequest();

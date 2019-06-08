@@ -3,6 +3,7 @@
     <index-editor 
       :data-index="getIndex()" 
       data-endpoint="/index"
+      data-toggle-endpoint="http://styleguide-api.test/api/v1/1/pages/toggle"
     ></index-editor>
 
     <chapter-form 
