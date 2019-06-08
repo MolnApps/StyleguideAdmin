@@ -29,12 +29,13 @@
     <video-editor :data-page-video="getVideo()"></video-editor>
     <video-form 
       :data-video="getVideo()[0]" 
-      data-endpoint="http://styleguide-api.text/api/v1/1/videos"
+      data-endpoint="http://styleguide-api.test/api/v1/1/videos"
     ></video-form>
     
     <moodboard-editor 
       :data-page-images="getImages()" 
-      data-upload-endpoint="https://httpbin.org/post"
+      data-endpoint="http://styleguide-api.test/api/v1/1/pages/1/images"
+      data-upload-endpoint="http://styleguide-api.test/api/v1/1/images"
     ></moodboard-editor>
     
     <typography-editor

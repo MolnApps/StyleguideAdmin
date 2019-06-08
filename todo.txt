@@ -2,8 +2,7 @@
 —— Implement actual file upload
 - Index
 —— When I remove an item with children it should ask for confirmation
-— Moodboard editor
-—— Finish implementation with a response from our server
+- All buttons that perform an Ajax Request should display a loading icon when clicked
 
 
 — Bugs

@@ -14,7 +14,7 @@
             >
                 <div class="PageItem__fill PageItem__fill--noWidth">
                     <img 
-                        :src="image.src" 
+                        :src="image.url" 
                         :width="image.width" 
                         :height="image.height" 
                         class="PageItem__image"
