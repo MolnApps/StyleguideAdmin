@@ -1,5 +1,6 @@
 import moxios from 'moxios'
 import expect from 'expect'
+import StyleguideForm from '../../src/StyleguideForm'
 
 class AjaxHelper {
 	constructor () {
@@ -54,7 +55,10 @@ class AjaxHelper {
 	expectRequest(url, params) {
 		let request = moxios.requests.mostRecent();
 		expect(request.config.url).toEqual(url);
-		expect(JSON.parse(request.config.data)).toEqual(params);
+
+		let paramsData = new StyleguideForm(params).data();
+		
+		expect(JSON.parse(request.config.data)).toEqual(paramsData);
 	}
 
 	expectAfterRequest(callback, done) {

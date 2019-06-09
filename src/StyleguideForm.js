@@ -6,7 +6,7 @@ class StyleguideForm extends EventEmitter
 	constructor(data, constraints)
 	{
 		super();
-		
+
 		data = this.filterData(data, constraints);
 		
 		this.cacheOriginalData(data);
@@ -14,6 +14,8 @@ class StyleguideForm extends EventEmitter
 		
 		this.feedback = [];
 		this.errors = {};
+
+		this.uploads = {};
 	}
 
 	filterData(data, constraints)
@@ -48,13 +50,54 @@ class StyleguideForm extends EventEmitter
 
 	data()
 	{
+		return this.dataPlain();
+		return this.dataForm();
+	}
+
+	dataPlain()
+	{
 		let data = {};
 
 		for (let attribute in this.originalData) {
 			data[attribute] = this[attribute];
 		}
 
+		for (let attribute in this.uploads) {
+			data[attribute] = this.uploads[attribute];
+		}
+		
 		return data;
+	}
+
+	dataForm()
+	{
+		let formData = new FormData();
+
+		for (let attribute in this.originalData) {
+			this.dataFormRecursive(formData, attribute, this);
+		}
+
+		for (let attribute in this.uploads) {
+			formData.append(attribute, this.uploads[attribute], this.uploads[attribute].name);
+		}
+		
+		return formData;
+	}
+
+	dataFormRecursive(formData, attribute, data)
+	{
+		if (Array.isArray(this[attribute])) {
+			return this[attribute].map((el, i) => {
+				this.dataFormRecursive(formData, attribute + '[' + i + ']', el);
+			});
+		} 
+
+		formData.append(attribute, this[attribute]);
+	}
+
+	filesChange(fieldName, fileList)
+	{
+		this.uploads[fieldName] = fileList[0];
 	}
 
 	submit(endpoint)
@@ -69,7 +112,7 @@ class StyleguideForm extends EventEmitter
 				this.data(),
 				{
 					headers: {
-						'Authorization': 'Bearer ' + apiToken
+						'Authorization': 'Bearer ' + apiToken,
 					}
 				}
 			)
@@ -78,8 +121,14 @@ class StyleguideForm extends EventEmitter
                 this.emit('success', data);
             })
             .catch((error) => {
-            	this.feedback = error.response.data.feedback;
-            	this.errors = error.response.data.errors;
+            	if (error.response) {
+            		this.feedback = error.response.data.feedback;
+            		this.errors = error.response.data.errors;
+            	} else {
+            		this.feedback = 'Unknown error';
+            		this.errors = [];
+            	}
+            	
             	this.emit('fail');
             });
 	}

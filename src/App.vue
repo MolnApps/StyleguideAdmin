@@ -70,6 +70,7 @@
     ></logo-bg-form>
     <logo-form 
       :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}}"
+      data-endpoint="http://styleguide-api.test/api/v1/1/logos"
     ></logo-form>
     <logo-spec-form 
       :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', display_width: '200px', display_height: '250px', space_x: '30%', space_y: '25%', min_width: '30px', min_width_text: '3mm', pivot: {preferences: {'background-color': '#00ff00'}}}"

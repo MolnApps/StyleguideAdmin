@@ -1,6 +1,6 @@
 <template>
     <div class="Container">
-        <form id="logoForm" class="Form" @submit.prevent="">
+        <form id="logoForm" class="Form" @submit.prevent="" enctype="multipart/form-data">
             <h3 class="Title">Logo</h3>
             <div class="Form__row">
                 <input 
@@ -17,6 +17,7 @@
                     type="file" 
                     name="file" 
                     class="Form__input" 
+                    @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
                 />
                 <p v-for="error in form.errors.file" v-text="error"></p>
             </div>
@@ -56,8 +57,11 @@ export default {
         },
         save() {
             this.form.on('success', this.onSuccess.bind(this));
-
             this.form.submit(this.dataEndpoint);
+        },
+        filesChange(fieldName, fileList)
+        {
+            this.form.filesChange(fieldName, fileList);
         },
         onSuccess: function(data) {
             this.resetForm();
