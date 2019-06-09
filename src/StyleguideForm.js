@@ -1,5 +1,6 @@
-import axios from 'axios';
-import EventEmitter from 'events';
+import axios from 'axios'
+import EventEmitter from 'events'
+//import FormDataCollector from './FormDataCollector'
 
 class StyleguideForm extends EventEmitter
 {
@@ -51,7 +52,6 @@ class StyleguideForm extends EventEmitter
 	data()
 	{
 		return this.dataPlain();
-		return this.dataForm();
 	}
 
 	dataPlain()
@@ -67,32 +67,6 @@ class StyleguideForm extends EventEmitter
 		}
 		
 		return data;
-	}
-
-	dataForm()
-	{
-		let formData = new FormData();
-
-		for (let attribute in this.originalData) {
-			this.dataFormRecursive(formData, attribute, this);
-		}
-
-		for (let attribute in this.uploads) {
-			formData.append(attribute, this.uploads[attribute], this.uploads[attribute].name);
-		}
-		
-		return formData;
-	}
-
-	dataFormRecursive(formData, attribute, data)
-	{
-		if (Array.isArray(this[attribute])) {
-			return this[attribute].map((el, i) => {
-				this.dataFormRecursive(formData, attribute + '[' + i + ']', el);
-			});
-		} 
-
-		formData.append(attribute, this[attribute]);
 	}
 
 	filesChange(fieldName, fileList)
