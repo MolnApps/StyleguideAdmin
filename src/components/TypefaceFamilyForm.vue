@@ -84,8 +84,8 @@ export default {
     		this.$emit('cancel');
     	},
     	save: function() {
-    		this.form.on('success', this.onSuccess.bind(this));
-    		this.form.submit(this.dataEndpoint);
+            this.form.on('success', this.onSuccess.bind(this));
+    		this.form.submit(this.dataEndpoint + '/' + this.dataTypefaceFamily.id);
     	},
     	onSuccess: function(data) {
     		this.resetForm();

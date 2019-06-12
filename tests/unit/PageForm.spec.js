@@ -45,6 +45,11 @@ describe('PageForm.vue', () => {
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
+			ajaxHelper.expectRequest('/pages/1', {
+				id: '1', 
+				title:'Foobar', 
+				body: 'Barbaz'
+			});
 			ui.see('The page was updated.');
 		}, done);
 	})
@@ -105,7 +110,7 @@ describe('PageForm.vue', () => {
 		wrapper = shallowMount(PageForm, {
 			propsData: {
 				dataPage: page,
-				dataEndpoint: '/pages/' + page.id
+				dataEndpoint: '/pages'
 			}
 		});
 

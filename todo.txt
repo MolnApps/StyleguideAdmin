@@ -1,11 +1,28 @@
-- Logo Form
-—— Implement actual file upload
-- Index
-—— When I remove an item with children it should ask for confirmation
+Implementation
+— Allow to choose a page type and component when creating a page
 - All buttons that perform an Ajax Request should display a loading icon when clicked
+— Colour Palette Editor: I should be able to edit/remove colours in the library.
+- When the user removes a page with children from the index, ask where to append the children of the deleted page
 
 
 — Bugs
+—— Need to refactor url generator (now 'undefined' is appended to the string)
+—— Index
+——— Reordering index throws a 500 internal error in api call
+——— Toggling a chapter works, toggling a nested child does not.
+——— Removing a page will be persisted, but a 500 internal error api call is triggered
 —— When I add/remove contacts from a person, reactivity is lost.
-—— Streamline the url creation with ID. All endpoints should contain no resource ID.
-——— TypefaceFamilyForm
+—— When I add a contact to a new person, an error is thrown because contacts is not an array.
+—— Person Form: display feedback after save
+—— Person Form: a new contact will not be added or updated
+—— We should not create a new listener on every request
+—— MoodboardEditor: 
+——— Only one image will be added to the list. 
+——— Only two out of three images will be saved to the DB.
+——— Provide feedback after successful response
+—— Typeface Editor: typeface will not be associated with page.
+—— TypefaceForm: 
+——— typeface will be updated, but the new record returned by the api is not set in the form.
+——— provide feedback after successful response
+—— LogoForm: update fails, probably because no file is selected.
+—— LogoSpecsForm: the form data is reset but not with the record returned by api.

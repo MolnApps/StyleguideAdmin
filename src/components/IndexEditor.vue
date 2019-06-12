@@ -36,6 +36,7 @@
         <page-form 
             v-if="displayPageForm" 
             :data-page="currentIndex.page" 
+            :data-endpoint="dataPageEndpoint"
             @cancel="onCancel" 
             @success="onSuccess"
         ></page-form>
@@ -48,7 +49,7 @@ import IndexItem from './IndexItem.vue';
 import PageForm from './PageForm.vue';
 export default {
     components: {IndexItem, PageForm},
-    props: ['dataIndex', 'dataEndpoint', 'dataToggleEndpoint'],
+    props: ['dataIndex', 'dataEndpoint', 'dataPageEndpoint', 'dataToggleEndpoint'],
     data() {
         return {
             index: this.dataIndex,

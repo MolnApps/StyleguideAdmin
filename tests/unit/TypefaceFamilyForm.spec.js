@@ -177,7 +177,7 @@ describe('TypefaceFamilyForm.vue', () => {
 		wrapper = shallowMount(TypefaceFamilyForm, {
 			propsData: { 
 				dataTypefaceFamily: typefaceFamily, 
-				dataEndpoint: '/typography/2'
+				dataEndpoint: '/typography'
 			}
 		});
 

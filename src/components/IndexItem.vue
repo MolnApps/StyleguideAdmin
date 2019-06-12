@@ -80,7 +80,11 @@ export default {
             this.$emit('edit', index);
         },
         onRemove: function(index) {
+            let children = this.index[index].children;
             this.index.splice(index, 1);
+            children.map((child) => {
+                this.index.push(child);
+            });
         },
         onToggle: function(index) {
             index.page.visible = ! index.page.visible;

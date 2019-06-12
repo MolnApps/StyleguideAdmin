@@ -125,7 +125,7 @@ describe('LogoSpecForm.vue', () => {
 		wrapper = shallowMount(LogoSpecForm, {
 			propsData: { 
 				dataLogo: logoHelper.make('Primary logo', {id: 2}), 
-				dataEndpoint: '/logos/2'
+				dataEndpoint: '/logos'
 			}
 		});
 

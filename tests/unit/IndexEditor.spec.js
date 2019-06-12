@@ -155,6 +155,18 @@ describe('IndexEditor.vue', () => {
 		ui.notSee('About us');
 	})
 
+	it ('removes the page but not its children when the remove button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.see('My chapter');
+		ui.see('About us');
+
+		ui.click('li.index_1 span.del');
+
+		ui.notSee('My chapter');
+		ui.see('About us');
+	})
+
 	it ('changes the button label when the visibility button is clicked', () => {
 		bootstrapWrapper();
 

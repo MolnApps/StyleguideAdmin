@@ -1,101 +1,107 @@
 <template>
-  <div id="app" class="">
-    <index-editor 
-      :data-index="getIndex()" 
-      data-endpoint="/index"
-      data-toggle-endpoint="http://styleguide-api.test/api/v1/1/pages/toggle"
-    ></index-editor>
+	<div id="app" class="">
+		<index-editor 
+			:data-index="index" 
+			:key="'index.' + index.length"
+			:data-endpoint="endpoint('/index')"
+			:data-page-endpoint="endpoint('/pages')"
+			:data-toggle-endpoint="endpoint('/pages/toggle')"
+		></index-editor>
 
-    <chapter-form 
-      :data-page="{id: 1, title:'Foo', body: 'Bar'}" 
-      data-endpoint="http://styleguide-api.test/api/v1/1/pages/1"
-    ></chapter-form>
+		<chapter-form 
+			:data-page="chapter" 
+			:key="'chapter.' + chapter.id"
+			:data-endpoint="endpoint('/pages')"
+		></chapter-form>
 
-    <page-form 
-      :data-page="{title:'Foo', body: 'Bar'}" 
-      data-endpoint="http://styleguide-api.test/api/v1/1/pages/2"
-    ></page-form>
+		<page-form 
+			:data-page="page" 
+			:key="'page.' + page.id"
+			:data-endpoint="endpoint('/pages')"
+		></page-form>
 
-    <people-editor 
-      :data-page-people="getPeople()" 
-      data-endpoint="/pages/1/people"
-    ></people-editor>
+		<people-editor 
+			:data-page-people="people" 
+			:key="'people' + people.length"
+			:data-endpoint="endpoint('/pages/4/people')"
+		></people-editor>
 
-    <person-form 
-      :data-person="getPeople()[0]" 
-      data-endpoint="http://styleguide-api.test/api/v1/1/people"
-    ></person-form>
-    
-    <video-editor :data-page-video="getVideo()"></video-editor>
-    <video-form 
-      :data-video="getVideo()[0]" 
-      data-endpoint="http://styleguide-api.test/api/v1/1/videos"
-    ></video-form>
-    
-    <moodboard-editor 
-      :data-page-images="getImages()" 
-      data-endpoint="http://styleguide-api.test/api/v1/1/pages/1/images"
-      data-upload-endpoint="http://styleguide-api.test/api/v1/1/images"
-    ></moodboard-editor>
-    
-    <typography-editor
-      :dataPageTypefaceFamilies="[
-        {id: 1, title: 'Rubik', weights: [{name: 'Rubik bold', weight: 700}, {name: 'Rubik regular', weight: 400}], pivot: {preferences: {weight: 700}}},
-      ]"
-      :dataAllTypefaceFamilies="[
-        {id: 1, title: 'Rubik', weights: [{name: 'Rubik bold', weight: 700}, {name: 'Rubik regular', weight: 400}, {name: 'Rubik light', weight: 300}]},
-        {id: 2, title: 'Roboto', weights: [{name: 'Roboto bold', weight: 700},{name: 'Roboto regular', weight: 400}, {name: 'Roboto light', weight: 300}]},
-      ]"
-    ></typography-editor>
+		<person-form 
+			:data-person="person" 
+			:key="'person.' + person.id"
+			:data-endpoint="endpoint('/people')"
+		></person-form>
+		
+		<video-editor 
+			:data-page-video="videos"
+			:key="'videos.' + videos.length"
+			:data-endpoint="endpoint('/pages/19/videos')"
+		></video-editor>
 
-    <typeface-family-form 
-      :data-typeface-family="{id: 1, title: 'Helvetica', weights: [{name: 'Helvetica bold', weight: 700}, {name: 'Helvetica regular', weight: 400}, {name: 'Helvetica light', weight: 300}]}"
-      data-endpoint="http://styleguide-api.test/api/v1/1/typefaces/1"
-    ></typeface-family-form>
-    
-    <logo-editor 
-    	:dataEndpoint="'/logos'" 
-    	:dataPageLogos="[
-        {id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}},
-        {id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#ff0000'}}}
-      ]" 
-    	:dataAllLogos="[
-    		{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1'}, 
-    		{id: 2, title: 'Secondary positive', url: 'http://lorempixel.com/100/100/sports/2'}, 
-    		{id: 3, title: 'Secondary negative', url: 'http://lorempixel.com/100/100/sports/3'}
-    	]"
-    ></logo-editor>
-    <logo-bg-form 
-      :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}}"
-    ></logo-bg-form>
-    <logo-form 
-      :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', pivot: {preferences: {'background-color': '#00ff00'}}}"
-      data-endpoint="http://styleguide-api.test/api/v1/1/logos"
-    ></logo-form>
-    <logo-spec-form 
-      :data-logo="{id: 1, title: 'Primary', url: 'http://lorempixel.com/100/100/sports/1', display_width: '200px', display_height: '250px', space_x: '30%', space_y: '25%', min_width: '30px', min_width_text: '3mm', pivot: {preferences: {'background-color': '#00ff00'}}}"
-      data-endpoint="http://styleguide-api.test/api/v1/1/logos/2"
-    ></logo-spec-form>
-    
-    <colour-palette-editor 
-      :dataPageColours="[
-        {id: 1, title: 'Red', hex: '#ff0000'},
-        {id: 3, title: 'Blue', hex: '#0000ff'}
-      ]"
-      :dataAllColours="[
-        {id: 1, title: 'Red', hex: '#ff0000'},
-        {id: 2, title: 'Green', hex: '#00ff00'},
-        {id: 3, title: 'Blue', hex: '#0000ff'}
-      ]"
-      data-endpoint="http://styleguide-api.test/api/v1/1/colours"
-      data-page-endpoint="http://styleguide-api.test/api/v1/1/pages/14/colours"
-    ></colour-palette-editor>
+		<video-form 
+			:data-video="video" 
+			:key="'video.' + video.id"
+			:data-endpoint="endpoint('/videos')"
+		></video-form>
+		
+		<moodboard-editor 
+			:data-page-images="images" 
+			:key="'images.' + images.length"
+			:data-endpoint="endpoint('/pages/17/images')"
+			:data-upload-endpoint="endpoint('/images')"
+		></moodboard-editor>
+		
+		<typography-editor
+			:data-page-typeface-families="typefaces"
+			:key="'typefaces.' + typefaces.length"
+			:data-all-typeface-families="typefacesLibrary"
+			:data-endpoint="endpoint('/pages/15/typefaces')"
+		></typography-editor>
 
-    <colour-form 
-      :data-colour="{id: 1, title: 'Red', hex: '#ff0000'}"
-      data-endpoint="http://styleguide-api.test/api/v1/1/colours"
-    ></colour-form>
-  </div>
+		<typeface-family-form 
+			:data-typeface-family="typeface"
+			:key="'typeface.' + typeface.id"
+			:data-endpoint="endpoint('/typefaces')"
+		></typeface-family-form>
+		
+		<logo-editor 
+			:data-page-logos="logos" 
+			:key="'logos.' + logos.length"
+			:data-all-logos="logosLibrary"
+			:data-endpoint="endpoint('/pages/10/logos')"
+		></logo-editor>
+		<logo-bg-form 
+			v-if="logoWithBg.id"
+			:data-logo="logoWithBg"
+			:key="'logo.bg.' + logoWithBg.id"
+		></logo-bg-form>
+		<logo-form 
+			:data-logo="logo"
+			:key="'logo.' + logo.id"
+			:data-endpoint="endpoint('/logos')"
+		></logo-form>
+		<logo-spec-form 
+			v-if="logoWithSpecs.id"
+			:data-logo="logoWithSpecs"
+			:key="'logo.specs.' + logoWithSpecs.id"
+			:data-endpoint="endpoint('/logos')"
+		></logo-spec-form>
+		
+		<colour-palette-editor 
+			:dataPageColours="colours"
+			:dataAllColours="coloursLibrary"
+			:key="'colours.' + colours.length"
+			:data-endpoint="endpoint('/colours')"
+			:data-page-endpoint="endpoint('/pages/14/colours')"
+		></colour-palette-editor>
+
+		<colour-form 
+			v-if="colour.id"
+			:data-colour="colour"
+			:key="'colour.' + colour.id"
+			:data-endpoint="endpoint('/colours')"
+		></colour-form>
+	</div>
 </template>
 
 <script>
@@ -121,54 +127,96 @@ import VideoForm from './components/VideoForm.vue'
 import axios from 'axios';
 
 export default {
-  name: 'app',
-  components: {
-    // Editors
-    ColourPaletteEditor, 
-    IndexEditor,
-    LogoEditor, 
-    MoodboardEditor, 
-    PeopleEditor, 
-    TypographyEditor,
-    VideoEditor,
-    // Forms
-    ChapterForm,
-    ColourForm,
-    LogoBgForm,
-    LogoForm,
-    LogoSpecForm,
-    PageForm,
-    PersonForm,
-    TypefaceFamilyForm,
-    VideoForm
-  },
-  methods: {
-    getIndex: function() {
-      let indexHelper = new IndexHelper;
-      return indexHelper.makeStructure();
-    },
-    getImages: function() {
-      let moodboardHelper = new MoodboardHelper;
-      return moodboardHelper.getImages();
-    },
-    getVideo: function() {
-      return [
-        {id: 1, provider: 'vimeo', provider_id: '50719582'},
-        {id: 2, provider: 'youtube', provider_id: 'Pq3hQ--Hbss'},
-      ];
-    },
-    getPeople: function() {
-      return [
-        {id: 1, first_name: 'John', middle_name: 'Johnathan', last_name: 'Doe', full_name: 'John Doe', job_title: 'Founder', contacts: [
-            {id: 1, type: 'email', value: {value: 'info@example.com'}},
-            {id: 2, type: 'telephone', value: {prefix: '+39', number: '000 00 00 000'}}
-          ]},
-        {id: 2, first_name: 'Jane', middle_name: '', last_name: 'Doe', full_name: 'Jane Doe', job_title: 'SVP Marketing', contacts: [
-            {id: 1, type: 'email', value: {value: 'info@example.com'}},
-            {id: 2, type: 'telephone', value: {prefix: '+39', number: '000 00 00 000'}}
-          ]}
-      ];
-    }
-  }
+	name: 'app',
+	components: {
+		// Editors
+		ColourPaletteEditor, 
+		IndexEditor,
+		LogoEditor, 
+		MoodboardEditor, 
+		PeopleEditor, 
+		TypographyEditor,
+		VideoEditor,
+		// Forms
+		ChapterForm,
+		ColourForm,
+		LogoBgForm,
+		LogoForm,
+		LogoSpecForm,
+		PageForm,
+		PersonForm,
+		TypefaceFamilyForm,
+		VideoForm
+	},
+	data() {
+		return {
+			index: [],
+			
+			chapter: {},
+			page: {},
+			
+			people: [],
+			person: {},
+			
+			videos: [],
+			video: {},
+			
+			images: [],
+			
+			typefacesLibrary: [],
+			typefaces: [],
+			typeface: {},
+			
+			logosLibrary: [],
+			logos: [],
+			logoWithBg: {},
+			logoWithSpecs: {},
+			logo: {},
+
+			coloursLibrary: [],
+			colours: [],
+			colour: {}
+		}
+	},
+	created() {
+		this.loadStyleguide();
+	},
+	methods: {
+		loadStyleguide: function() {
+			axios.get(
+				'http://styleguide-api.test/api/v1/all?styleguide_id=1'
+			)
+				.then((r) => {
+					this.index = r.data.index;
+					this.chapter = r.data.pages[0];
+					this.page = r.data.pages[4];
+					this.people = r.data.contacts['contacts'];
+					this.person = this.people[0];
+					this.videos = r.data.videos['reel'];
+					this.video = this.videos[0];
+					this.images = r.data.images['moodboard'];
+					
+					this.typefacesLibrary = r.data.typefaces['_library'];
+					this.typefaces = r.data.typefaces['typography'];
+					this.typeface = this.typefacesLibrary[0];
+
+					this.logosLibrary = r.data.logos['_library'];
+					this.logos = r.data.logos['logo-primary'];
+					this.logoWithBg = r.data.logos['logo-primary'][1];
+					this.logoWithSpecs = r.data.logos['_library'][0];
+					this.logo = r.data.logos['_library'][0];
+
+					this.coloursLibrary = r.data['colour-palette']['_library'];
+					this.colours = r.data['colour-palette']['colour-palette'];
+					this.colour = r.data['colour-palette']['_library'][0];
+				})
+				.catch((error) => {
+					
+				});
+		},
+		endpoint: function(path) {
+			return 'http://styleguide-api.test/api/v1/1' + path;
+		}
+	}
 }
 </script>

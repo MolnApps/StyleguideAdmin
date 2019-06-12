@@ -47,7 +47,7 @@ export default {
                 this.$emit('success', response.record);
             });
 
-            this.form.submit(this.dataEndpoint);
+            this.form.submit(this.dataEndpoint + '/' + this.page.id);
         },
         cancel: function() {
             this.$emit('cancel');

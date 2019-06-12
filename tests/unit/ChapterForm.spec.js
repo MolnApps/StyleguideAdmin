@@ -42,6 +42,9 @@ describe('ChapterForm.vue', () => {
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
+			ajaxHelper.expectRequest('/pages/1', {
+				title: 'Foobar'
+			});
 			ui.see('The page was updated.');
 		}, done);
 	})
@@ -101,7 +104,7 @@ describe('ChapterForm.vue', () => {
 		wrapper = shallowMount(ChapterForm, {
 			propsData: {
 				dataPage: page,
-				dataEndpoint: '/pages/' + page.id
+				dataEndpoint: '/pages'
 			}
 		});
 
