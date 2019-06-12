@@ -82,6 +82,18 @@ describe('MoodboardEditor.vue', () => {
 		}, done);
 	})
 
+	it ('displays feedback when the changes are saved', (done) => {
+		mockSuccessfullRequest();
+
+		ui.notSee('The page was updated.');
+
+		ui.click('#saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('The page was updated.');
+		}, done);
+	})
+
 	it ('does not perform any api call when the cancell button is clicked', () => {
 		ui.click('#cancelChanges');
 

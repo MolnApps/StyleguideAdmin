@@ -145,7 +145,7 @@ export default {
         save() {
             this.form.on('success', this.onSuccess.bind(this));
 
-            this.form.submit(this.dataEndpoint + '/' + this.logo.id);
+            this.form.submit(this.dataEndpoint, this.logo);
         },
         onSuccess: function(data) {
             this.resetForm();

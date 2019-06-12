@@ -85,6 +85,16 @@ describe('PersonForm.vue', () => {
 		}, done);
 	})
 
+	it ('displays feedback if the api call is successful', (done) => {
+		mockSuccessfullRequest();
+
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('The page was updated.');
+		}, done);
+	})
+
 	it ('emits an event after the api call if successful', (done) => {
 		mockSuccessfullRequest();
 

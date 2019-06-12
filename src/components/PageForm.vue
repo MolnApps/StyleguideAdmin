@@ -1,6 +1,6 @@
 <template>
     <div class="Container">
-        <form id="pageForm" @submit.prevent="" :data-id="dataPage.id" class="Form">
+        <form id="pageForm" @submit.prevent="" :data-id="page.id" class="Form">
             <h2 class="Title" v-text="title"></h2>
             <div class="Form__row">
                 <input 
@@ -23,18 +23,18 @@
                 <button 
                     type="button" 
                     id="cancel" 
-                    @click="cancel" 
+                    @click="onCancel" 
                     class="Button Button--secondary Button--xl"
                 >Cancel</button>
                 <button 
                     type="submit" 
                     id="save" 
-                    @click="save" 
+                    @click="onSave" 
                     class="Button Button--primary Button--xl"
                 >Save</button>
             </div>
         </form>
-        <p v-for="message in this.form.feedback" v-text="message"></p>
+        <p v-for="message in feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -45,24 +45,37 @@ export default {
     props: ['dataPage', 'dataEndpoint'],
     data() {
         return {
-            form: new StyleguideForm(this.dataPage),
+            page: this.dataPage,
+            form: null,
+            feedback: []
         }
+    },
+    created() {
+        this.resetForm();
     },
     computed: {
         title() {
-            return this.dataPage.id ? 'Edit page' : 'New page';
+            return this.page.id ? 'Edit page' : 'New page';
         }
     },
     methods: {
-        save: function() {
-            this.form.on('success', (response) => {
-                this.$emit('success', response.record);
-            });
+        onSave: function() {
+            this.form.on('success', this.onSuccess);
 
-            this.form.submit(this.dataEndpoint + '/' + this.dataPage.id);
+            this.form.submit(this.dataEndpoint, this.page);
         },
-        cancel: function() {
+        onSuccess: function(response) {
+            this.$emit('success', response.record);
+            this.feedback = this.form.feedback;
+            this.page = response.record;
+            this.resetForm();
+        },
+        onCancel: function() {
+            this.resetForm();
             this.$emit('cancel');
+        },
+        resetForm: function() {
+            this.form = new StyleguideForm(this.page);
         }
     }
 }

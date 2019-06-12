@@ -141,7 +141,7 @@ describe('LogoForm.vue', () => {
 		wrapper = shallowMount(LogoForm, {
 			propsData: { 
 				dataLogo: logo, 
-				dataEndpoint: '/logos/2'
+				dataEndpoint: '/logos'
 			}
 		});
 

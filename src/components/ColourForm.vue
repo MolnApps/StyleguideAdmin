@@ -104,11 +104,7 @@ export default {
         onSave: function() {
             this.form.on('success', this.onSuccess.bind(this));
 
-            let endpoint = this.colour.id 
-                ? this.dataEndpoint + '/' + this.colour.id
-                : this.dataEndpoint;
-
-            this.form.submit(endpoint);
+            this.form.submit(this.dataEndpoint, this.colour);
         },
         onCancel: function() {
             this.resetForm();

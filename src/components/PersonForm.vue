@@ -56,7 +56,7 @@
                 >Save</button>
             </div>
         </form>
-        <p v-for="message in this.form.feedback" v-text="message"></p>
+        <p v-for="message in feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -69,7 +69,8 @@ export default {
     data() {
         return {
             person: this.dataPerson,
-            form: null
+            form: null,
+            feedback: []
         }
     },
     created() {
@@ -78,10 +79,11 @@ export default {
     methods: {
         onSave: function() {
             this.form.on('success', this.onSuccess.bind(this));
-            this.form.submit(this.dataEndpoint + '/' + this.person.id);
+            this.form.submit(this.dataEndpoint, this.person);
         },
         onSuccess: function(data) {
             this.person = data.record;
+            this.feedback = this.form.feedback;
             this.resetForm();
             this.$emit('success');
         },

@@ -61,6 +61,7 @@
                 <button id="cancel" @click="cancel" class="Button Button--secondary">Cancel</button>
                 <button id="save" @click="save" class="Button Button--primary">Save</button>
             </div>
+            <p v-for="message in feedback" v-text="feedback"></p>
         </form>
     </div>
 </template>
@@ -72,7 +73,8 @@ export default {
     data() {
     	return {
     		typefaceFamily: this.dataTypefaceFamily,
-    		form: null
+    		form: null,
+            feedback: []
     	}
     },
     created() {
@@ -85,9 +87,10 @@ export default {
     	},
     	save: function() {
             this.form.on('success', this.onSuccess.bind(this));
-    		this.form.submit(this.dataEndpoint + '/' + this.dataTypefaceFamily.id);
+    		this.form.submit(this.dataEndpoint, this.dataTypefaceFamily);
     	},
     	onSuccess: function(data) {
+            this.feedback = this.form.feedback;
     		this.resetForm();
     		this.$emit('success', {
                 data: data

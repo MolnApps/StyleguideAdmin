@@ -57,7 +57,7 @@ export default {
         },
         save() {
             this.form.on('success', this.onSuccess.bind(this));
-            this.form.submit(this.dataEndpoint);
+            this.form.submit(this.dataEndpoint, this.logo);
         },
         filesChange(fieldName, fileList)
         {

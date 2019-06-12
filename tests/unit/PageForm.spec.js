@@ -50,6 +50,17 @@ describe('PageForm.vue', () => {
 				title:'Foobar', 
 				body: 'Barbaz'
 			});
+		}, done);
+	})
+
+	it ('displays feedback after successful api call', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+		
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated.');
 		}, done);
 	})
@@ -70,9 +81,7 @@ describe('PageForm.vue', () => {
 	it('triggers an event when the form is submitted', (done) => {
 		bootstrapWrapper();
 
-		let record = { id: '12', title: 'Foobar', body: '' };
-
-		mockSuccessfullRequest(record);
+		mockSuccessfullRequest();
 
 		ui.notExpectEvent('success');
 
@@ -80,7 +89,7 @@ describe('PageForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
-			ui.expectEventData('success', [record]);
+			ui.expectEventData('success', [{ id: 12, title: 'Barfoo', body: 'Bazbar' }]);
 		}, done);
 	})
 
@@ -104,6 +113,40 @@ describe('PageForm.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
+	it ('resets the form when the save button is clicked', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+
+		ui.seeInput('input[name="title"]', 'Foo');
+		ui.seeInput('textarea[name="body"]', 'Bar');
+		
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeInput('input[name="title"]', 'Barfoo');
+			ui.seeInput('textarea[name="body"]', 'Bazbar');
+		}, done);
+	})
+
+	it ('resets the form when the cancel button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.seeInput('input[name="title"]', 'Foo');
+		ui.seeInput('textarea[name="body"]', 'Bar');
+
+		ui.type('input[name="title"]', 'Foobar');
+		ui.type('textarea[name="body"]', 'Barbaz');
+
+		ui.seeInput('input[name="title"]', 'Foobar');
+		ui.seeInput('textarea[name="body"]', 'Barbaz');
+		
+		ui.click('#cancel');
+
+		ui.seeInput('input[name="title"]', 'Foo');
+		ui.seeInput('textarea[name="body"]', 'Bar');
+	})
+
 	let bootstrapWrapper = (page) => {
 		page = page ? page : {id: '1', title:'Foo', body: 'Bar'};
 
@@ -118,6 +161,12 @@ describe('PageForm.vue', () => {
 	}
 
 	let mockSuccessfullRequest = (record, override) => {
+		record = record ? record : {
+			id: 12,
+			title: 'Barfoo',
+			body: 'Bazbar'
+		};
+
 		ajaxHelper.stubRequest(
 			/pages\/\d+/, 
 			ajaxHelper.getSuccessfulResponse(record, override)

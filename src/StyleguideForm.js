@@ -1,6 +1,7 @@
 import axios from 'axios'
 import EventEmitter from 'events'
 //import FormDataCollector from './FormDataCollector'
+import Endpoint from './Endpoint';
 
 class StyleguideForm extends EventEmitter
 {
@@ -8,30 +9,46 @@ class StyleguideForm extends EventEmitter
 	{
 		super();
 
-		data = this.filterData(data, constraints);
-		
-		this.cacheOriginalData(data);
-		this.transferDataToProperties(data);
+		this.constraints = constraints;
+
+		this.bootstrap(data);
 		
 		this.feedback = [];
 		this.errors = {};
 
 		this.uploads = {};
+
+		this.preferences = {
+			shouldReset: false
+		};
 	}
 
-	filterData(data, constraints)
+	bootstrap(data)
 	{
-		if (constraints) {
-			let tmp = {}
-			
-			constraints.forEach((key) => {
-				tmp[key] = data[key];
-			})
-			
-			data = tmp;
+		data = this.constrainData(data);
+		
+		this.cacheOriginalData(data);
+		this.transferDataToProperties(data);
+	}
+
+	shouldReset(shouldReset)
+	{
+		this.preferences.shouldReset = true;
+	}
+
+	constrainData(data)
+	{
+		if ( ! this.constraints) {
+			return data;
 		}
 
-		return data;
+		let result = {}
+			
+		this.constraints.forEach((key) => {
+			result[key] = data[key];
+		})
+		
+		return result;
 	}
 
 	cacheOriginalData(data)
@@ -74,24 +91,24 @@ class StyleguideForm extends EventEmitter
 		this.uploads[fieldName] = fileList[0];
 	}
 
-	submit(endpoint)
+	submit(endpoint, record)
 	{
-		let apiToken = (document.head.querySelector('[name="api-token"]')) 
-			? document.head.querySelector('[name="api-token"]').content
-			: '';
-
 		return axios
 			.post(
-				endpoint, 
+				Endpoint.url(endpoint, record), 
 				this.data(),
 				{
-					headers: {
-						'Authorization': 'Bearer ' + apiToken,
-					}
+					headers: Endpoint.headers()
 				}
 			)
             .then(({data}) => {
             	this.feedback = data.feedback;
+                this.errors = {};
+                
+                if (this.preferences.shouldReset) {
+                	this.bootstrap(data.record);
+                }
+
                 this.emit('success', data);
             })
             .catch((error) => {
@@ -99,8 +116,8 @@ class StyleguideForm extends EventEmitter
             		this.feedback = error.response.data.feedback;
             		this.errors = error.response.data.errors;
             	} else {
-            		this.feedback = 'Unknown error';
-            		this.errors = [];
+            		this.feedback = ['Unknown error'];
+            		this.errors = {};
             	}
             	
             	this.emit('fail');

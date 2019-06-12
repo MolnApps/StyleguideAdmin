@@ -51,7 +51,7 @@ export default {
     methods: {
         save: function() {
             this.form.on('success', this.onSuccess.bind(this));
-            this.form.submit(this.dataEndpoint + '/' + this.video.id);
+            this.form.submit(this.dataEndpoint, this.video);
         },
         cancel: function() {
             this.resetForm();

@@ -85,6 +85,20 @@ describe('TypefaceFamilyForm.vue', () => {
     	}, done);
     })
 
+    it ('displays feedback after successful api call', (done) => {
+        bootstrapWrapper();
+
+        mockSuccessfullRequest();
+
+        ui.notSee('The page was updated');
+
+        ui.click('#save');
+
+        ajaxHelper.expectAfterRequest(() => {
+            ui.see('The page was updated');
+        }, done);
+    })
+
     it ('does not perform any api call when the cancel button is clicked', () => {
     	bootstrapWrapper();
 

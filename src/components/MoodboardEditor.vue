@@ -33,6 +33,7 @@
             <button id="cancelChanges" @click="onCancel" class="Button Button--secondary Button--xl">Cancel changes</button>
             <button id="saveChanges" @click="onSave" class="Button Button--primary Button--xl">Save changes</button>
         </div>
+        <p v-for="message in feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -49,7 +50,9 @@ export default {
     ],
     data() {
         return {
-            pageImages: this.dataPageImages
+            pageImages: this.dataPageImages,
+            form: null,
+            feedback: []
         }
     },
     methods: {
@@ -62,14 +65,15 @@ export default {
                     return i.id;
                 })
             };
-            let form = new StyleguideForm(data);
-            form.on('success', this.onSuccess);
-            form.submit(this.dataEndpoint);
+            this.form = new StyleguideForm(data);
+            this.form.on('success', this.onSuccess);
+            this.form.submit(this.dataEndpoint);
         },
         onCancel: function() {
             this.$emit('cancel');
         },
-        onSuccess: function() {
+        onSuccess: function(response) {
+            this.feedback = this.form.feedback;
             this.$emit('success');
         },
         onUploadSuccess: function(image) {
