@@ -27,7 +27,18 @@ describe('LogoForm.vue', () => {
 		ui.seeForm('#logoForm');
 		ui.seeInput('input[name="title"]', 'Primary logo');
 		ui.seeInput('input[type="file"][name="file"]', '');
+	})
+
+	it ('display a save button', () => {
+		bootstrapWrapper();
+
 		ui.seeInput('button[id="save"]', '');
+	})
+
+	it ('display a cancel button', () => {
+		bootstrapWrapper();
+
+		ui.seeInput('button[id="cancel"]', '');
 	})
 
 	it ('performs an api call when the save button is clicked', (done) => {
@@ -35,12 +46,10 @@ describe('LogoForm.vue', () => {
 
 		let logo = logoHelper.make('My logo', {id: '2'});
 
-		mockSuccessfullRequest(logo, {id: 2});
+		mockSuccessfullRequest(logo);
 
 		ui.type('input[name="title"]', logo.title);
 		
-		// *** Here we must fake a file upload ***
-
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
@@ -55,12 +64,10 @@ describe('LogoForm.vue', () => {
 
 		let logo = logoHelper.make('My logo', {id: 2});
 
-		mockSuccessfullRequest(logo, {id: 2});
+		mockSuccessfullRequest(logo);
 
 		ui.type('input[name="title"]', logo.title);
 		
-		// *** Here we must fake a file upload ***
-
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
@@ -72,6 +79,20 @@ describe('LogoForm.vue', () => {
 				}, 
 				id: 2
 			}]);
+		}, done);
+	})
+
+	it ('displays feedback when the save button is clicked', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+
+		ui.notSee('The page was updated');
+
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('The page was updated');
 		}, done);
 	})
 
@@ -93,14 +114,16 @@ describe('LogoForm.vue', () => {
 
 		let logo = logoHelper.make('My logo', {id: 2});
 
-		mockSuccessfullRequest(logo, {id: 2});
+		mockSuccessfullRequest(logoHelper.make('My logo returned'));
 
 		ui.type('input[name="title"]', logo.title);
+
+		ui.seeInput('input[name="title"]', logo.title);
 		
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeInput('input[name="title"]', '');
+			ui.seeInput('input[name="title"]', 'My logo returned');
 		}, done);
 	})
 
@@ -125,7 +148,7 @@ describe('LogoForm.vue', () => {
 
 		let logo = logoHelper.make('My logo', {id: 2});
 
-		mockSuccessfullRequest(logo, {id: 2});
+		mockSuccessfullRequest(logo);
 
 		ui.type('input[name="title"]', logo.title);
 		
@@ -137,7 +160,10 @@ describe('LogoForm.vue', () => {
 	})
 
 	let bootstrapWrapper = (logo) => {
-		logo = logo ? logo : logoHelper.make('Primary logo', {id: 2});
+		logo = logo 
+			? logo 
+			: logoHelper.make('Primary logo', {id: 2});
+
 		wrapper = shallowMount(LogoForm, {
 			propsData: { 
 				dataLogo: logo, 
@@ -151,6 +177,10 @@ describe('LogoForm.vue', () => {
 	}
 
 	let mockSuccessfullRequest = (record, override) => {
+		record = record
+			? record
+			: logoHelper.make('Returned logo', {id: 15});
+
 		ajaxHelper.stubRequest(/logos/, ajaxHelper.getSuccessfulResponse(record, override));
 	}
 

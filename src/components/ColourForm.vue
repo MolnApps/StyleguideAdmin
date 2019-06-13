@@ -69,6 +69,7 @@
                         class="Button Button--primary Button--xl"
                     >Save</button>
                 </div>
+                <p v-for="message in form.feedback" v-text="message"></p>
             </form>
             <sketch-picker 
                 :value="form.hex"  
@@ -92,53 +93,46 @@ export default {
     props: ['dataColour', 'dataEndpoint', 'dataLiveUpdate'],
     data() {
         return {
-            colour: this.dataColour,
             liveUpdate: this.dataLiveUpdate,
-            form: null
+            form: new StyleguideForm(
+                this.dataColour, 
+                ['title', 'hex', 'rgb', 'cmyk', 'pantone']
+            )
         }
     },
     created() {
-        this.resetForm();
+        this.form.on('success', this.onSuccess.bind(this));
+        this.form.shouldReset(true);
     },
     methods: {
         onSave: function() {
-            this.form.on('success', this.onSuccess.bind(this));
-
-            this.form.submit(this.dataEndpoint, this.colour);
+            this.form.submit(this.dataEndpoint);
         },
         onCancel: function() {
-            this.resetForm();
+            this.form.reset();
             this.$emit('cancel');
         },
         onSuccess: function(data) {
-            this.colour = data.record;
-            this.resetForm();
             this.$emit('success', data.record);
-        },
-        resetForm: function() {
-            this.form = new StyleguideForm(
-                this.colour, 
-                ['title', 'hex', 'rgb', 'cmyk', 'pantone']
-            );
         },
         onInput: function() {
             if ( ! this.liveUpdate || ! this.form.hex) {
                 return;
             }
             
-            if ( ! this.colour.title) {
+            if ( ! this.dataColour.title) {
                 let name = colorNamer(this.form.hex, { pick: ['ntc'] });
                 this.form.title = name.ntc[0].name;
             }
-            if ( ! this.colour.rgb) {
+            if ( ! this.dataColour.rgb) {
                 this.form.rgb = chroma(this.form.hex).rgb().toString().split(',').join(' ');
             }
-            if ( ! this.colour.cmyk) {
+            if ( ! this.dataColour.cmyk) {
                 this.form.cmyk = chroma(this.form.hex).cmyk().toString().split(',').map((c) => {
                     return parseInt(c * 100);
                 }).join(' ');
             }
-            if ( ! this.colour.pantone) {
+            if ( ! this.dataColour.pantone) {
                 this.form.pantone = hexToPantone(this.form.hex);
             }
         },

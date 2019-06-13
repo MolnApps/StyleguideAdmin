@@ -132,14 +132,14 @@ describe('TypefaceFamilyForm.vue', () => {
     it ('resets the form when the api call is done', (done) => {
     	bootstrapWrapper();
 
-    	mockSuccessfullRequest();
+    	mockSuccessfullRequest({title: 'Lato'});
 
     	ui.type('input[name="title"]', 'Roboto');
 
     	ui.click('#save');
 
     	ajaxHelper.expectAfterRequest(() => {
-    		ui.seeInput('input[name="title"]', 'Rubik');
+    		ui.seeInput('input[name="title"]', 'Lato');
     	}, done);
     })
 
@@ -188,7 +188,7 @@ describe('TypefaceFamilyForm.vue', () => {
 			? typefaceFamily 
 			: typographyHelper.make(2, 'Rubik', [700, 400, 300]);
 
-		wrapper = shallowMount(TypefaceFamilyForm, {
+        wrapper = shallowMount(TypefaceFamilyForm, {
 			propsData: { 
 				dataTypefaceFamily: typefaceFamily, 
 				dataEndpoint: '/typography'
@@ -201,6 +201,9 @@ describe('TypefaceFamilyForm.vue', () => {
 	}
 
 	let mockSuccessfullRequest = (record, override) => {
+        record = record
+            ? record
+            : typographyHelper.make(2, 'Rubik', [700, 400, 300]);
 		ajaxHelper.stubRequest(/typography/, ajaxHelper.getSuccessfulResponse(record, override));
 	}
 

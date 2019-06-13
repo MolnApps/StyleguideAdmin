@@ -27,6 +27,7 @@
                     >Save</button>
                 </div>
             </div>
+            <p v-for="message in form.feedback" v-text="message"></p>
         </div>
     </form>
 </template>
@@ -41,35 +42,28 @@ export default {
     props: ['dataEndpoint', 'dataVideo'],
     data() {
         return {
-            video: this.dataVideo,
-            form: null
+            form: new StyleguideForm(this.dataVideo, ['provider', 'provider_id'])
         }
     },
     created() {
-        this.resetForm();
+        this.form.shouldReset(true);
+        this.form.on('success', this.onSuccess.bind(this));
     },
     methods: {
         save: function() {
-            this.form.on('success', this.onSuccess.bind(this));
-            this.form.submit(this.dataEndpoint, this.video);
+            this.form.submit(this.dataEndpoint);
         },
         cancel: function() {
-            this.resetForm();
+            this.form.reset();
             this.$emit('cancel');
         },
         onSuccess: function(data) {
-            this.video = data.record; 
-            this.resetForm();
-            
-            this.$emit('success', this.video);
+            this.$emit('success', data.record);
         },
         onEmbed: function(record) {
             Object.assign(this.form, record);
 
             this.$emit('embedded');
-        },
-        resetForm: function() {
-            this.form = new StyleguideForm(this.video, ['provider', 'provider_id']);
         }
     }
 }

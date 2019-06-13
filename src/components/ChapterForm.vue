@@ -1,6 +1,6 @@
 <template>
     <div class="Container">
-        <form id="chapterForm" @submit.prevent="save" class="Form">
+        <form id="chapterForm" @submit.prevent="" class="Form">
             <h2 class="Title" v-text="title"></h2>
             <div class="Form__row">
                 <input type="text" name="title" v-model="form.title" class="Form__input" />
@@ -21,7 +21,7 @@
                 >Save</button>
             </div>
         </form>
-        <p v-for="message in this.form.feedback" v-text="message"></p>
+        <p v-for="message in form.feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -32,25 +32,28 @@ export default {
     props: ['dataPage', 'dataEndpoint'],
     data() {
         return {
-            page: this.dataPage,
             form: new StyleguideForm(this.dataPage, ['title'])
         }
     },
+    created() {
+        this.form.on('success', this.onSuccess.bind(this));
+        this.form.shouldReset(true);
+    },
     computed: {
         title() {
-            return this.page.id ? 'Edit chapter' : 'New chapter';
+            return this.form.id ? 'Edit chapter' : 'New chapter';
         }
     },
     methods: {
         save: function() {
-            this.form.on('success', (response) => {
-                this.$emit('success', response.record);
-            });
-
-            this.form.submit(this.dataEndpoint, this.page);
+            this.form.submit(this.dataEndpoint);
         },
         cancel: function() {
+            this.form.reset();
             this.$emit('cancel');
+        },
+        onSuccess: function(response) {
+            this.$emit('success', response.record);
         }
     }
 }

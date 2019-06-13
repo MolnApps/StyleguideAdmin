@@ -106,6 +106,18 @@ describe('VideoForm.vue', () => {
 		}, done);
 	})
 
+	it ('displays a feedback after successul api call', (done) => {
+		mockSuccessfullRequest({id: 1, provider: 'youtube', provider_id: '1eMg23jjR_c'});
+
+		ui.notSee('The page was updated');
+
+		ui.click('#save');
+		
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('The page was updated');
+		}, done);
+	})
+
 	it ('displays error message if the url is not supported', (done) => {
 		mockUrlRequestWithError('The url is not supported');
 

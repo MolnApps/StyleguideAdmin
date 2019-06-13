@@ -1,7 +1,7 @@
 <template>
     <div class="Container">
         <h3 class="Title">Person</h3>
-        <form id="personForm" class="Form" :data-id="dataPerson.id" @submit.prevent="">
+        <form id="personForm" class="Form" :data-id="form.id" @submit.prevent="">
             <div class="Form__row">
                 <input 
                     type="text" 
@@ -56,7 +56,7 @@
                 >Save</button>
             </div>
         </form>
-        <p v-for="message in feedback" v-text="message"></p>
+        <p v-for="message in form.feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -68,37 +68,29 @@ export default {
     props: ['dataPerson', 'dataEndpoint'],
     data() {
         return {
-            person: this.dataPerson,
-            form: null,
-            feedback: []
-        }
-    },
-    created() {
-        this.resetForm();
-    },
-    methods: {
-        onSave: function() {
-            this.form.on('success', this.onSuccess.bind(this));
-            this.form.submit(this.dataEndpoint, this.person);
-        },
-        onSuccess: function(data) {
-            this.person = data.record;
-            this.feedback = this.form.feedback;
-            this.resetForm();
-            this.$emit('success');
-        },
-        onCancel: function() {
-            this.resetForm();
-            this.$emit('cancel');
-        },
-        resetForm: function() {
-            this.form = new StyleguideForm(this.person, [
+            form: new StyleguideForm(this.dataPerson, [
                 'first_name', 
                 'middle_name', 
                 'last_name', 
                 'job_title',
                 'contacts'
-            ]);
+            ])
+        }
+    },
+    created() {
+        this.form.on('success', this.onSuccess.bind(this));
+        this.form.shouldReset(true);
+    },
+    methods: {
+        onSave: function() {
+            this.form.submit(this.dataEndpoint, this.person);
+        },
+        onSuccess: function(data) {
+            this.$emit('success');
+        },
+        onCancel: function() {
+            this.form.reset();
+            this.$emit('cancel');
         }
     }
 }

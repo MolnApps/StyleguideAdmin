@@ -121,6 +121,20 @@ describe('ColourForm.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
+	it ('displays feedback after a successful api call', (done) => {
+		let returnedColour = colourHelper.make('Orange', '#ffff00', 25);
+
+		mockSuccessfullRequest(returnedColour);
+
+		ui.notSee('The page was updated');
+
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('The page was updated');
+		}, done);
+	})
+
 	it ('resets the form when the cancel button is clicked', () => {
 		ui.seeInput('input[name="title"]', 'Red');
 		ui.seeInput('input[name="hex"]', '#ff0000');

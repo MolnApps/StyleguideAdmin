@@ -3,8 +3,8 @@
         <form id="logoSpecForm" class="Form" @submit.prevent="">
             <h3 class="Title">Logo Specs</h3>
             <div class="flex">
-                <logo-safety :logo="logo" :logo-specs="form" class="flex-1"></logo-safety>
-                <logo-size :logo="logo" :logo-specs="form" class="flex-1"></logo-size>
+                <logo-safety :logo="dataLogo" :logo-specs="form" class="flex-1"></logo-safety>
+                <logo-size :logo="dataLogo" :logo-specs="form" class="flex-1"></logo-size>
             </div>
             <div class="Form__group Form__group--border">
                 <div class="Form__row Form__row--noMargin">
@@ -117,6 +117,7 @@
                     class="Button Button--primary Button--xl"
                 >Save</button>
             </div>
+            <p v-for="message in form.feedback" v-text="message"></p>
         </form>
     </div>
 </template>
@@ -130,38 +131,30 @@ export default {
     props: ['dataLogo', 'dataEndpoint'],
     data() {
         return {
-            logo: this.dataLogo,
-            form: null
-        }
-    },
-    created() {
-        this.resetForm();
-    },
-    methods: {
-        cancel() {
-            this.resetForm();
-            this.$emit('cancel');
-        },
-        save() {
-            this.form.on('success', this.onSuccess.bind(this));
-
-            this.form.submit(this.dataEndpoint, this.logo);
-        },
-        onSuccess: function(data) {
-            this.resetForm();
-            this.$emit('success', {
-                data: data
-            });
-        },
-        resetForm: function() {
-            this.form = new StyleguideForm(this.logo, [
+            form: new StyleguideForm(this.dataLogo, [
                 'display_width', 
                 'display_height', 
                 'space_x',
                 'space_y',
                 'min_width',
                 'min_width_text'
-            ]);
+            ])
+        }
+    },
+    created() {
+        this.form.on('success', this.onSuccess.bind(this));
+        this.form.shouldReset(true);
+    },
+    methods: {
+        cancel() {
+            this.form.reset();
+            this.$emit('cancel');
+        },
+        save() {
+            this.form.submit(this.dataEndpoint);
+        },
+        onSuccess: function(data) {
+            this.$emit('success', {data: data});
         }
     }
 }

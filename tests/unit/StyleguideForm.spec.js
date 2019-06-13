@@ -29,7 +29,7 @@ describe('StyleguideForm.js', () => {
     it ('allows to constrain the properties to be transferred', () => {
         let form = new StyleguideForm({id: 15, title: 'Foo', body: 'Bar'}, ['title']);
 
-        expect(form.id).toBe(undefined);
+        expect(form.id).toBe(15);
         expect(form.title).toBe('Foo');
         expect(form.body).toBe(undefined);
     })
@@ -71,6 +71,28 @@ describe('StyleguideForm.js', () => {
 
         ajaxHelper.expectAfterRequest(() => {
             ajaxHelper.expectRequest('/pages/15', record);
+        }, done);
+    })
+
+    it ('submits an ajax call using the id of the instance', (done) => {
+        mockSuccessfulRequest();
+
+        form.submit('/pages');
+
+        ajaxHelper.expectAfterRequest(() => {
+            ajaxHelper.expectRequest('/pages/15', record);
+        }, done);
+    })
+
+    it ('submits an ajax call using the id of the instance even with constraints', (done) => {
+        mockSuccessfulRequest();
+
+        form = new StyleguideForm(record, ['title']);
+
+        form.submit('/pages');
+
+        ajaxHelper.expectAfterRequest(() => {
+            ajaxHelper.expectRequest('/pages/15', {title: 'Foo'});
         }, done);
     })
 
@@ -179,6 +201,26 @@ describe('StyleguideForm.js', () => {
                 }, done);
             }
         );
+    })
+
+    it ('provides a method to reset the form to its original data', () => {
+        expect(form.id).toBe(15);
+        expect(form.title).toBe('Foo');
+        expect(form.body).toBe('Bar');
+
+        form.id = 18;
+        form.title = 'Foobar';
+        form.body = 'Barbaz';
+
+        expect(form.id).toBe(18);
+        expect(form.title).toBe('Foobar');
+        expect(form.body).toBe('Barbaz');
+
+        form.reset();
+
+        expect(form.id).toBe(15);
+        expect(form.title).toBe('Foo');
+        expect(form.body).toBe('Bar');
     })
 
     let mockSuccessfulRequest = () => {

@@ -11,6 +11,8 @@ class StyleguideForm extends EventEmitter
 
 		this.constraints = constraints;
 
+		this.id = null;
+
 		this.bootstrap(data);
 		
 		this.feedback = [];
@@ -25,6 +27,7 @@ class StyleguideForm extends EventEmitter
 
 	bootstrap(data)
 	{
+		this.id = data.id;
 		data = this.constrainData(data);
 		
 		this.cacheOriginalData(data);
@@ -91,8 +94,17 @@ class StyleguideForm extends EventEmitter
 		this.uploads[fieldName] = fileList[0];
 	}
 
+	reset()
+	{
+		this.bootstrap(this.originalData);
+	}
+
 	submit(endpoint, record)
 	{
+		if ( ! record) {
+			record = {id: this.id};
+		}
+
 		return axios
 			.post(
 				Endpoint.url(endpoint, record), 

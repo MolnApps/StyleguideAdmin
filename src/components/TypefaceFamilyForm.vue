@@ -58,10 +58,10 @@
                 </div>
             </div>
             <div class="Actions">
-                <button id="cancel" @click="cancel" class="Button Button--secondary">Cancel</button>
-                <button id="save" @click="save" class="Button Button--primary">Save</button>
+                <button id="cancel" @click="onCancel" class="Button Button--secondary">Cancel</button>
+                <button id="save" @click="onSave" class="Button Button--primary">Save</button>
             </div>
-            <p v-for="message in feedback" v-text="feedback"></p>
+            <p v-for="message in form.feedback" v-text="message"></p>
         </form>
     </div>
 </template>
@@ -72,43 +72,34 @@ export default {
 	props: ['dataTypefaceFamily', 'dataEndpoint'],
     data() {
     	return {
-    		typefaceFamily: this.dataTypefaceFamily,
-    		form: null,
-            feedback: []
+    		form: new StyleguideForm(this.dataTypefaceFamily, [
+                'title', 
+                'weights', 
+                'webfont_url', 
+                'foundry_url'
+            ])
     	}
     },
     created() {
-    	this.resetForm();
+    	this.form.shouldReset(true);
+        this.form.on('success', this.onSuccess.bind(this));
     },
     methods: {
-    	cancel: function() {
-    		this.resetForm();
+    	onCancel: function() {
+    		this.form.reset();
     		this.$emit('cancel');
     	},
-    	save: function() {
-            this.form.on('success', this.onSuccess.bind(this));
-    		this.form.submit(this.dataEndpoint, this.dataTypefaceFamily);
+    	onSave: function() {
+            this.form.submit(this.dataEndpoint);
     	},
     	onSuccess: function(data) {
-            this.feedback = this.form.feedback;
-    		this.resetForm();
-    		this.$emit('success', {
-                data: data
-            });
+            this.$emit('success', {data: data});
     	},
     	removeWeight: function(index) {
     		this.form.weights.splice(index, 1);
     	},
     	addWeight: function() {
     		this.form.weights.push({name: '', weigth: ''});
-    	},
-    	resetForm: function() {
-    		this.form = new StyleguideForm(this.dataTypefaceFamily, [
-    			'title', 
-    			'weights', 
-    			'webfont_url', 
-    			'foundry_url'
-    		]);
     	}
     }
 }

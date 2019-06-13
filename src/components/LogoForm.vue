@@ -33,6 +33,7 @@
                     class="Button Button--primary Button--xl"
                 >Save</button>
             </div>
+            <p v-for="message in form.feedback" v-text="message"></p>
         </form>
     </div>
 </template>
@@ -43,35 +44,30 @@ export default {
     props: ['dataLogo', 'dataEndpoint'],
     data() {
         return {
-            logo: this.dataLogo,
-            form: null
+            form: new StyleguideForm(this.dataLogo, ['title'])
         }
     },
     created() {
-        this.resetForm();
+        this.form.on('success', this.onSuccess.bind(this));
+        this.form.shouldReset(true);
     },
     methods: {
         cancel() {
-            this.resetForm();
+            this.form.reset();
             this.$emit('cancel');
         },
         save() {
-            this.form.on('success', this.onSuccess.bind(this));
-            this.form.submit(this.dataEndpoint, this.logo);
+            this.form.submit(this.dataEndpoint);
         },
         filesChange(fieldName, fileList)
         {
             this.form.filesChange(fieldName, fileList);
         },
         onSuccess: function(data) {
-            this.resetForm();
             this.$emit('success', {
                 data: data, 
-                id: this.logo.id
+                id: data.record.id
             });
-        },
-        resetForm: function() {
-            this.form = new StyleguideForm(this.logo, ['title']);
         }
     }
 }

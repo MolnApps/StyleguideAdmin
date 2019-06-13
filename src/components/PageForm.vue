@@ -1,6 +1,6 @@
 <template>
     <div class="Container">
-        <form id="pageForm" @submit.prevent="" :data-id="page.id" class="Form">
+        <form id="pageForm" @submit.prevent="" :data-id="form.id" class="Form">
             <h2 class="Title" v-text="title"></h2>
             <div class="Form__row">
                 <input 
@@ -34,7 +34,7 @@
                 >Save</button>
             </div>
         </form>
-        <p v-for="message in feedback" v-text="message"></p>
+        <p v-for="message in form.feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -45,37 +45,28 @@ export default {
     props: ['dataPage', 'dataEndpoint'],
     data() {
         return {
-            page: this.dataPage,
-            form: null,
-            feedback: []
+            form: new StyleguideForm(this.dataPage)
         }
     },
     created() {
-        this.resetForm();
+        this.form.shouldReset(true);
+        this.form.on('success', this.onSuccess);
     },
     computed: {
         title() {
-            return this.page.id ? 'Edit page' : 'New page';
+            return this.form.id ? 'Edit page' : 'New page';
         }
     },
     methods: {
         onSave: function() {
-            this.form.on('success', this.onSuccess);
-
-            this.form.submit(this.dataEndpoint, this.page);
+            this.form.submit(this.dataEndpoint);
         },
         onSuccess: function(response) {
             this.$emit('success', response.record);
-            this.feedback = this.form.feedback;
-            this.page = response.record;
-            this.resetForm();
         },
         onCancel: function() {
-            this.resetForm();
+            this.form.reset();
             this.$emit('cancel');
-        },
-        resetForm: function() {
-            this.form = new StyleguideForm(this.page);
         }
     }
 }

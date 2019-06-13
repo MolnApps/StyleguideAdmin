@@ -7,8 +7,6 @@ Implementation
 
 — Bugs
 
-—— We should not create a new listener on every request
-
 —— Index
 ——— Reordering index throws a 500 internal error in api call
 ——— Toggling a chapter works, toggling a nested child does not.

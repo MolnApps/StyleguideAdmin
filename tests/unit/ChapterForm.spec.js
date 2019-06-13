@@ -45,6 +45,19 @@ describe('ChapterForm.vue', () => {
 			ajaxHelper.expectRequest('/pages/1', {
 				title: 'Foobar'
 			});
+		}, done);
+	})
+
+	it ('displays feedback after a successful api call', (done) => {
+		bootstrapWrapper();
+
+	    mockSuccessfullRequest();
+
+		ui.notSee('The page was updated.');
+		
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated.');
 		}, done);
 	})
@@ -64,9 +77,9 @@ describe('ChapterForm.vue', () => {
 	it ('triggers an event when the form is submitted', (done) => {
 		bootstrapWrapper();
 
-		let record = { id: '12', title: 'Foobar', body: '' };
+		let returnedRecord = { id: '12', title: 'Foobar', body: '' };
 
-		mockSuccessfullRequest(record);
+		mockSuccessfullRequest(returnedRecord);
 
 		ui.notExpectEvent('success');
 
@@ -74,7 +87,7 @@ describe('ChapterForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
-			ui.expectEventData('success', [record]);
+			ui.expectEventData('success', [returnedRecord]);
 		}, done);
 	})
 
@@ -98,6 +111,24 @@ describe('ChapterForm.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
+	it ('resets the form when the save button is clicked', () => {
+		
+	})
+
+	it('resets the form when the cancel button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.seeInput('input[name="title"]', 'Foo');
+
+		ui.type('input[name="title"]', 'Foobar');
+
+		ui.seeInput('input[name="title"]', 'Foobar');
+
+		ui.click('#cancel');
+
+		ui.seeInput('input[name="title"]', 'Foo');
+	})
+
 	let bootstrapWrapper = (page) => {
 		page = page ? page : {id: '1', title:'Foo', body: ''};
 
@@ -112,6 +143,10 @@ describe('ChapterForm.vue', () => {
 	}
 
 	let mockSuccessfullRequest = (record, override) => {
+		record = record
+			? record
+			: {id: 12, title: 'Foobar', body: ''};
+
 		ajaxHelper.stubRequest(
 			/pages\/\d+/, 
 			ajaxHelper.getSuccessfulResponse(record, override)

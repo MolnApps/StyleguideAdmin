@@ -72,6 +72,22 @@ describe('LogoSpecForm.vue', () => {
 		}, done);
 	})
 
+	it ('displays feedback after successful api call', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest(logoHelper.make('Foobar', {id: 2}));
+
+		logoHelper.fillSpecForm();
+
+		ui.notSee('The page was updated');
+
+		ui.click('button[id="save"]');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('The page was updated');
+		}, done);
+	})
+
     it ('displays validation errors', (done) => {
 		bootstrapWrapper();
 
@@ -107,6 +123,57 @@ describe('LogoSpecForm.vue', () => {
 		ui.click('button[id="cancel"]');
 
 		ui.expectEvent('cancel');
+	})
+
+	it ('resets the form when the save button is clicked', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest(logoHelper.make('Foobar', {
+			id: 2,
+			display_width: '400px'
+		}));
+
+		ui.seeInput('input[name="display_width"]', '200px');
+
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeInput('input[name="display_width"]', '400px');
+		}, done);
+	})
+
+	it ('resets the form when the cancel button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.seeInput('input[name="display_width"]', '200px');
+		ui.seeInput('input[name="display_height"]', '200px');
+		ui.seeInput('input[name="space_x"]', '30%');
+		ui.seeInput('input[name="space_y"]', '30%');
+		ui.seeInput('input[name="min_width"]', '30px');
+		ui.seeInput('input[name="min_width_text"]', '30mm');
+
+		ui.type('input[name="display_width"]', '300px');
+		ui.type('input[name="display_height"]', '300px');
+		ui.type('input[name="space_x"]', '50%');
+		ui.type('input[name="space_y"]', '25%');
+		ui.type('input[name="min_width"]', '200px');
+		ui.type('input[name="min_width_text"]', '2mm');
+
+		ui.seeInput('input[name="display_width"]', '300px');
+		ui.seeInput('input[name="display_height"]', '300px');
+		ui.seeInput('input[name="space_x"]', '50%');
+		ui.seeInput('input[name="space_y"]', '25%');
+		ui.seeInput('input[name="min_width"]', '200px');
+		ui.seeInput('input[name="min_width_text"]', '2mm');
+
+		ui.click('#cancel');
+
+		ui.seeInput('input[name="display_width"]', '200px');
+		ui.seeInput('input[name="display_height"]', '200px');
+		ui.seeInput('input[name="space_x"]', '30%');
+		ui.seeInput('input[name="space_y"]', '30%');
+		ui.seeInput('input[name="min_width"]', '30px');
+		ui.seeInput('input[name="min_width_text"]', '30mm');
 	})
 
 	it ('displays logo safety component', () => {
