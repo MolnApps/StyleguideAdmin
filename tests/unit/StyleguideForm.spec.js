@@ -230,6 +230,24 @@ describe('StyleguideForm.js', () => {
         expect(form.title).toBe('');
     })
 
+    it ('will reset the form expect for the id, if the id was set after a successful request', (done) => {
+        mockSuccessfulRequest();
+
+        let form = new StyleguideForm({title: '', body: ''}, ['title', 'body']);
+
+        form.shouldReset(true);
+
+        expect(form.id).toBeNull();
+        
+        form.submit('/pages');
+
+        ajaxHelper.expectAfterRequest(() => {
+            expect(form.id).toBe(18);
+            form.reset();
+            expect(form.id).toBe(18);
+        }, done)
+    })
+
     let mockSuccessfulRequest = () => {
         let newRecord = {id: 18, title: 'Foobar', body: 'Barbaz'};
         ajaxHelper.stubRequest(/pages/, ajaxHelper.getSuccessfulResponse(newRecord));

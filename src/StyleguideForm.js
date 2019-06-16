@@ -27,7 +27,10 @@ class StyleguideForm extends EventEmitter
 
 	bootstrap(data)
 	{
-		this.id = data.id;
+		if (data.id) {
+			this.id = data.id;
+		}
+
 		data = this.constrainData(data);
 		
 		this.cacheOriginalData(data);

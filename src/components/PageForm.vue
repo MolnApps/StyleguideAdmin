@@ -19,6 +19,8 @@
                 ></textarea>
                 <p v-if="form.errors.body" v-for="error in form.errors.body" v-text="error"></p>
             </div>
+            <input type="hidden" name="type" v-model="form.type" />
+            <input type="hidden" name="component" v-model="form.component" />
             <div class="Actions Actions--noMargin">
                 <button 
                     type="button" 
@@ -45,7 +47,7 @@ export default {
     props: ['dataPage', 'dataEndpoint'],
     data() {
         return {
-            form: new StyleguideForm(this.dataPage, ['title', 'body'])
+            form: new StyleguideForm(this.dataPage, ['title', 'body', 'type', 'component'])
         }
     },
     created() {

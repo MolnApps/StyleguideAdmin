@@ -1,6 +1,7 @@
 Implementation
-— LogoForm: File upload update
 — Allow to choose a page type and component when creating a page
+—— Styling
+— LogoForm: File upload update
 - All buttons that perform an Ajax Request should display a loading icon when clicked
 — Colour Palette Editor: I should be able to edit/remove colours in the library.
 - When the user removes a page with children from the index, ask where to append the children of the deleted page

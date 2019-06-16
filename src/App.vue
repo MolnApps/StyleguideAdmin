@@ -1,5 +1,9 @@
 <template>
 	<div id="app" class="">
+		<page-steps 
+			:data-endpoint="endpoint('/pages')"
+		></page-steps>
+
 		<index-editor 
 			:data-index="index" 
 			:key="'index.' + index.length"
@@ -107,6 +111,8 @@
 </template>
 
 <script>
+import PageSteps from './components/PageSteps.vue'
+
 import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
 import IndexEditor from './components/IndexEditor.vue'
 import LogoEditor from './components/LogoEditor.vue'
@@ -131,6 +137,7 @@ import axios from 'axios';
 export default {
 	name: 'app',
 	components: {
+		PageSteps,
 		// Editors
 		ColourPaletteEditor, 
 		IndexEditor,

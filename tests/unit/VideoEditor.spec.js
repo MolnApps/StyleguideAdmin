@@ -143,7 +143,7 @@ describe('VideoEditor.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
-	it.only ('displays a feedback after a successful api call', (done) => {
+	it ('displays a feedback after a successful api call', (done) => {
 		mockSuccessfullRequest();
 
 		ajaxHelper.expectNoRequests();
