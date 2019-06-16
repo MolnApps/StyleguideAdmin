@@ -1,0 +1,25 @@
+.Steps__container {
+    @apply flex list-reset justify-center flex-wrap;
+}
+.Steps__container--margin {
+	@apply mb-8;
+}
+
+.Steps__type {
+    @apply block mr-2 mb-2 bg-blue flex justify-center items-center cursor-pointer rounded;
+    width: 200px;
+    height: 200px;
+}
+
+.Steps__progress {
+	@apply border-b mx-2 py-2 flex-1 text-grey;
+}
+.Steps__progress--on {
+	@apply text-blue;
+}
+.Steps__progress--current {
+	@apply font-bold border-blue;
+}
+.Steps__progress--back {
+	@apply font-bold cursor-pointer text-right text-black;
+}

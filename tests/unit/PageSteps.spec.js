@@ -40,7 +40,6 @@ describe('PageSteps.vue', () => {
 		ui.seeElement('#pageComponents');
 		ui.notSeeChildComponent(PageForm);
 		
-		ui.seeElement('#component-none');
 		ui.seeElement('#component-logo');
 		ui.seeElement('#component-logo-safety');
 		ui.seeElement('#component-logo-size');
@@ -113,6 +112,16 @@ describe('PageSteps.vue', () => {
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeChildComponent(LogoEditor);
 		}, done);
+	})
+
+	it ('sends the user back to components view if the user clicks back', () => {
+		ui.click('#type-text-side');
+		ui.click('#component-logo');
+
+		ui.seeElement('#back');
+		ui.click('#back');
+
+		ui.seeElement('#pageTypes');
 	})
 
 	let bootstrapWrapper = (page) => {
