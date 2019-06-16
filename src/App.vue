@@ -24,6 +24,7 @@
 			:data-page-people="people" 
 			:key="'people' + people.length"
 			:data-endpoint="endpoint('/pages/4/people')"
+			:data-form-endpoint="endpoint('/people')"
 		></people-editor>
 
 		<person-form 
@@ -36,6 +37,7 @@
 			:data-page-video="videos"
 			:key="'videos.' + videos.length"
 			:data-endpoint="endpoint('/pages/19/videos')"
+			:data-create-endpoint="endpoint('/videos')"
 		></video-editor>
 
 		<video-form 
@@ -53,8 +55,8 @@
 		
 		<typography-editor
 			:data-page-typeface-families="typefaces"
-			:key="'typefaces.' + typefaces.length"
 			:data-all-typeface-families="typefacesLibrary"
+			:key="'typefaces.' + typefaces.length"
 			:data-endpoint="endpoint('/pages/15/typefaces')"
 		></typography-editor>
 

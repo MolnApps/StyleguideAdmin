@@ -3,16 +3,18 @@
 		<div class="LogoSize__container">
 			<div class="LogoSize__image">
 				<img 
-					v-bind:src="logo.url" 
+					:src="logo.url" 
+					:style="getNormalSize" 
 					class="LogoSize__normal" 
-					v-bind:style="getNormalSize" />
+				/>
 			</div>
 			<div class="LogoSize__space"></div>
 			<div class="LogoSize__image">
 				<img 
-					v-bind:src="logo.url" 
+					:src="logo.url" 
+					:style="getSmallSize" 
 					class="LogoSize__small" 
-					v-bind:style="getSmallSize" />
+				/>
 				<span class="LogoSize__desc">{{ logoSpecs.min_width_text }}</span>
 			</div>
 		</div>

@@ -86,7 +86,7 @@ export default {
             this.form.submit(this.dataEndpoint, this.person);
         },
         onSuccess: function(data) {
-            this.$emit('success');
+            this.$emit('success', data.record);
         },
         onCancel: function() {
             this.form.reset();

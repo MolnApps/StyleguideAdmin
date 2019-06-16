@@ -46,7 +46,6 @@ describe('PageForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1', {
-				id: '1', 
 				title:'Foobar', 
 				body: 'Barbaz'
 			});

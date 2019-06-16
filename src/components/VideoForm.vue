@@ -42,7 +42,7 @@ export default {
     props: ['dataEndpoint', 'dataVideo'],
     data() {
         return {
-            form: new StyleguideForm(this.dataVideo, ['provider', 'provider_id'])
+            form: new StyleguideForm(this.dataVideo, ['title', 'provider', 'provider_id'])
         }
     },
     created() {
@@ -60,8 +60,8 @@ export default {
         onSuccess: function(data) {
             this.$emit('success', data.record);
         },
-        onEmbed: function(record) {
-            Object.assign(this.form, record);
+        onEmbed: function(data) {
+            Object.assign(this.form, data.record);
 
             this.$emit('embedded');
         }

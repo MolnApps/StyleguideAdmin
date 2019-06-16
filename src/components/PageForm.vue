@@ -45,7 +45,7 @@ export default {
     props: ['dataPage', 'dataEndpoint'],
     data() {
         return {
-            form: new StyleguideForm(this.dataPage)
+            form: new StyleguideForm(this.dataPage, ['title', 'body'])
         }
     },
     created() {

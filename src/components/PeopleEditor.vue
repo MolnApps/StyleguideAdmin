@@ -21,7 +21,13 @@
                  <button id="saveChanges" @click="onSaveChanges" class="Button Button--primary Button--xl">Save changes</button>
             </div>
         </div>
-        <person-form v-if="displayForm" :data-person="person" @cancel="toggleForm" @success="toggleForm"></person-form>
+        <person-form 
+            v-if="displayForm" 
+            :data-endpoint="dataFormEndpoint" 
+            :data-person="person" 
+            @cancel="onFormClosed" 
+            @success="onFormSaved"
+        ></person-form>
     </div>
 </template>
 
@@ -32,16 +38,35 @@ export default {
     components: {PersonForm},
     props: [
         'dataPagePeople', 
-        'dataEndpoint'
+        'dataEndpoint',
+        'dataFormEndpoint'
     ],
     data() {
         return {
             pagePeople: this.dataPagePeople,
             displayForm: false,
-            person: {}
+            person: {contacts: []}
         }
     },
     methods: {
+        onFormClosed: function()
+        {
+            this.person = {contacts: []};
+            this.toggleForm();
+        },
+        onFormSaved: function(record) {
+            if (this.person.id !== record.id) {
+                this.pagePeople.push(record);
+            } else {
+                this.pagePeople.map((person, i) => {
+                    if (person.id === record.id) {
+                        this.pagePeople[i] = record;
+                    }
+                });
+            }
+            this.person = {contacts: []};
+            this.toggleForm();
+        },
         onAdd: function() {
             this.toggleForm();
         },

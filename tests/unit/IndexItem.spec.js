@@ -55,13 +55,13 @@ describe('IndexItem.vue', () => {
 	it ('updates the parent id of the item when the nested draggable emits a change:added event', () => {
 		bootstrapWrapper();
 
-		expect(index[1].children[0].parent_id).toBe(4);
+		expect(index[1].children[0].parent.id).toBe(4);
 
 		let p = wrapper.find(Draggable).findAll(IndexItem).at(0).find(Draggable);
 
 		p.vm.$emit('change', {added: {element: index[1].children[0], oldIndex: 0, newIndex: 1}});
 
-		expect(index[1].children[0].parent_id).toBe(1);
+		expect(index[1].children[0].parent.id).toBe(1);
 	})
 
 	it ('updates the position of the items when the nested draggable emits a change:added event', () => {
@@ -133,6 +133,37 @@ describe('IndexItem.vue', () => {
 
 		ui.expectEvent('toggle');
 		ui.expectEventData('toggle', [index[0]]);
+	})
+
+	it ('emits an event when the visibility button is clicked on a child', () => {
+		bootstrapWrapper();
+
+		ui.notExpectEvent('toggle');
+
+		ui.click('li.index_2 span.visibility');
+
+		ui.expectEvent('toggle');
+		ui.expectEventData('toggle', [index[0]['children'][0]]);
+	})
+
+	it ('changes the button label when the visibility button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.notSee('Publish');
+
+		ui.click('li.index_1 span.visibility');
+
+		ui.see('Publish', 'li.index_1');
+	})
+
+	it ('changes the button label when the visibility button is clicked on a child', () => {
+		bootstrapWrapper();
+
+		ui.notSee('Publish');
+
+		ui.click('li.index_2 span.visibility');
+
+		ui.see('Publish', 'li.index_2');
 	})
 
 	let bootstrapWrapper = () => {

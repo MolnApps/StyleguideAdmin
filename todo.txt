@@ -1,4 +1,5 @@
 Implementation
+— LogoForm: File upload update
 — Allow to choose a page type and component when creating a page
 - All buttons that perform an Ajax Request should display a loading icon when clicked
 — Colour Palette Editor: I should be able to edit/remove colours in the library.
@@ -6,19 +7,6 @@ Implementation
 
 
 — Bugs
-
-—— Index
-——— Reordering index throws a 500 internal error in api call
-——— Toggling a chapter works, toggling a nested child does not.
-——— Removing a page will be persisted, but a 500 internal error api call is triggered
-—— When I add/remove contacts from a person, reactivity is lost.
-—— When I add a contact to a new person, an error is thrown because contacts is not an array.
-—— Person Form: a new contact will not be added or updated
 —— MoodboardEditor: 
 ——— Only one image will be added to the list. 
 ——— Only two out of three images will be saved to the DB.
-—— Typeface Editor: typeface will not be associated with page.
-—— TypefaceForm: 
-——— typeface will be updated, but the new record returned by the api is not set in the form.
-—— LogoForm: update fails, probably because no file is selected.
-—— LogoSpecsForm: the form data is reset but not with the record returned by api.

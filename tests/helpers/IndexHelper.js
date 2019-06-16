@@ -17,11 +17,11 @@ class IndexHelper {
 	{
 		return [
 			this.make(1, 'My chapter', 'chapter', {children: [
-				this.make(2, 'About us', 'text', {parent_id: 1}),
-				this.make(3, 'Mission', 'text', {parent_id: 1})
+				this.make(2, 'About us', 'text', {parent: {id: 1}}),
+				this.make(3, 'Mission', 'text', {parent: {id: 1}})
 			]}),
 			this.make(4, 'Another chapter', 'chapter', {children: [
-				this.make(5, 'Foobar', 'text', {parent_id: 4})
+				this.make(5, 'Foobar', 'text', {parent: {id: 4}})
 			]})
 		];
 	}
@@ -30,10 +30,9 @@ class IndexHelper {
 	{
 		return Object.assign({
 			id: id,
-			parent_id: null,
 			position: id - 1,
 			page: {id: id, title: title, body: '', type: type, component: '', visible: true},
-			parent: null,
+			parent: {id: null},
 			children: []
 		}, override);
 	}

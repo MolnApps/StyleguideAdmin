@@ -51,11 +51,11 @@ describe('IndexEditor.vue', () => {
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/index', {
 				index: [
-					{id: 1, parent_id: null, position: 0},
-					{id: 2, parent_id: 1, position: 1},
-					{id: 3, parent_id: 1, position: 2},
-					{id: 4, parent_id: null, position: 3},
-					{id: 5, parent_id: 4, position: 4}
+					{id: 1, page_id: 1, parent_id: null, position: 0},
+					{id: 2, page_id: 2, parent_id: 1, position: 1},
+					{id: 3, page_id: 3, parent_id: 1, position: 2},
+					{id: 4, page_id: 4, parent_id: null, position: 3},
+					{id: 5, page_id: 5, parent_id: 4, position: 4}
 				]
 			});
 		}, done);
@@ -167,14 +167,25 @@ describe('IndexEditor.vue', () => {
 		ui.see('About us');
 	})
 
-	it ('changes the button label when the visibility button is clicked', () => {
+	it ('resets the children position and parent id of a deleted page', (done) => {
 		bootstrapWrapper();
 
-		ui.notSee('Publish');
+		mockSuccessfullRequest();
 
-		ui.click('li.index_1 span.visibility');
+		ui.click('li.index_1 span.del');
 
-		ui.see('Publish', 'li.index_1');
+		ui.click('#saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ajaxHelper.expectRequest('/index', {
+				index: [
+					{id: 4, page_id: 4, parent_id: null, position: 0},
+					{id: 5, page_id: 5, parent_id: 4, position: 4},
+					{id: 2, page_id: 2, parent_id: null, position: 1},
+					{id: 3, page_id: 3, parent_id: null, position: 2},
+				]
+			})
+		}, done)
 	})
 
 	it ('makes an api call when the visibility button is clicked', (done) => {
@@ -250,11 +261,11 @@ describe('IndexEditor.vue', () => {
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/index', {
 				index: [
-					{id: 1, parent_id: null, position: 0},
-					{id: 2, parent_id: 1, position: 1},
-					{id: 3, parent_id: 1, position: 2},
-					{id: 4, parent_id: null, position: 3},
-					{id: 5, parent_id: 4, position: 4}
+					{id: 1, page_id: 1, parent_id: null, position: 0},
+					{id: 2, page_id: 2, parent_id: 1, position: 1},
+					{id: 3, page_id: 3, parent_id: 1, position: 2},
+					{id: 4, page_id: 4, parent_id: null, position: 3},
+					{id: 5, page_id: 5, parent_id: 4, position: 4}
 				]
 			});
 		}, done);
@@ -282,10 +293,6 @@ describe('IndexEditor.vue', () => {
 		ui.click('#cancelChanges');
 
 		ui.expectEvent('cancel');
-	})
-
-	xit ('asks for confirmation before removing a page with children', () => {
-		
 	})
 
 	let bootstrapWrapper = () => {

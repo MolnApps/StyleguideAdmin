@@ -96,7 +96,16 @@ describe('PersonForm.vue', () => {
 	})
 
 	it ('emits an event after the api call if successful', (done) => {
-		mockSuccessfullRequest();
+		let returnedRecord = {
+			id: 1,
+			first_name: 'John',
+			middle_name: 'Johnson',
+			last_name: 'Doe',
+			job_title: 'Massmarket',
+			contacts: []
+		};
+		
+		mockSuccessfullRequest(returnedRecord);
 
 		ui.notExpectEvent('success');
 
@@ -104,6 +113,7 @@ describe('PersonForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
+			ui.expectEventData('success', [returnedRecord])
 		}, done);
 	})
 

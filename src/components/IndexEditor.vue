@@ -7,7 +7,7 @@
             <div class="List">
                 <index-item 
                     :index="index" 
-                    :owner="{id: 0}" 
+                    :owner="{id: null}" 
                     @end="onEnd" 
                     @edit="onEdit" 
                     @toggle="onToggle"
@@ -125,7 +125,8 @@ export default {
         },
         serializeIndex: function(index, data) {
             index.forEach((i) => {
-                data.push({id: i.id, parent_id: i.parent_id, position: i.position});
+                let parentId = i.parent ? i.parent.id : null;
+                data.push({id: i.id, page_id: i.page.id, parent_id: parentId, position: i.position});
 
                 data = this.serializeIndex(i.children, data);
             });

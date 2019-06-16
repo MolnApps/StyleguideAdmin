@@ -143,6 +143,18 @@ describe('VideoEditor.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
+	it.only ('displays a feedback after a successful api call', (done) => {
+		mockSuccessfullRequest();
+
+		ajaxHelper.expectNoRequests();
+
+		ui.click('#saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('The page was updated');
+		}, done);
+	})
+
 	it ('allows to sort videos', () => {
 		expect(wrapper.find(Draggable).exists()).toBe(true);
 	})

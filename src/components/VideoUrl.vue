@@ -2,13 +2,13 @@
     <div class="Form__row Form__row--noMargin">
         <input 
             :placeholder="getRandomPlaceholder()" 
-            v-model="urlForm.url" 
+            v-model="form.url" 
             @input="onInput" 
             type="text" 
             name="url" 
             class="Form__input" 
         />
-        <p v-for="message in urlForm.feedback" v-text="message"></p>
+        <p v-for="message in form.feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -18,19 +18,18 @@ export default {
     props: ['dataEndpoint'],
     data() {
         return {
-            urlForm: null
+            form: new StyleguideForm({url: ''})
         }
     },
     created() {
-        this.urlForm = new StyleguideForm({url: ''});
+        this.form.on('success', this.onUrlSuccess.bind(this));
     },
     methods: {
         onInput: function() {
-            this.urlForm.on('success', this.onUrlSuccess.bind(this));
-            this.urlForm.submit(this.dataEndpoint);
+            this.form.submit(this.dataEndpoint);
         },
         onUrlSuccess: function(data) {
-            this.$emit('success', data.record);
+            this.$emit('success', data);
         },
         getRandomPlaceholder: function() {
             return 'https://www.youtube.com/watch?v=abc123';

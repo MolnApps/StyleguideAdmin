@@ -48,7 +48,7 @@ class StyleguideForm extends EventEmitter
 		let result = {}
 			
 		this.constraints.forEach((key) => {
-			result[key] = data[key];
+			result[key] = data[key] !== undefined ? data[key] : '';
 		})
 		
 		return result;

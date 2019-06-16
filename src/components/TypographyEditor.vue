@@ -53,6 +53,7 @@
                     class="Button Button--primary Button--xl"
                 >Save changes</button>
             </div>
+            <p v-for="message in form.feedback" v-text="message"></p>
         </div>
         <typeface-family-form 
             v-if="display.typefaceFamilyForm" 
@@ -70,7 +71,7 @@ import TypefaceWeight from './TypefaceWeight.vue';
 import TypefaceFamilyForm from './TypefaceFamilyForm.vue';
 export default {
     components: {TypefaceWeight, TypefaceFamilyForm},
-    props: ['dataPageTypefaceFamilies', 'dataAllTypefaceFamilies', 'endpoint'],
+    props: ['dataPageTypefaceFamilies', 'dataAllTypefaceFamilies', 'dataEndpoint'],
     data() {
         return {
             pageTypefaceFamilies: this.dataPageTypefaceFamilies,
@@ -78,7 +79,8 @@ export default {
             typefaceFamily: null,
             display: {
                 typefaceFamilyForm: false
-            }
+            },
+            form: new StyleguideForm({})
         }
     },
     methods: {
@@ -147,13 +149,14 @@ export default {
             let data = this.pageTypefaceFamilies.map((t) => {
                 return {id: t.id, weight: t.pivot.preferences.weight};
             });
-            let form = new StyleguideForm({
+            this.form = new StyleguideForm({
                 typeface: data
             });
-            form.on('success', () => {
-                this.$emit('success');
-            });
-            form.submit(this.endpoint);
+            this.form.on('success', this.onSuccess.bind(this));
+            this.form.submit(this.dataEndpoint);
+        },
+        onSuccess() {
+            this.$emit('success');
         },
         cancelChanges() {
             this.$emit('cancel');

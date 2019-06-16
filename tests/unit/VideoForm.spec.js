@@ -41,17 +41,27 @@ describe('VideoForm.vue', () => {
 	})
 
 	it ('performs an api call when user paste a url', (done) => {
-		mockSuccessfullUrlRequest({provider: 'youtube', provider_id: '1eMg23jjR_c'});
+		mockSuccessfullUrlRequest({
+			title: 'Video', 
+			provider: 'youtube', 
+			provider_id: '1eMg23jjR_c'
+		});
 
 		ui.type('input[name="url"]', 'https://www.youtube.com/watch?v=1eMg23jjR_c');
 		
 		ajaxHelper.expectAfterRequest(() => {
-			ajaxHelper.expectRequest('/videos/url', {url: 'https://www.youtube.com/watch?v=1eMg23jjR_c'});
+			ajaxHelper.expectRequest('/videos/url', {
+				url: 'https://www.youtube.com/watch?v=1eMg23jjR_c'
+			});
 		}, done);
 	})
 
 	it ('embeds a video immediately after the api call response', (done) => {
-		mockSuccessfullUrlRequest({provider: 'youtube', provider_id: '1eMg23jjR_c'});
+		mockSuccessfullUrlRequest({
+			title: 'Video', 
+			provider: 'youtube', 
+			provider_id: '1eMg23jjR_c'
+		});
 
 		ui.type('input[name="url"]', 'https://www.youtube.com/watch?v=1eMg23jjR_c');
 		
@@ -61,7 +71,11 @@ describe('VideoForm.vue', () => {
 	})
 
 	it ('emits an event when the user types a url', (done) => {
-		mockSuccessfullUrlRequest({provider: 'youtube', provider_id: '1eMg23jjR_c'});
+		mockSuccessfullUrlRequest({
+			title: 'Video', 
+			provider: 'youtube', 
+			provider_id: '1eMg23jjR_c'
+		});
 
 		ui.notExpectEvent('embedded');
 
@@ -73,12 +87,18 @@ describe('VideoForm.vue', () => {
 	})
 
 	it ('performs an api call when the save button is clicked', (done) => {
-		mockSuccessfullRequest({id: 1, provider: 'youtube', provider_id: '1eMg23jjR_c'});
+		mockSuccessfullRequest({
+			id: 1, 
+			title: 'Video',
+			provider: 'youtube', 
+			provider_id: '1eMg23jjR_c'
+		});
 
 		ui.click('#save');
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/videos/1', {
+				title: 'Video',
 				provider: 'vimeo',
 				provider_id: 'abc123'
 			});
@@ -154,7 +174,7 @@ describe('VideoForm.vue', () => {
 	})
 
 	let bootstrapComponent = (video) => {
-		video = video ? video : {id: 1, provider: 'vimeo', provider_id: 'abc123'};
+		video = video ? video : {id: 1, title: 'Video', provider: 'vimeo', provider_id: 'abc123'};
 		wrapper = mount(VideoForm, {
 			propsData: { 
 				dataVideo: video, 

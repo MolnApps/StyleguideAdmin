@@ -38,6 +38,7 @@
                     @click="onSaveChanges"
                 >Save changes</button>
             </div>
+            <p v-for="message in form.feedback" v-text="message"></p>
         </div>
         <video-form 
             v-if="displayForm"
@@ -61,7 +62,8 @@ export default {
         return {
             pageVideo: this.dataPageVideo,
             video: {},
-            displayForm: false
+            displayForm: false,
+            form: new StyleguideForm({video_id: []})
         };
     },
     methods: {
@@ -85,8 +87,11 @@ export default {
         },
         onSaveChanges: function() {
             let ids = this.pageVideo.map((v) => { return v.id; });
-            let form = new StyleguideForm({video_id: ids});
-            form.submit(this.dataEndpoint);
+            this.form = new StyleguideForm({video_id: ids});
+            this.form.on('success', this.onSuccessChanges.bind(this));
+            this.form.submit(this.dataEndpoint);
+        },
+        onSuccessChanges: function() {
             this.$emit('success');
         },
         onCancelChanges: function() {

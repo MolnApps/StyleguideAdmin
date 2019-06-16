@@ -116,10 +116,6 @@ describe('TypographyEditor.vue', () => {
 		ui.notSeeForm('#typefaceFamilyForm');
 	})
 
-	it ('adds a typeface family from the library on click', () => {
-		
-	})
-
 	it ('adds a typeface family weight from the library on click', () => {
 		bootstrapWrapper();
 
@@ -238,6 +234,20 @@ describe('TypographyEditor.vue', () => {
 		}, done);
 	})
 
+	it ('displays feedback when the save changes button is clicked', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+
+		ui.notSee('The page was updated');
+
+		ui.click('#saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('The page was updated');
+		}, done);
+	})
+
 	it ('does not save the changes when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
@@ -289,7 +299,7 @@ describe('TypographyEditor.vue', () => {
 			propsData: {
 				dataPageTypefaceFamilies: pageTypefaceFamilies,
 				dataAllTypefaceFamilies: allTypefaceFamilies,
-				endpoint: '/pages/1/typefaces'
+				dataEndpoint: '/pages/1/typefaces'
 			}
 		});
 

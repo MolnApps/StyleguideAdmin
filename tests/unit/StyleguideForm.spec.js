@@ -223,6 +223,13 @@ describe('StyleguideForm.js', () => {
         expect(form.body).toBe('Bar');
     })
 
+    it ('will add properties to an object if they are not set', () => {
+        let form = new StyleguideForm({contacts: []}, ['contacts', 'title']);
+
+        expect(form.contacts).toEqual([]);
+        expect(form.title).toBe('');
+    })
+
     let mockSuccessfulRequest = () => {
         let newRecord = {id: 18, title: 'Foobar', body: 'Barbaz'};
         ajaxHelper.stubRequest(/pages/, ajaxHelper.getSuccessfulResponse(newRecord));

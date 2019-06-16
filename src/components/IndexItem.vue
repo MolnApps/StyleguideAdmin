@@ -7,10 +7,10 @@
         @change="onChange"
         @end="onEnd"
         class="list-reset"
+        :key="forceRender"
     >
         <li 
             v-for="(i, k) in index" 
-            :key="i.id" 
             :class="'index_' + i.id"
             class="pl-4"
         >
@@ -45,6 +45,7 @@
                 :number="k + 1 + '.'"
                 @end="onEnd" 
                 @edit="onEdit" 
+                @toggle="onToggleChild"
             ></index-item>
         </li>
     </draggable>
@@ -55,6 +56,11 @@ import Draggable from 'vuedraggable'
 export default {
     name: 'IndexItem',
     components: {Draggable},
+    data() {
+        return {
+            forceRender: 0
+        }
+    },
     props: {
         index: {type: Array}, 
         owner: {type: Object},
@@ -66,7 +72,9 @@ export default {
         },
         onChange: function(data) {
             if (data.added) {
-                data.added.element.parent_id = this.owner.id ? this.owner.id : null;
+                data.added.element.parent.id = this.owner.id 
+                    ? this.owner.id 
+                    : null;
             }
             
             this.index.map((i, pos) => {
@@ -79,15 +87,30 @@ export default {
         onEdit: function(index) {
             this.$emit('edit', index);
         },
-        onRemove: function(index) {
-            let children = this.index[index].children;
-            this.index.splice(index, 1);
+        onRemove: function(k) {
+            let children = this.index[k].children;
+            this.index.splice(k, 1);
+            this.moveChildrenToRoot(children);
+            this.resetPositionAndParent();
+        },
+        moveChildrenToRoot: function(children) {
             children.map((child) => {
                 this.index.push(child);
             });
         },
+        resetPositionAndParent: function() {
+            this.index.map((item, p) => {
+                item.position = p;
+                item.parent = {id: this.owner.id};
+            });
+        },
         onToggle: function(index) {
             index.page.visible = ! index.page.visible;
+            this.forceRender+= 1;
+            
+            this.$emit('toggle', index);
+        },
+        onToggleChild: function(index) {
             this.$emit('toggle', index);
         }
     }

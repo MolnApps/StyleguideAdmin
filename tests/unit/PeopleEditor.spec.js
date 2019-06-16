@@ -7,6 +7,7 @@ describe('PeopleEditor.vue', () => {
 	let wrapper;
 	let ui;
 	let ajaxHelper;
+	let returnedRecord;
 
 	beforeEach(() => {
 		ajaxHelper = new AjaxHelper();
@@ -133,17 +134,56 @@ describe('PeopleEditor.vue', () => {
 		ui.notSeeForm('#personForm');
 	})
 
-	it ('hides the form after a successful api call', () => {
+	it ('hides the form and adds the new record to the list after a successful api call', () => {
 		ui.click('div[data-id="2"] span.edit');
 
 		ui.seeForm('#personForm');
 
-		wrapper.find(PersonForm).vm.$emit('success');
+		wrapper.find(PersonForm).vm.$emit('success', returnedRecord);
 
 		ui.notSeeForm('#personForm');
 	})
 
+	it ('adds a new person to the form after a successful api call', () => {
+		ui.see('John Doe');
+		ui.see('Jane Doe');
+		ui.notSee('Robert Redford')
+
+		ui.click('#add');
+
+		wrapper.find(PersonForm).vm.$emit('success', returnedRecord);
+
+		ui.see('John Doe');
+		ui.see('Jane Doe');
+		ui.see('Robert Redford')
+	})
+
+	it ('will not add an edited person to the form after a successful api call', () => {
+		ui.see('John Doe');
+		ui.see('Jane Doe');
+		ui.notSee('Robert Redford');
+
+		returnedRecord.id = 2;
+
+		ui.click('div[data-id="2"] span.edit');
+
+		wrapper.find(PersonForm).vm.$emit('success', returnedRecord);
+
+		ui.see('John Doe');
+		ui.notSee('Jane Doe');
+		ui.see('Robert Redford')
+	})
+
 	let bootstrapComponent = () => {
+		returnedRecord = {
+			id: 15, 
+			first_name: 'Robert', 
+			middle_name: '', 
+			last_name: 'Redford', 
+			full_name: 'Robert Redford', 
+			job_title: 'Actor'
+		};
+
 		wrapper = mount(PeopleEditor, {
 			propsData: { 
 				dataPagePeople: [
