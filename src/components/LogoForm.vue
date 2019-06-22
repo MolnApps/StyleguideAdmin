@@ -61,6 +61,7 @@ export default {
         },
         filesChange(fieldName, fileList)
         {
+            console.log('passo');
             this.form.filesChange(fieldName, fileList);
         },
         onSuccess: function(data) {

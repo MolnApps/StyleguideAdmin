@@ -1,6 +1,6 @@
 import axios from 'axios'
 import EventEmitter from 'events'
-//import FormDataCollector from './FormDataCollector'
+import FormDataCollector from './FormDataCollector'
 import Endpoint from './Endpoint';
 
 class StyleguideForm extends EventEmitter
@@ -21,7 +21,8 @@ class StyleguideForm extends EventEmitter
 		this.uploads = {};
 
 		this.preferences = {
-			shouldReset: false
+			shouldReset: false,
+			hasUploads: false
 		};
 	}
 
@@ -40,6 +41,11 @@ class StyleguideForm extends EventEmitter
 	shouldReset(shouldReset)
 	{
 		this.preferences.shouldReset = true;
+	}
+
+	hasUploads(hasUploads)
+	{
+		this.preferences.hasUploads = true;
 	}
 
 	constrainData(data)
@@ -74,22 +80,7 @@ class StyleguideForm extends EventEmitter
 
 	data()
 	{
-		return this.dataPlain();
-	}
-
-	dataPlain()
-	{
-		let data = {};
-
-		for (let attribute in this.originalData) {
-			data[attribute] = this[attribute];
-		}
-
-		for (let attribute in this.uploads) {
-			data[attribute] = this.uploads[attribute];
-		}
-		
-		return data;
+		return new FormDataCollector(this.originalData, this, this.uploads).collect();
 	}
 
 	filesChange(fieldName, fileList)
@@ -108,12 +99,19 @@ class StyleguideForm extends EventEmitter
 			record = {id: this.id};
 		}
 
+		let endpointHelper = new Endpoint();
+
+		endpointHelper.addHeader('authorization');
+		if (this.preferences.hasUploads) {
+			endpointHelper.addHeader('multipartFormData');
+		}
+
 		return axios
 			.post(
-				Endpoint.url(endpoint, record), 
+				endpointHelper.getUrl(endpoint, record), 
 				this.data(),
 				{
-					headers: Endpoint.headers()
+					headers: endpointHelper.getHeaders()
 				}
 			)
             .then(({data}) => {

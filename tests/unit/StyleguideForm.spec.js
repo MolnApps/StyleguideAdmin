@@ -248,6 +248,36 @@ describe('StyleguideForm.js', () => {
         }, done)
     })
 
+    it ('submits multipart-formdata header if has uploads', (done) => {
+        mockSuccessfulRequest();
+
+        let form = new StyleguideForm({}, []);
+
+        form.hasUploads(true);
+
+        form.filesChange('file', [new Blob()]);
+
+        form.submit('/pages');
+
+        ajaxHelper.expectAfterRequest(() => {
+            ajaxHelper.expectHeaders({'Content-Type': 'multipart/form-data'});
+        }, done)
+    })
+
+    it ('will not submit multipart-formdata header if has not uploads', (done) => {
+        mockSuccessfulRequest();
+
+        let form = new StyleguideForm({}, []);
+
+        form.filesChange('file', [new Blob()]);
+
+        form.submit('/pages');
+
+        ajaxHelper.expectAfterRequest(() => {
+            ajaxHelper.expectHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+        }, done)
+    })
+
     let mockSuccessfulRequest = () => {
         let newRecord = {id: 18, title: 'Foobar', body: 'Barbaz'};
         ajaxHelper.stubRequest(/pages/, ajaxHelper.getSuccessfulResponse(newRecord));

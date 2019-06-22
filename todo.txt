@@ -2,7 +2,6 @@ Implementation
 — Allow to choose a page type and component when creating a page
 —— We should display qualified component after the page was created (possibly programmatically)
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
-— LogoForm: File upload update
 - All buttons that perform an Ajax Request should display a loading icon when clicked
 — Colour Palette Editor: I should be able to edit/remove colours in the library.
 

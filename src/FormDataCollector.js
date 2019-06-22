@@ -22,21 +22,45 @@ class FormDataCollector
 		return formData;
 	}
 
+	toObject(formData)
+	{
+		if ( ! formData) {
+			formData = this.collect();
+		}
+
+		let object = {};
+
+		for (let pair of formData) {
+			object[pair[0]] = pair[1];
+		}
+
+		return object;
+	}
+
 	dataFormRecursive(formData, attribute, data)
 	{
 		if (Array.isArray(data[attribute])) {
 			return data[attribute].map((el, i) => {
-				this.dataFormRecursive(formData, attribute + '[' + i + ']', el);
+				this.handleArrayOrObject(formData, attribute, el, i);
 			});
 		}
 
 		if (typeof data[attribute] === 'object' && data[attribute] !== null) {
-			return data[attribute].map((el, key) => {
-				this.dataFormRecursive(formData, attribute + '[' + key + ']', el);
-			});
+			for (let [i, el] of Object.entries(data[attribute])) {
+				this.handleArrayOrObject(formData, attribute, el, i);
+			}
+			return;
 		}
-
+		
 		formData.append(attribute, data[attribute]);
+	}
+
+	handleArrayOrObject(formData, attribute, el, i)
+	{
+		let tmp = {};
+		let arrAttribute = attribute + '[' + i + ']';
+		tmp[arrAttribute] = el;
+		this.dataFormRecursive(formData, arrAttribute, tmp);
 	}
 }
 

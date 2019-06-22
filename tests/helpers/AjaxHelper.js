@@ -1,6 +1,6 @@
 import moxios from 'moxios'
 import expect from 'expect'
-import StyleguideForm from '../../src/StyleguideForm'
+import FormDataCollector from '../../src/FormDataCollector'
 
 class AjaxHelper {
 	constructor () {
@@ -56,9 +56,25 @@ class AjaxHelper {
 		let request = moxios.requests.mostRecent();
 		expect(request.config.url).toEqual(url);
 
-		let paramsData = new StyleguideForm(params).data();
+		let formDataCollector = new FormDataCollector(params, params);
 		
-		expect(JSON.parse(request.config.data)).toEqual(paramsData);
+		expect(
+			formDataCollector.toObject(request.config.data)
+		).toEqual(formDataCollector.toObject());
+	}
+
+	expectHeaders(expectedHeaders) {
+		let request = moxios.requests.mostRecent();
+		for (let [key, value] of Object.entries(expectedHeaders)) {
+			expect(request.config.headers[key]).toEqual(value);
+		}
+	}
+
+	notExpectHeaders(expectedHeaders) {
+		let request = moxios.requests.mostRecent();
+		for (let i = 0; i < expectedHeaders.length; i++) {
+			expect(Object.keys(request.config.headers)).not.toContain(expectedHeaders[i]);
+		}
 	}
 
 	expectAfterRequest(callback, done) {
