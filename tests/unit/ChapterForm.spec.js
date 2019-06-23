@@ -1,13 +1,20 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import ChapterForm from '@/components/ChapterForm.vue'
-import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
+
+import Btn from '@/components/Btn'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('ChapterForm.vue', () => {
 	let wrapper;
 	let ui;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
 		ajaxHelper = new AjaxHelper();
 	    ajaxHelper.install();
 	})
@@ -39,7 +46,7 @@ describe('ChapterForm.vue', () => {
 
 		mockSuccessfullRequest();
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1', {
@@ -55,7 +62,7 @@ describe('ChapterForm.vue', () => {
 
 		ui.notSee('The page was updated.');
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated.');
@@ -67,7 +74,7 @@ describe('ChapterForm.vue', () => {
 
 		mockRequestWithValidationErrors();
 
-	    ui.click('#save');
+	    ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('Title is required');
@@ -83,7 +90,7 @@ describe('ChapterForm.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -96,7 +103,7 @@ describe('ChapterForm.vue', () => {
 
 		mockRequestWithValidationErrors();
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.notExpectEvent('success');
@@ -106,7 +113,7 @@ describe('ChapterForm.vue', () => {
 	it('triggers an event when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.expectEvent('cancel');
 	})
@@ -124,7 +131,7 @@ describe('ChapterForm.vue', () => {
 
 		ui.seeInput('input[name="title"]', 'Foobar');
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.seeInput('input[name="title"]', 'Foo');
 	})
@@ -133,6 +140,8 @@ describe('ChapterForm.vue', () => {
 		page = page ? page : {id: '1', title:'Foo', body: ''};
 
 		wrapper = shallowMount(ChapterForm, {
+			localVue,
+			store,
 			propsData: {
 				dataPage: page,
 				dataEndpoint: '/pages'

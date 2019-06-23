@@ -29,6 +29,7 @@
                 >Cancel</button>
                 <button 
                     id="save" 
+                    ref="save"
                     @click="save" 
                     class="Button Button--primary Button--xl"
                 >Save</button>
@@ -61,7 +62,6 @@ export default {
         },
         filesChange(fieldName, fileList)
         {
-            console.log('passo');
             this.form.filesChange(fieldName, fileList);
         },
         onSuccess: function(data) {

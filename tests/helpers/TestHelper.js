@@ -61,7 +61,11 @@ class TestHelper {
 	}
 
 	click(selector) {
-		this.wrapper.find(selector).trigger('click');
+		if (selector.charAt(0) === '$') {
+			let ref = selector.replace('$', '');
+			return this.wrapper.vm.$refs[ref].$emit('click');
+		}
+		return this.wrapper.find(selector).trigger('click');
 	}
 
 	type(selector, value) {
@@ -71,8 +75,11 @@ class TestHelper {
 		node.trigger('input');
 	}
 
-	expectEvent(name) {
+	expectEvent(name, count) {
 		expect(this.wrapper.emitted()[name]).toBeTruthy();
+		if (count !== undefined) {
+			expect(this.wrapper.emitted()[name].length).toEqual(count);
+		}
 	}
 
 	emitEvent(component, eventName, eventParams)

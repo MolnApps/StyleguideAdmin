@@ -2,6 +2,7 @@ import axios from 'axios'
 import EventEmitter from 'events'
 import FormDataCollector from './FormDataCollector'
 import Endpoint from './Endpoint';
+import bus from './bus';
 
 class StyleguideForm extends EventEmitter
 {
@@ -123,6 +124,7 @@ class StyleguideForm extends EventEmitter
                 }
 
                 this.emit('success', data);
+                bus.$emit('success');
             })
             .catch((error) => {
             	if (error.response) {

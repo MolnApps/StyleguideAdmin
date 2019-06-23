@@ -836,6 +836,18 @@ table {
   background-color: #b8c2cc;
 }
 
+.Button--loading,
+.Button--loading:hover {
+  background-color: #22292f;
+  color: #b8c2cc;
+}
+
+.Button--disabled,
+.Button--disabled:hover {
+  background-color: #dae1e7;
+  color: #b8c2cc;
+}
+
 .Button--xs {
   padding-top: .25rem;
   padding-bottom: .25rem;

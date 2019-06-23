@@ -7,18 +7,8 @@
                 <p v-for="error in form.errors.title" v-text="error"></p>
             </div>
             <div class="Actions Actions--noMargin">
-                <button 
-                    type="button" 
-                    id="cancel" 
-                    @click="cancel" 
-                    class="Button Button--secondary Button--xl"
-                >Cancel</button>
-                <button 
-                    type="submit" 
-                    id="save" 
-                    @click="save" 
-                    class="Button Button--primary Button--xl"
-                >Save</button>
+                <btn ref="cancel" type="secondary" @click="cancel">Cancel</btn>
+                <btn asynch ref="save" type="primary" @click="save">Save</btn>
             </div>
         </form>
         <p v-for="message in form.feedback" v-text="message"></p>
@@ -27,8 +17,9 @@
 
 <script>
 import StyleguideForm from './../StyleguideForm';
-
+import Btn from './Btn';
 export default {
+    components: {Btn},
     props: ['dataPage', 'dataEndpoint'],
     data() {
         return {

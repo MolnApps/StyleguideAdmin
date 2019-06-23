@@ -33,6 +33,12 @@
 .Button--secondary:hover {
     @apply bg-grey;
 }
+.Button--loading, .Button--loading:hover {
+    @apply bg-black text-grey;
+}
+.Button--disabled, .Button--disabled:hover {
+    @apply bg-grey-light text-grey;
+}
 .Button--xs {
 	@apply py-1 px-2 text-xs h-6;
 }

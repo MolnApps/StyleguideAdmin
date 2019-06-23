@@ -1,5 +1,8 @@
 <template>
 	<div id="app" class="">
+		<btn class="Button--primary">Save</btn>
+		<btn class="Button--secondary">Cancel</btn>
+
 		<page-steps 
 			:data-endpoint="endpoint('/pages')"
 		></page-steps>
@@ -131,6 +134,8 @@ import PageForm from './components/PageForm.vue'
 import PersonForm from './components/PersonForm.vue'
 import TypefaceFamilyForm from './components/TypefaceFamilyForm.vue'
 import VideoForm from './components/VideoForm.vue'
+// Components
+import Btn from './components/Btn.vue'
 
 import axios from 'axios';
 
@@ -155,7 +160,9 @@ export default {
 		PageForm,
 		PersonForm,
 		TypefaceFamilyForm,
-		VideoForm
+		VideoForm,
+		// Components
+		Btn
 	},
 	data() {
 		return {
