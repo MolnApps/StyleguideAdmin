@@ -3,14 +3,20 @@ import PageSteps from '@/components/PageSteps.vue'
 import PageForm from '@/components/PageForm.vue'
 import ChapterForm from '@/components/ChapterForm.vue'
 import LogoEditor from '@/components/LogoEditor.vue'
-import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('PageSteps.vue', () => {
 	let wrapper;
 	let ui;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		ajaxHelper = new AjaxHelper();
 	    ajaxHelper.install();
 
@@ -126,6 +132,8 @@ describe('PageSteps.vue', () => {
 
 	let bootstrapWrapper = (page) => {
 		wrapper = mount(PageSteps, {
+			localVue,
+			store,
 			propsData: {
 				dataEndpoint: '/pages'
 			}

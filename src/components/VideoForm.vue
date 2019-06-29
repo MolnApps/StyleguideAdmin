@@ -15,16 +15,8 @@
                     <input type="hidden" name="provider_id" v-model="form.provider_id" />
                 </div>
                 <div class="List__right">
-                    <button 
-                        id="cancel" 
-                        @click="cancel" 
-                        class="Button Button--secondary"
-                    >Cancel</button>
-                    <button 
-                        id="save" 
-                        @click="save" 
-                        class="Button Button--primary"
-                    >Save</button>
+                    <btn ref="cancel" @click="cancel" type="secondary">Cancel</btn>
+                    <btn ref="save" @click="save">Save</btn>
                 </div>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>
@@ -35,10 +27,11 @@
 <script>
 import StyleguideForm from './../StyleguideForm.js'
 import VideoUrl from './VideoUrl.vue'
-import Vimeo from './Vimeo.vue';
-import Youtube from './Youtube.vue';
+import Vimeo from './Vimeo.vue'
+import Youtube from './Youtube.vue'
+import Btn from './Btn.vue'
 export default {
-    components: {VideoUrl, Vimeo, Youtube},
+    components: {Btn, VideoUrl, Vimeo, Youtube},
     props: ['dataEndpoint', 'dataVideo'],
     data() {
         return {

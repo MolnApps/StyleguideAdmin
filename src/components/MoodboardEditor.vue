@@ -30,19 +30,20 @@
             @success="onUploadSuccess"
         ></moodboard-dropzone>
         <div class="Actions">
-            <button id="cancelChanges" @click="onCancel" class="Button Button--secondary Button--xl">Cancel changes</button>
-            <button id="saveChanges" @click="onSave" class="Button Button--primary Button--xl">Save changes</button>
+            <btn ref="cancelChanges" @click="onCancel" type="secondary">Cancel changes</btn>
+            <btn ref="saveChanges" @click="onSave">Save changes</btn>
         </div>
         <p v-for="message in feedback" v-text="message"></p>
     </div>
 </template>
 
 <script>
-import Draggable from 'vuedraggable';
-import MoodboardDropzone from './MoodboardDropzone.vue';
-import StyleguideForm from './../StyleguideForm';
+import Draggable from 'vuedraggable'
+import MoodboardDropzone from './MoodboardDropzone.vue'
+import StyleguideForm from './../StyleguideForm'
+import Btn from './Btn.vue'
 export default {
-    components: {Draggable, MoodboardDropzone},
+    components: {Btn, Draggable, MoodboardDropzone},
     props: [
         'dataPageImages', 
         'dataEndpoint',

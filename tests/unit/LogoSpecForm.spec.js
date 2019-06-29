@@ -2,16 +2,22 @@ import { mount, shallowMount } from '@vue/test-utils'
 import LogoSpecForm from '@/components/LogoSpecForm.vue'
 import LogoSafety from '@/components/LogoSafety.vue'
 import LogoSize from '@/components/LogoSize.vue'
-import {TestHelper, AjaxHelper, LogoHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, LogoHelper, StateHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('LogoSpecForm.vue', () => {
 	let wrapper;
 	let ui;
 	let logoHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		logoHelper = new LogoHelper();
 
 		ajaxHelper = new AjaxHelper();
@@ -33,8 +39,9 @@ describe('LogoSpecForm.vue', () => {
 		ui.seeInput('input[name="space_y"]', '30%');
 		ui.seeInput('input[name="min_width"]', '30px');
 		ui.seeInput('input[name="min_width_text"]', '30mm');
-		ui.seeInput('button[id="save"]');
-		ui.seeInput('button[id="cancel"]');
+		
+		ui.seeButton('$save');
+		ui.seeButton('$cancel');
 	})
 
     it ('performs an api call when the save logo button is clicked', (done) => {
@@ -44,7 +51,7 @@ describe('LogoSpecForm.vue', () => {
 
 		logoHelper.fillSpecForm();
 
-		ui.click('button[id="save"]');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/logos/2', {
@@ -65,7 +72,7 @@ describe('LogoSpecForm.vue', () => {
 
 		logoHelper.fillSpecForm();
 
-		ui.click('button[id="save"]');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -81,7 +88,7 @@ describe('LogoSpecForm.vue', () => {
 
 		ui.notSee('The page was updated');
 
-		ui.click('button[id="save"]');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated');
@@ -93,7 +100,7 @@ describe('LogoSpecForm.vue', () => {
 
 		mockRequestWithValidationErrors();
 
-		ui.click('button[id="save"]');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('Please provide a display width');
@@ -110,7 +117,7 @@ describe('LogoSpecForm.vue', () => {
 
 		logoHelper.fillSpecForm();
 
-		ui.click('button[id="cancel"]');
+		ui.click('$cancel');
 
 		ajaxHelper.expectNoRequests();
 	})
@@ -120,7 +127,7 @@ describe('LogoSpecForm.vue', () => {
 
 		logoHelper.fillSpecForm();
 
-		ui.click('button[id="cancel"]');
+		ui.click('$cancel');
 
 		ui.expectEvent('cancel');
 	})
@@ -135,7 +142,7 @@ describe('LogoSpecForm.vue', () => {
 
 		ui.seeInput('input[name="display_width"]', '200px');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeInput('input[name="display_width"]', '400px');
@@ -166,7 +173,7 @@ describe('LogoSpecForm.vue', () => {
 		ui.seeInput('input[name="min_width"]', '200px');
 		ui.seeInput('input[name="min_width_text"]', '2mm');
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.seeInput('input[name="display_width"]', '200px');
 		ui.seeInput('input[name="display_height"]', '200px');
@@ -190,6 +197,8 @@ describe('LogoSpecForm.vue', () => {
 
 	let bootstrapWrapper = (pageLogos, allLogos) => {
 		wrapper = shallowMount(LogoSpecForm, {
+			localVue,
+			store,
 			propsData: { 
 				dataLogo: logoHelper.make('Primary logo', {id: 2}), 
 				dataEndpoint: '/logos'

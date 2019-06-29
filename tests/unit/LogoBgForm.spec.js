@@ -2,15 +2,21 @@ import { mount, shallowMount } from '@vue/test-utils'
 import LogoBgForm from '@/components/LogoBgForm.vue'
 import Logo from '@/components/Logo.vue'
 import { Sketch } from 'vue-color'
-import {TestHelper, AjaxHelper, LogoHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, LogoHelper, StateHelper} from './../helpers/Helpers.js'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('LogoBgForm.vue', () => {
 	let wrapper;
 	let ui;
 	let logoHelper;
 	let ajaxHelper;
+    let store;
 
 	beforeEach(() => {
+        store = stateHelper.freshStore();
+
         logoHelper = new LogoHelper();
 
 		ajaxHelper = new AjaxHelper();
@@ -27,13 +33,13 @@ describe('LogoBgForm.vue', () => {
 
     	ui.seeForm('#logoBgForm');
     	ui.seeInput('input[name="hex"]', '#0099ff');
-    	ui.seeInput('button[id="save"]');
+    	ui.seeButton('$save');
     })
 
     it ('emits an event if the save button is clicked', () => {
     	bootstrapWrapper(logoHelper.pivot('#0099ff'));
 
-    	ui.click('#save');
+    	ui.click('$save');
 
     	ui.expectEvent('success');
     })
@@ -41,7 +47,7 @@ describe('LogoBgForm.vue', () => {
     it ('does not perform any api call when the save button is clicked', () => {
     	bootstrapWrapper(logoHelper.pivot('#0099ff'));
 
-    	ui.click('#save');
+    	ui.click('$save');
 
     	ajaxHelper.expectNoRequests();
     })
@@ -51,7 +57,7 @@ describe('LogoBgForm.vue', () => {
 
     	ui.type('input[name="hex"]', '#ff0000');
 
-    	ui.click('#cancel');
+    	ui.click('$cancel');
 
     	ui.seeInput('input[name="hex"]', '#0099ff');
     })
@@ -59,7 +65,7 @@ describe('LogoBgForm.vue', () => {
     it ('emits an event when the cancel button is clicked', () => {
     	bootstrapWrapper(logoHelper.pivot('#0099ff'));
 
-    	ui.click('#cancel');
+    	ui.click('$cancel');
 
     	ui.expectEvent('cancel');
     })
@@ -74,6 +80,8 @@ describe('LogoBgForm.vue', () => {
 
 	let bootstrapWrapper = (pivot) => {
 		wrapper = shallowMount(LogoBgForm, {
+            localVue,
+            store,
 			propsData: { 
 				dataLogo: logoHelper.make(
 					'Primary logo', 

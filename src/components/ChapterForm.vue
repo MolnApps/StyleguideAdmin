@@ -8,7 +8,7 @@
             </div>
             <div class="Actions Actions--noMargin">
                 <btn ref="cancel" type="secondary" @click="cancel">Cancel</btn>
-                <btn asynch ref="save" type="primary" @click="save">Save</btn>
+                <btn asynch ref="save" @click="save">Save</btn>
             </div>
         </form>
         <p v-for="message in form.feedback" v-text="message"></p>

@@ -38,15 +38,12 @@
                     </div>
                 </div>
                 <div class="List__right">
-                    <span 
-                        class="del Button Button--secondary Button--xs" 
-                        @click="onRemove(index)"
-                    >Remove</span>
+                    <btn class="del" type="secondary" size="xs" @click="onRemove(index)">Remove</btn>
                 </div>
             </li>
             <li class="List__actions">
-                <button id="add_email" @click="onAddEmail" class="Button Button--secondary">Add email</button>
-                <button id="add_telephone" @click="onAddTelephone" class="Button Button--secondary">Add telephone</button>
+                <btn id="add_email" ref="addEmail" type="secondary" @click="onAddEmail">Add email</btn>
+                <btn id="add_telephone" ref="addTelephone" type="secondary" @click="onAddTelephone">Add telephone</btn>
             </li>
         </ul>
     </div>
@@ -54,7 +51,9 @@
 
 <script>
 import StyleguideForm from './../StyleguideForm.js'
+import Btn from './Btn.vue';
 export default {
+    components: {Btn},
     props: ['dataContacts'],
     data() {
         return {

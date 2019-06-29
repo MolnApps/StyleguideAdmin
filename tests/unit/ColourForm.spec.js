@@ -48,11 +48,11 @@ describe('ColourForm.vue', () => {
 	})
 
 	it ('displays a save button', () => {
-		ui.seeInput('button[id="save"]');
+		ui.seeButton('$save');
 	})
 
 	it ('displays a cancel button', () => {
-		ui.seeInput('button[id="cancel"]');
+		ui.seeButton('$cancel');
 	})
 
 	it ('perform an api call when the colour does not exists', (done) => {
@@ -67,7 +67,7 @@ describe('ColourForm.vue', () => {
 		ui.type('input[name="rgb"]', '255 0 0');
 		ui.type('input[name="cmyk"]', '100 100 0 0');
 		ui.type('input[name="pantone"]', 'Pantone 195 C');
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/colours', {
@@ -85,7 +85,7 @@ describe('ColourForm.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/colours/1', {
@@ -105,7 +105,7 @@ describe('ColourForm.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -116,7 +116,7 @@ describe('ColourForm.vue', () => {
 	it ('fires an event when the cancel button is clicked', () => {
 		ui.notExpectEvent('cancel');
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.expectEvent('cancel');
 	})
@@ -128,7 +128,7 @@ describe('ColourForm.vue', () => {
 
 		ui.notSee('The page was updated');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated');
@@ -148,7 +148,7 @@ describe('ColourForm.vue', () => {
 		ui.type('input[name="cmyk"]', '100 0 0 100');
 		ui.type('input[name="pantone"]', 'Pantone 192 C');
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.seeInput('input[name="title"]', 'Red');
 		ui.seeInput('input[name="hex"]', '#ff0000');
@@ -172,7 +172,7 @@ describe('ColourForm.vue', () => {
 		ui.type('input[name="cmyk"]', '100 0 0 100');
 		ui.type('input[name="pantone"]', 'Pantone 192 C');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeInput('input[name="title"]', 'Orange');
@@ -186,7 +186,7 @@ describe('ColourForm.vue', () => {
 	it ('displays validation errors', (done) => {
 		mockRequestWithValidationErrors();
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('Title is required');

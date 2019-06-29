@@ -12,9 +12,6 @@
                     @remove="removeWeight"
                 ></typeface-weight>
             </div>
-            <div class="Actions">
-
-            </div>
             <h3 class="Title Title--small">Library</h3>
             <div class="all PageItem__container">
                 <div 
@@ -35,23 +32,11 @@
                         >Edit</span>
                     </div>
                 </div>
-                <button 
-                    id="add" 
-                    @click="addTypefaceFamily" 
-                    class="Button Button--primary"
-                >Add</button>
+                <btn ref="add" @click="addTypefaceFamily">Add</btn>
             </div>
             <div class="Actions">
-                <button 
-                    id="cancelChanges" 
-                    @click="cancelChanges" 
-                    class="Button Button--secondary Button-xl"
-                >Cancel changes</button>
-                <button 
-                    id="saveChanges" 
-                    @click="saveChanges" 
-                    class="Button Button--primary Button--xl"
-                >Save changes</button>
+                <btn ref="cancelChanges" @click="cancelChanges" type="secondary">Cancel changes</btn>
+                <btn ref="saveChanges" @click="saveChanges">Save changes</btn>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>
         </div>
@@ -66,11 +51,12 @@
 </template>
 
 <script>
-import StyleguideForm from './../StyleguideForm.js';
-import TypefaceWeight from './TypefaceWeight.vue';
-import TypefaceFamilyForm from './TypefaceFamilyForm.vue';
+import StyleguideForm from './../StyleguideForm.js'
+import TypefaceWeight from './TypefaceWeight.vue'
+import TypefaceFamilyForm from './TypefaceFamilyForm.vue'
+import Btn from './Btn.vue'
 export default {
-    components: {TypefaceWeight, TypefaceFamilyForm},
+    components: {Btn, TypefaceWeight, TypefaceFamilyForm},
     props: ['dataPageTypefaceFamilies', 'dataAllTypefaceFamilies', 'dataEndpoint'],
     data() {
         return {

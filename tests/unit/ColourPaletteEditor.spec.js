@@ -3,20 +3,28 @@ HTMLCanvasElement.prototype.getContext = jest.fn()
 
 import { mount, shallowMount } from '@vue/test-utils'
 import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
-import {TestHelper, AjaxHelper, ColourHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, ColourHelper, StateHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
 import Draggable from 'vuedraggable';
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('ColourPaletteEditor.vue', () => {
 	let wrapper;
 	let ui;
 	let colourHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
 		colourHelper = new ColourHelper();
 
+		store = stateHelper.freshStore();
+
 	    wrapper = mount(ColourPaletteEditor, {
+	    	localVue,
+	    	store,
 			propsData: { 
 				dataPageColours: [], 
 				dataAllColours: [], 
@@ -71,16 +79,16 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.seeElement('div.page');
 		ui.seeElement('div.all');
 		ui.seeInput('button[id="add"]');
-		ui.seeInput('button[id="saveChanges"]');
-		ui.seeInput('button[id="cancelChanges"]');
+		ui.seeButton('$saveChanges');
+		ui.seeButton('$cancelChanges');
 
 		ui.click('#add');
 
 		ui.notSeeElement('div.page');
 		ui.notSeeElement('div.all');
 		ui.notSeeInput('button[id="add"]');
-		ui.notSeeInput('button[id="saveChanges"]');
-		ui.notSeeInput('button[id="cancelChanges"]');
+		ui.notSeeButton('$saveChanges');
+		ui.notSeeButton('$cancelChanges');
 	})
 
 	it ('persists the colour if the save button is clicked', (done) => {
@@ -265,7 +273,7 @@ describe('ColourPaletteEditor.vue', () => {
 	        	.then(() => {
 	        		colourHelper.remove();
 
-					ui.click('#saveChanges');
+					ui.click('$saveChanges');
 
 					moxios.wait(() => {
 						moxios.requests.mostRecent()
@@ -288,7 +296,7 @@ describe('ColourPaletteEditor.vue', () => {
 		colourHelper.bootstrapPageEndpoint({id: 12});
 		colourHelper.bootstrapColours();
 		
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -308,7 +316,7 @@ describe('ColourPaletteEditor.vue', () => {
 	        	.then(() => {
 	        		colourHelper.remove();
 		
-					ui.click('#cancelChanges');
+					ui.click('$cancelChanges');
 					
 					moxios.wait(() => {
 						expect(moxios.requests.count()).toEqual(1);
@@ -321,7 +329,7 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('fires an event if the cancel button is clicked', () => {
 		colourHelper.bootstrapColours();
 		
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 		
 		ui.expectEvent('cancel');
 	})

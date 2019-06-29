@@ -26,16 +26,8 @@
                 />
             </div>
             <div class="Actions Actions--noMargin">
-                <button 
-                    id="cancel" 
-                    @click="cancel" 
-                    class="Button Button--secondary Button--xl"
-                >Cancel</button>
-                <button 
-                    id="save" 
-                    @click="save" 
-                    class="Button Button--primary Button--xl"
-                >Save</button>
+                <btn id="cancel" ref="cancel" type="secondary" @click="cancel">Cancel</btn>
+                <btn id="save" ref="save" @click="save">Save</btn>
             </div>
         </form>
     </div>
@@ -43,12 +35,14 @@
 
 <script>
 import StyleguideForm from './../StyleguideForm.js'
-import Logo from './Logo.vue';
-import {Sketch} from 'vue-color';
+import Logo from './Logo.vue'
+import {Sketch} from 'vue-color'
+import Btn from './Btn.vue'
 export default {
     components: {
         'logo': Logo, 
-        'sketch-picker': Sketch
+        'sketch-picker': Sketch,
+        'btn': Btn
     },
     props: ['dataLogo'],
     data() {

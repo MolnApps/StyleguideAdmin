@@ -8,17 +8,17 @@
                         {{person.full_name}} ({{person.job_title}})
                     </div>
                     <div class="List__right">
-                        <span class="edit Button Button--secondary Button--xs" @click="onEdit(person)">Edit</span>
-                        <span class="del Button Button--secondary Button--xs" @click="onRemove(index)">Remove</span>
+                        <btn class="edit" type="secondary" size="xs" @click="onEdit(person)">Edit</btn>
+                        <btn class="del" type="secondary" size="xs" @click="onRemove(index)">Remove</btn>
                     </div>
                 </div>
                 <div class="List__actions">
-                    <button id="add" @click="onAdd" class="Button Button--primary">Add</button>
+                    <btn ref="add" @click="onAdd">Add</btn>
                 </div>
             </div>
             <div class="Actions">
-                <button id="cancelChanges" @click="onCancelChanges" class="Button Button--secondary Button--xl">Cancel changes</button>
-                 <button id="saveChanges" @click="onSaveChanges" class="Button Button--primary Button--xl">Save changes</button>
+                <btn ref="cancelChanges" @click="onCancelChanges" type="secondary">Cancel changes</btn>
+                <btn ref="saveChanges" @click="onSaveChanges">Save changes</btn>
             </div>
         </div>
         <person-form 
@@ -32,10 +32,11 @@
 </template>
 
 <script>
-import StyleguideForm from './../StyleguideForm';
-import PersonForm from './PersonForm.vue';
+import StyleguideForm from './../StyleguideForm'
+import PersonForm from './PersonForm.vue'
+import Btn from './Btn.vue'
 export default {
-    components: {PersonForm},
+    components: {Btn, PersonForm},
     props: [
         'dataPagePeople', 
         'dataEndpoint',

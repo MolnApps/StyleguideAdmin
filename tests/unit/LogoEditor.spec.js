@@ -3,17 +3,23 @@ HTMLCanvasElement.prototype.getContext = jest.fn()
 
 import { mount, shallowMount } from '@vue/test-utils'
 import LogoEditor from '@/components/LogoEditor.vue'
-import {TestHelper, AjaxHelper, LogoHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, LogoHelper, StateHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
 import Draggable from 'vuedraggable';
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('LogoEditor.vue', () => {
 	let wrapper;
 	let ui;
 	let logoHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		logoHelper = new LogoHelper();
 	    ajaxHelper = new AjaxHelper();
 
@@ -46,7 +52,7 @@ describe('LogoEditor.vue', () => {
 	it ('presents a button to add a new logo', () => {
 		bootstrapWrapper()
 
-		ui.seeInput('button[id="add"]');
+		ui.seeButton('$add');
 	})
 
 	it ('removes a logo', () => {
@@ -92,7 +98,7 @@ describe('LogoEditor.vue', () => {
 		logoHelper.addLogoFromLibrary();
 		logoHelper.removeLogoFromPage();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1/logos', {
@@ -109,7 +115,7 @@ describe('LogoEditor.vue', () => {
 
 		mockSuccessfullRequest();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -122,7 +128,7 @@ describe('LogoEditor.vue', () => {
 		logoHelper.addLogoFromLibrary();
 		logoHelper.removeLogoFromPage();
 
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ajaxHelper.expectNoRequests();
 	})
@@ -130,7 +136,7 @@ describe('LogoEditor.vue', () => {
 	it ('emits an event if changes are cancelled', () => {
 		bootstrapWrapper();
 
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ui.expectEvent('cancel');
 	})
@@ -140,7 +146,7 @@ describe('LogoEditor.vue', () => {
 	it ('shows logo form when the add button is clicked', () => {
 		bootstrapWrapper()
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#logoForm');
 	})
@@ -148,7 +154,7 @@ describe('LogoEditor.vue', () => {
 	it ('hides all other elements when the form is shown', () => {
 		bootstrapWrapper()
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.notSeeElement('div.page');
 		ui.notSeeElement('div.all');
@@ -162,7 +168,7 @@ describe('LogoEditor.vue', () => {
 
 		mockSuccessfullRequest(logo, {id: 25});
 
-		ui.click('#add');
+		ui.click('$add');
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
@@ -175,7 +181,7 @@ describe('LogoEditor.vue', () => {
 
 		mockRequestWithValidationErrors();
 
-		ui.click('#add');
+		ui.click('$add');
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
@@ -186,7 +192,7 @@ describe('LogoEditor.vue', () => {
 	it ('hides the logo form when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#logoForm');
 
@@ -297,6 +303,8 @@ describe('LogoEditor.vue', () => {
 		];
 
 		wrapper = mount(LogoEditor, {
+			localVue,
+			store,
 			propsData: { 
 				dataPageLogos: pageLogos, 
 				dataAllLogos: allLogos, 

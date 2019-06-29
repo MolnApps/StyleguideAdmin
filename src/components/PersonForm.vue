@@ -44,16 +44,8 @@
             </div>
             <contact-form :data-contacts="form.contacts"></contact-form>
             <div class="Actions">
-                <button 
-                    id="cancel" 
-                    class="Button Button--secondary Button--xl" 
-                    @click="onCancel"
-                >Cancel</button>
-                <button 
-                    id="save" 
-                    class="Button Button--primary Button--xl" 
-                    @click="onSave"
-                >Save</button>
+                <btn ref="cancel" @click="onCancel" type="secondary">Cancel</btn>
+                <btn ref="save" @click="onSave">Save</btn>
             </div>
         </form>
         <p v-for="message in form.feedback" v-text="message"></p>
@@ -63,8 +55,9 @@
 <script>
 import StyleguideForm from './../StyleguideForm.js'
 import ContactForm from './ContactForm.vue'
+import Btn from './Btn.vue'
 export default {
-    components: {ContactForm},
+    components: {Btn, ContactForm},
     props: ['dataPerson', 'dataEndpoint'],
     data() {
         return {

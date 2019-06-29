@@ -1,15 +1,21 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import TypographyEditor from '@/components/TypographyEditor.vue'
-import {TestHelper, AjaxHelper, TypographyHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, TypographyHelper, StateHelper} from './../helpers/Helpers.js'
 import TypefaceFamilyForm from '@/components/TypefaceFamilyForm.vue';
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('TypographyEditor.vue', () => {
 	let wrapper;
 	let ui;
 	let typographyHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		typographyHelper = new TypographyHelper();
 
 	    ajaxHelper = new AjaxHelper();
@@ -67,13 +73,13 @@ describe('TypographyEditor.vue', () => {
 	it ('displays a button to add a new typeface family', () => {
 		bootstrapWrapper();
 
-		ui.seeInput('button[id="add"]');
+		ui.seeButton('$add');
 	})
 
 	it ('displays the typeface family form when the add button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#typefaceFamilyForm');
 	})
@@ -81,17 +87,17 @@ describe('TypographyEditor.vue', () => {
 	it ('hides other elements when displaying the typeface family form', () => {
 		bootstrapWrapper();
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.notSeeElement('div.page');
 		ui.notSeeElement('div.all');
-		ui.notSeeElement('#add');
+		ui.notSeeButton('$add');
 	})
 
 	it ('hides the typeface family form when the save button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#typefaceFamilyForm');
 
@@ -107,7 +113,7 @@ describe('TypographyEditor.vue', () => {
 	it ('hides the typefaces family form when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#typefaceFamilyForm');
 
@@ -208,13 +214,13 @@ describe('TypographyEditor.vue', () => {
 	it ('displays a button to save the changes', () => {
 		bootstrapWrapper();
 
-		ui.seeInput('button[id="saveChanges"]');
+		ui.seeButton('$saveChanges');
 	})
 
 	it ('displays a button to cancel the changes', () => {
 		bootstrapWrapper();
 
-		ui.seeInput('button[id="cancelChanges"]');
+		ui.seeButton('$cancelChanges');
 	})
 
 	it ('saves the changes when the save changes button is clicked', (done) => {
@@ -222,7 +228,7 @@ describe('TypographyEditor.vue', () => {
 
 		mockSuccessfullRequest();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1/typefaces', {
@@ -241,7 +247,7 @@ describe('TypographyEditor.vue', () => {
 
 		ui.notSee('The page was updated');
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated');
@@ -251,7 +257,7 @@ describe('TypographyEditor.vue', () => {
 	it ('does not save the changes when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ajaxHelper.expectNoRequests()
 	})
@@ -261,7 +267,7 @@ describe('TypographyEditor.vue', () => {
 
 		mockSuccessfullRequest();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -271,7 +277,7 @@ describe('TypographyEditor.vue', () => {
 	it ('fires and event when the changes are cancelled', () => {
 		bootstrapWrapper();
 
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ui.expectEvent('cancel');
 	})
@@ -296,6 +302,8 @@ describe('TypographyEditor.vue', () => {
 		];
 
 		wrapper = mount(TypographyEditor, {
+			localVue,
+			store,
 			propsData: {
 				dataPageTypefaceFamilies: pageTypefaceFamilies,
 				dataAllTypefaceFamilies: allTypefaceFamilies,

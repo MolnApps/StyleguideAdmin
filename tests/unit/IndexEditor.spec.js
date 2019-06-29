@@ -1,16 +1,22 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import IndexEditor from '@/components/IndexEditor.vue'
 import PageForm from '@/components/PageForm.vue'
-import {TestHelper, AjaxHelper, IndexHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, IndexHelper, StateHelper} from './../helpers/Helpers.js'
 import Draggable from 'vuedraggable'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('IndexEditor.vue', () => {
 	let wrapper;
 	let ui;
 	let ajaxHelper;
 	let indexHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		indexHelper = new IndexHelper();
 
 		ajaxHelper = new AjaxHelper();
@@ -90,7 +96,7 @@ describe('IndexEditor.vue', () => {
 
 		ui.notSeeForm('#pageForm');
 
-		ui.click('li.index_2 span.edit');
+		ui.click('li.index_2 .edit');
 
 		ui.seeForm('#pageForm[data-id="2"]');
 	})
@@ -100,7 +106,7 @@ describe('IndexEditor.vue', () => {
 
 		ui.seeElement('#editor');
 
-		ui.click('li.index_2 span.edit');
+		ui.click('li.index_2 .edit');
 
 		ui.notSeeElement('#editor');
 	})
@@ -108,7 +114,7 @@ describe('IndexEditor.vue', () => {
 	it ('displays a button to add a page', () => {
 		bootstrapWrapper();
 
-		ui.seeInput('button[id="add"]');
+		ui.seeButton('$add');
 	})
 
 	it ('displays the form when the add button is clicked', () => {
@@ -116,7 +122,7 @@ describe('IndexEditor.vue', () => {
 
 		ui.notSeeForm('#pageForm');
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#pageForm');
 	})
@@ -124,7 +130,7 @@ describe('IndexEditor.vue', () => {
 	it ('hides the form when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#pageForm')
 
@@ -136,7 +142,7 @@ describe('IndexEditor.vue', () => {
 	it ('hides the form after a successful api call', () => {
 		bootstrapWrapper();
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#pageForm')
 
@@ -150,7 +156,7 @@ describe('IndexEditor.vue', () => {
 
 		ui.see('About us');
 
-		ui.click('li.index_2 span.del');
+		ui.click('li.index_2 .del');
 
 		ui.notSee('About us');
 	})
@@ -161,7 +167,7 @@ describe('IndexEditor.vue', () => {
 		ui.see('My chapter');
 		ui.see('About us');
 
-		ui.click('li.index_1 span.del');
+		ui.click('li.index_1 .del');
 
 		ui.notSee('My chapter');
 		ui.see('About us');
@@ -172,9 +178,9 @@ describe('IndexEditor.vue', () => {
 
 		mockSuccessfullRequest();
 
-		ui.click('li.index_1 span.del');
+		ui.click('li.index_1 .del');
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/index', {
@@ -193,7 +199,7 @@ describe('IndexEditor.vue', () => {
 
 		mockSuccessfullToggleRequest();
 
-		ui.click('li.index_1 span.visibility');
+		ui.click('li.index_1 .visibility');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('toggleSuccess');
@@ -206,7 +212,7 @@ describe('IndexEditor.vue', () => {
 
 		ui.notSee('Lorem ipsum');
 
-		ui.click('#add');
+		ui.click('$add');
 
 		wrapper.find(PageForm).vm.$emit('success', {
 			record: {
@@ -227,7 +233,7 @@ describe('IndexEditor.vue', () => {
 		ui.see('About us');
 		ui.notSee('Lorem ipsum');
 
-		ui.click('li.index_2 span.edit');
+		ui.click('li.index_2 .edit');
 
 		wrapper.find(PageForm).vm.$emit('success', {
 			record: {
@@ -244,11 +250,11 @@ describe('IndexEditor.vue', () => {
 	})
 
 	it ('displays a button to save changes', () => {
-		ui.seeInput('button[id="saveChanges"]');
+		ui.seeButton('$saveChanges');
 	})
 
 	it ('displays a button to cancel changes', () => {
-		ui.seeInput('button[id="cancelChanges"]');
+		ui.seeButton('$cancelChanges');
 	})
 
 	it ('performs an api call if the save changes button is clicked', (done) => {
@@ -256,7 +262,7 @@ describe('IndexEditor.vue', () => {
 
 		mockSuccessfullRequest();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/index', {
@@ -278,7 +284,7 @@ describe('IndexEditor.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -290,7 +296,7 @@ describe('IndexEditor.vue', () => {
 
 		ui.notExpectEvent('cancel');
 
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ui.expectEvent('cancel');
 	})
@@ -299,6 +305,8 @@ describe('IndexEditor.vue', () => {
 		let index = indexHelper.makeStructure();
 
 		wrapper = mount(IndexEditor, {
+			localVue,
+			store,
 			propsData: {
 				dataIndex: index,
 				dataEndpoint: '/index',

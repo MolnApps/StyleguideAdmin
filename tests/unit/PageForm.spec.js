@@ -1,13 +1,18 @@
 import { shallowMount } from '@vue/test-utils'
 import PageForm from '@/components/PageForm.vue'
-import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('PageForm.vue', () => {
 	let wrapper;
 	let ui;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
 		ajaxHelper = new AjaxHelper();
 	    ajaxHelper.install();
 	})
@@ -42,7 +47,7 @@ describe('PageForm.vue', () => {
 
 		mockSuccessfullRequest();
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1', {
@@ -59,7 +64,7 @@ describe('PageForm.vue', () => {
 
 		mockSuccessfullRequest();
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated.');
@@ -71,7 +76,7 @@ describe('PageForm.vue', () => {
 
 		mockRequestWithValidationErrors();
 
-	    ui.click('#save');
+	    ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('Title is required');
@@ -86,7 +91,7 @@ describe('PageForm.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -99,7 +104,7 @@ describe('PageForm.vue', () => {
 
 		mockRequestWithValidationErrors();
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.notExpectEvent('success');
@@ -109,7 +114,7 @@ describe('PageForm.vue', () => {
 	it('triggers an event when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.expectEvent('cancel');
 	})
@@ -122,7 +127,7 @@ describe('PageForm.vue', () => {
 		ui.seeInput('input[name="title"]', 'Foo');
 		ui.seeInput('textarea[name="body"]', 'Bar');
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeInput('input[name="title"]', 'Barfoo');
@@ -142,7 +147,7 @@ describe('PageForm.vue', () => {
 		ui.seeInput('input[name="title"]', 'Foobar');
 		ui.seeInput('textarea[name="body"]', 'Barbaz');
 		
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.seeInput('input[name="title"]', 'Foo');
 		ui.seeInput('textarea[name="body"]', 'Bar');
@@ -152,6 +157,8 @@ describe('PageForm.vue', () => {
 		page = page ? page : {id: '1', title:'Foo', body: 'Bar'};
 
 		wrapper = shallowMount(PageForm, {
+			localVue,
+			store,
 			propsData: {
 				dataPage: page,
 				dataEndpoint: '/pages'

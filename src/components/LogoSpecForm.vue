@@ -106,16 +106,8 @@
                 v-text="error"
             ></p>
             <div class="Actions">
-                <button 
-                    id="cancel" 
-                    @click="cancel" 
-                    class="Button Button--secondary Button--xl"
-                >Cancel</button>
-                <button 
-                    id="save" 
-                    @click="save" 
-                    class="Button Button--primary Button--xl"
-                >Save</button>
+                <btn id="cancel" ref="cancel" @click="cancel" type="secondary">Cancel</btn>
+                <btn id="save" ref="save" @click="save">Save</btn>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>
         </form>
@@ -126,8 +118,9 @@
 import StyleguideForm from './../StyleguideForm.js'
 import LogoSafety from './LogoSafety.vue'
 import LogoSize from './LogoSize.vue'
+import Btn from './Btn.vue'
 export default {
-    components: {LogoSafety, LogoSize},
+    components: {Btn, LogoSafety, LogoSize},
     props: ['dataLogo', 'dataEndpoint'],
     data() {
         return {

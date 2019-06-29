@@ -3,15 +3,21 @@ import VideoEditor from '@/components/VideoEditor.vue'
 import VideoForm from '@/components/VideoForm.vue'
 import Vimeo from '@/components/Vimeo.vue'
 import Draggable from 'vuedraggable'
-import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('VideoEditor.vue', () => {
 	let wrapper;
 	let ui;
 	let videoHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		ajaxHelper = new AjaxHelper();
 
 	    ajaxHelper.install();
@@ -29,33 +35,33 @@ describe('VideoEditor.vue', () => {
 	})
 
 	it ('displays a button to remove a video from the page', () => {
-		ui.seeElement('div[data-id="1"] span.del');
-		ui.seeElement('div[data-id="2"] span.del');
+		ui.seeElement('div[data-id="1"] .del');
+		ui.seeElement('div[data-id="2"] .del');
 	})
 
 	it ('removes a video from the page when the remove button is clicked', () => {
 		ui.seeElement('div[data-id="1"]');
 		ui.seeElement('div[data-id="2"]');
 
-		ui.click('div[data-id="2"] span.del');
+		ui.click('div[data-id="2"] .del');
 
 		ui.seeElement('div[data-id="1"]');
 		ui.notSeeElement('div[data-id="2"]');
 	})
 
 	it ('displays a button to add a video', () => {
-		ui.seeInput('button[id="add"]');
+		ui.seeButton('$add');
 	})
 
 	it ('displays a button to edit a video', () => {
-		ui.seeElement('div[data-id="1"] span.edit');
-		ui.seeElement('div[data-id="2"] span.edit');
+		ui.seeElement('div[data-id="1"] .edit');
+		ui.seeElement('div[data-id="2"] .edit');
 	})
 
 	it ('displays the form when the edit video is clicked', () => {
 		ui.notSeeForm('#videoForm');
 
-		ui.click('div[data-id="1"] span.edit');
+		ui.click('div[data-id="1"] .edit');
 
 		ui.seeForm('#videoForm');
 	})
@@ -63,7 +69,7 @@ describe('VideoEditor.vue', () => {
 	it ('displays a form to add a new video', () => {
 		ui.notSeeForm('#videoForm');
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#videoForm');
 	})
@@ -71,13 +77,13 @@ describe('VideoEditor.vue', () => {
 	it ('hides the editor when the form is visible', () => {
 		ui.seeElement('#editor');
 		
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.notSeeElement('#editor');
 	})
 
 	it ('hides the form when the user cancels', () => {
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#videoForm');
 
@@ -89,18 +95,18 @@ describe('VideoEditor.vue', () => {
 	it ('when the form submission is successful it will add the video to the page', () => {
 		ui.notSeeElement('div[data-id="3"]');	
 		
-		ui.click('#add');
+		ui.click('$add');
 		wrapper.find(VideoForm).vm.$emit('success', {id: 3, provider: 'vimeo', provider_id: '123456'});
 
 		ui.seeElement('div[data-id="3"]');	
 	})
 
 	it ('displays a button to save the changes', () => {
-		ui.seeElement('#saveChanges');
+		ui.seeButton('$saveChanges');
 	})
 
 	it ('displays a button to cancel the changes', () => {
-		ui.seeElement('#cancelChanges');
+		ui.seeButton('$cancelChanges');
 	})
 
 	it ('performs an api call when the save changes button is clicked', (done) => {
@@ -108,7 +114,7 @@ describe('VideoEditor.vue', () => {
 
 		ajaxHelper.expectNoRequests();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1/video', {
@@ -118,7 +124,7 @@ describe('VideoEditor.vue', () => {
 	})
 
 	it ('does not perform any api call when the cancel changes button is clicked', () => {
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ajaxHelper.expectNoRequests();
 	})
@@ -128,7 +134,7 @@ describe('VideoEditor.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -138,7 +144,7 @@ describe('VideoEditor.vue', () => {
 	it ('emits an event when the cancel button is clicked', () => {
 		ui.notExpectEvent('cancel');
 
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ui.expectEvent('cancel');
 	})
@@ -148,7 +154,7 @@ describe('VideoEditor.vue', () => {
 
 		ajaxHelper.expectNoRequests();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated');
@@ -161,6 +167,8 @@ describe('VideoEditor.vue', () => {
 
 	let bootstrapComponent = () => {
 		wrapper = mount(VideoEditor, {
+			localVue,
+			store,
 			propsData: { 
 				dataPageVideo: [
 					{id: 1, provider: 'vimeo', provider_id: 'abc123'},

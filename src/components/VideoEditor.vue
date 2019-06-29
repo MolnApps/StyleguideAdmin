@@ -8,35 +8,17 @@
                         Video {{ v.id }}
                     </div>
                     <div class="List__right">
-                        <span 
-                            class="del Button Button--secondary Button--xs" 
-                            @click="onRemove(index)"
-                        >Remove</span>
-                        <span 
-                            class="edit Button Button--secondary Button--xs" 
-                            @click="onEdit(v)"
-                        >Edit</span>
+                        <btn class="del" type="secondary" size="xs" @click="onRemove(index)">Remove</btn>
+                        <btn class="edit" type="secondary" size="xs" @click="onEdit(v)">Edit</btn>
                     </div>
                 </div>
                 <div class="List__actions">
-                    <button 
-                        id="add" 
-                        class="Button Button--primary"
-                        @click="onAdd"
-                    >Add</button>
+                    <btn ref="add" @click="onAdd">Add</btn>
                 </div>
             </draggable>
             <div class="Actions">
-                <button 
-                    class="Button Button--secondary Button--xl" 
-                    id="cancelChanges" 
-                    @click="onCancelChanges"
-                >Cancel changes</button>
-                <button 
-                    class="Button Button--primary Button--xl" 
-                    id="saveChanges" 
-                    @click="onSaveChanges"
-                >Save changes</button>
+                <btn ref="cancelChanges" @click="onCancelChanges" type="secondary">Cancel changes</btn>
+                <btn ref="saveChanges" @click="onSaveChanges">Save changes</btn>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>
         </div>
@@ -53,10 +35,11 @@
 
 <script>
 import StyleguideForm from './../StyleguideForm.js'
-import VideoForm from './VideoForm.vue';
-import Draggable from 'vuedraggable';
+import VideoForm from './VideoForm.vue'
+import Draggable from 'vuedraggable'
+import Btn from './Btn.vue'
 export default {
-    components: {VideoForm, Draggable},
+    components: {Btn, VideoForm, Draggable},
     props: ['dataPageVideo', 'dataEndpoint', 'dataCreateEndpoint'],
     data() {
         return {

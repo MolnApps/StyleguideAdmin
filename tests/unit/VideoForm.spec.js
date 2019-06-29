@@ -3,15 +3,21 @@ import VideoForm from '@/components/VideoForm.vue'
 import Vimeo from '@/components/Vimeo.vue'
 import Youtube from '@/components/Youtube.vue'
 import Draggable from 'vuedraggable'
-import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('VideoForm.vue', () => {
 	let wrapper;
 	let ui;
 	let videoHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		ajaxHelper = new AjaxHelper();
 
 	    ajaxHelper.install();
@@ -94,7 +100,7 @@ describe('VideoForm.vue', () => {
 			provider_id: '1eMg23jjR_c'
 		});
 
-		ui.click('#save');
+		ui.click('$save');
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/videos/1', {
@@ -108,7 +114,7 @@ describe('VideoForm.vue', () => {
 	it ('emits an event when the cancel button is clicked', () => {
 		ui.notExpectEvent('cancel');
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.expectEvent('cancel');
 	})
@@ -118,7 +124,7 @@ describe('VideoForm.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#save');
+		ui.click('$save');
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -131,7 +137,7 @@ describe('VideoForm.vue', () => {
 
 		ui.notSee('The page was updated');
 
-		ui.click('#save');
+		ui.click('$save');
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated');
@@ -154,7 +160,7 @@ describe('VideoForm.vue', () => {
 
 		ui.type('input[name="provider"]', 'youtube');
 		
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.seeInput('input[name="provider"]', 'vimeo');
 	})
@@ -165,7 +171,7 @@ describe('VideoForm.vue', () => {
 		ui.seeInput('input[name="provider"]', 'vimeo');
 		ui.seeInput('input[name="provider_id"]', 'abc123');
 
-		ui.click('#save');
+		ui.click('$save');
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeInput('input[name="provider"]', 'youtube');
@@ -176,6 +182,8 @@ describe('VideoForm.vue', () => {
 	let bootstrapComponent = (video) => {
 		video = video ? video : {id: 1, title: 'Video', provider: 'vimeo', provider_id: 'abc123'};
 		wrapper = mount(VideoForm, {
+			localVue,
+			store,
 			propsData: { 
 				dataVideo: video, 
 				dataEndpoint: '/videos'

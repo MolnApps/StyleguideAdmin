@@ -1,15 +1,21 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import PeopleEditor from '@/components/PeopleEditor.vue'
 import PersonForm from '@/components/PersonForm.vue'
-import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('PeopleEditor.vue', () => {
 	let wrapper;
 	let ui;
 	let ajaxHelper;
 	let returnedRecord;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		ajaxHelper = new AjaxHelper();
 
 	    ajaxHelper.install();
@@ -27,23 +33,23 @@ describe('PeopleEditor.vue', () => {
 	})
 
 	it ('displays a button to edit a person', () => {
-		ui.seeElement('div[data-id="1"] span.edit');
-		ui.seeElement('div[data-id="2"] span.edit');
+		ui.seeElement('div[data-id="1"] .edit');
+		ui.seeElement('div[data-id="2"] .edit');
 	})
 
 	it ('displays a button to remove a person', () => {
-		ui.seeElement('div[data-id="1"] span.del');
-		ui.seeElement('div[data-id="2"] span.del');
+		ui.seeElement('div[data-id="1"] .del');
+		ui.seeElement('div[data-id="2"] .del');
 	})
 
 	it ('displays a button to add a person', () => {
-		ui.seeInput('button[id="add"]');
+		ui.seeButton('$add');
 	})
 
 	it ('displays a form when the add button is clicked', () => {
 		ui.notSeeForm('#personForm');
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#personForm');
 	})
@@ -51,45 +57,45 @@ describe('PeopleEditor.vue', () => {
 	it ('displays a form when the edit button is clicked', () => {
 		ui.notSeeForm('#personForm');
 
-		ui.click('div[data-id="2"] span.edit');
+		ui.click('div[data-id="2"] .edit');
 
 		ui.seeForm('#personForm[data-id="2"]');
 	})
 
 	it ('hides the list when the edit button is clicked', () => {
-		ui.seeInput('button[id="add"]');
-		ui.seeInput('button[id="cancelChanges"]');
-		ui.seeInput('button[id="saveChanges"]');
+		ui.seeButton('$add');
+		ui.seeButton('$cancelChanges');
+		ui.seeButton('$saveChanges');
 
-		ui.click('div[data-id="2"] span.edit');
+		ui.click('div[data-id="2"] .edit');
 
-		ui.notSeeInput('button[id="add"]');
-		ui.notSeeInput('button[id="cancelChanges"]');
-		ui.notSeeInput('button[id="saveChanges"]');
+		ui.notSeeButton('$add');
+		ui.notSeeButton('$cancelChanges');
+		ui.notSeeButton('$saveChanges');
 	})
 
 	it ('removes the person from the list when the remove button is clicked', () => {
 		ui.see('John Doe');
 		ui.see('Jane Doe');
 
-		ui.click('div[data-id="2"] span.del');
+		ui.click('div[data-id="2"] .del');
 
 		ui.see('John Doe');
 		ui.notSee('Jane Doe')
 	})
 
 	it ('displays a button to save the changes', () => {
-		ui.seeInput('button[id="saveChanges"]');
+		ui.seeButton('$saveChanges');
 	})
 
 	it ('displays a button to cancel the changes', () => {
-		ui.seeInput('button[id="cancelChanges"]');
+		ui.seeButton('$cancelChanges');
 	})
 
 	it ('performs an api call when the save changes button is clicked', (done) => {
 		mockSuccessfullRequest();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1/people', {
@@ -99,7 +105,7 @@ describe('PeopleEditor.vue', () => {
 	})
 
 	it ('does not perform an api call when the cancel button is clicked', () => {
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ajaxHelper.expectNoRequests();
 	})
@@ -109,7 +115,7 @@ describe('PeopleEditor.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -119,23 +125,23 @@ describe('PeopleEditor.vue', () => {
 	it ('emits an event when the cancel changes button is clicked', () => {
 		ui.notExpectEvent('cancel');
 
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ui.expectEvent('cancel');
 	})
 
 	it ('hides the form on cancel', () => {
-		ui.click('div[data-id="2"] span.edit');
+		ui.click('div[data-id="2"] .edit');
 
 		ui.seeForm('#personForm');
 
-		ui.click('#cancel');
+		wrapper.find(PersonForm).vm.$emit('cancel');
 
 		ui.notSeeForm('#personForm');
 	})
 
 	it ('hides the form and adds the new record to the list after a successful api call', () => {
-		ui.click('div[data-id="2"] span.edit');
+		ui.click('div[data-id="2"] .edit');
 
 		ui.seeForm('#personForm');
 
@@ -149,7 +155,7 @@ describe('PeopleEditor.vue', () => {
 		ui.see('Jane Doe');
 		ui.notSee('Robert Redford')
 
-		ui.click('#add');
+		ui.click('$add');
 
 		wrapper.find(PersonForm).vm.$emit('success', returnedRecord);
 
@@ -165,7 +171,7 @@ describe('PeopleEditor.vue', () => {
 
 		returnedRecord.id = 2;
 
-		ui.click('div[data-id="2"] span.edit');
+		ui.click('div[data-id="2"] .edit');
 
 		wrapper.find(PersonForm).vm.$emit('success', returnedRecord);
 
@@ -185,6 +191,8 @@ describe('PeopleEditor.vue', () => {
 		};
 
 		wrapper = mount(PeopleEditor, {
+			localVue,
+			store,
 			propsData: { 
 				dataPagePeople: [
 					{id: 1, first_name: 'John', middle_name: '', last_name: 'Doe', full_name: 'John Doe', job_title: 'Founder'},

@@ -22,17 +22,8 @@
                 <p v-for="error in form.errors.file" v-text="error"></p>
             </div>
             <div class="Actions Actions--noMargin">
-                <button 
-                    id="cancel" 
-                    @click="cancel" 
-                    class="Button Button--secondary Button--xl"
-                >Cancel</button>
-                <button 
-                    id="save" 
-                    ref="save"
-                    @click="save" 
-                    class="Button Button--primary Button--xl"
-                >Save</button>
+                <btn id="cancel" ref="cancel" @click="cancel" type="secondary">Cancel</btn>
+                <btn id="save" ref="save" @click="save">Save</btn>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>
         </form>
@@ -41,7 +32,9 @@
 
 <script>
 import StyleguideForm from './../StyleguideForm.js'
+import Btn from './Btn.vue'
 export default {
+    components: {Btn},
     props: ['dataLogo', 'dataEndpoint'],
     data() {
         return {

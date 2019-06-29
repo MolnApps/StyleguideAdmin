@@ -38,10 +38,20 @@ class TestHelper {
 
 	seeInput(selector, value) {
 		if (value != undefined) {
-			expect(this.wrapper.find(selector).element.value).toBe(value);
+			expect(this.find(selector).element.value).toBe(value);
 		} else {
-			expect(this.wrapper.find(selector).exists()).toBe(true);
+			expect(this.find(selector).exists()).toBe(true);
 		}
+	}
+
+	notSeeButton(ref)
+	{
+		expect(this.find(ref)).toBeFalsy();
+	}
+
+	seeButton(ref)
+	{
+		expect(this.find(ref)).toBeTruthy();
 	}
 
 	notSeeElement(selector) {
@@ -61,11 +71,24 @@ class TestHelper {
 	}
 
 	click(selector) {
-		if (selector.charAt(0) === '$') {
-			let ref = selector.replace('$', '');
-			return this.wrapper.vm.$refs[ref].$emit('click');
+		if (this.isRef(selector)) {
+			return this.find(selector).$emit('click');
 		}
-		return this.wrapper.find(selector).trigger('click');
+		return this.find(selector).trigger('click');
+	}
+
+	isRef(selectorOrRef) {
+		if (typeof selectorOrRef === 'string' || selectorOrRef instanceof String) {
+			return selectorOrRef.charAt(0) === '$';
+		}
+	}
+
+	find(selectorOrRef) {
+		if (this.isRef(selectorOrRef)) {
+			let ref = selectorOrRef.replace('$', '');
+			return this.wrapper.vm.$refs[ref];
+		}
+		return this.wrapper.find(selectorOrRef);
 	}
 
 	type(selector, value) {

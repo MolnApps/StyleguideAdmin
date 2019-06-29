@@ -35,16 +35,8 @@
                 >Add</button>
             </div>
             <div class="Actions">
-                <button 
-                    id="cancelChanges" 
-                    @click="cancelChanges" 
-                    class="Button Button--secondary Button-xl"
-                >Cancel</button>
-                <button 
-                    id="saveChanges" 
-                    @click="saveChanges" 
-                    class="Button Button--primary Button--xl"
-                >Save changes</button>
+                <btn ref="cancelChanges" type="secondary" @click="cancelChanges">Cancel</btn>
+                <btn ref="saveChanges" @click="saveChanges">Save changes</btn>
             </div>
         </div>
         <!-- Form -->
@@ -63,9 +55,10 @@
 import StyleguideForm from './../StyleguideForm.js'
 import ColourForm from './ColourForm.vue'
 import Colour from './Colour.vue'
+import Btn from './Btn.vue'
 import Draggable from 'vuedraggable'
 export default {
-    components: {ColourForm, Colour, Draggable},
+    components: {Btn, ColourForm, Colour, Draggable},
     props: {
         dataPageColours: {type: Array}, 
         dataAllColours: {type: Array}, 

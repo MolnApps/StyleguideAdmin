@@ -13,24 +13,12 @@
                     @toggle="onToggle"
                 ></index-item>
                 <div class="List__actions">
-                    <button 
-                        id="add" 
-                        @click="onAdd"
-                        class="Button Button--primary"
-                    >Add</button>
+                    <btn ref="add" type="primary" @click="onAdd">Add</btn>
                 </div>
             </div>
             <div class="Actions">
-                <button 
-                    id="cancelChanges" 
-                    class="Button Button--secondary Button--xl"
-                    @click="onCancelChanges"
-                >Cancel changes</button>
-                <button 
-                    id="saveChanges" 
-                    class="Button Button--primary Button--xl"
-                    @click="onSaveChanges"
-                >Save changes</button>
+                <btn ref="cancelChanges" type="secondary" @click="onCancelChanges">Cancel changes</btn>
+                <btn ref="saveChanges" @click="onSaveChanges">Save changes</btn>
             </div>
         </div>
         <page-form 
@@ -47,8 +35,9 @@
 import StyleguideForm from './../StyleguideForm.js';
 import IndexItem from './IndexItem.vue';
 import PageForm from './PageForm.vue';
+import Btn from './Btn.vue';
 export default {
-    components: {IndexItem, PageForm},
+    components: {Btn, IndexItem, PageForm},
     props: ['dataIndex', 'dataEndpoint', 'dataPageEndpoint', 'dataToggleEndpoint'],
     data() {
         return {

@@ -2,15 +2,21 @@ import { mount, shallowMount } from '@vue/test-utils'
 import MoodboardEditor from '@/components/MoodboardEditor.vue'
 import MoodboardDropzone from '@/components/MoodboardDropzone.vue'
 import Draggable from 'vuedraggable'
-import {TestHelper, AjaxHelper, MoodboardHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, MoodboardHelper, StateHelper} from './../helpers/Helpers.js'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('MoodboardEditor.vue', () => {
 	let wrapper;
 	let ui;
 	let moodboardHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		moodboardHelper = new MoodboardHelper();
 
 		ajaxHelper = new AjaxHelper();
@@ -51,17 +57,17 @@ describe('MoodboardEditor.vue', () => {
 	})
 
 	it ('displays a save changes button', () => {
-		ui.seeElement('#saveChanges');
+		ui.seeButton('$saveChanges');
 	})
 
 	it ('displays a cancel changes button', () => {
-		ui.seeElement('#cancelChanges');
+		ui.seeButton('$cancelChanges');
 	})
 
 	it ('performs an api call when the save changes button is clicked', (done) => {
 		mockSuccessfullRequest();
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/pages/1/images', {
@@ -75,7 +81,7 @@ describe('MoodboardEditor.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -87,7 +93,7 @@ describe('MoodboardEditor.vue', () => {
 
 		ui.notSee('The page was updated.');
 
-		ui.click('#saveChanges');
+		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated.');
@@ -95,13 +101,13 @@ describe('MoodboardEditor.vue', () => {
 	})
 
 	it ('does not perform any api call when the cancell button is clicked', () => {
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 
 		ajaxHelper.expectNoRequests();
 	})
 
 	it ('fires an event when the cancel button is clicked', () => {
-		ui.click('#cancelChanges');
+		ui.click('$cancelChanges');
 		
 		ui.expectEvent('cancel');
 	})
@@ -125,6 +131,8 @@ describe('MoodboardEditor.vue', () => {
 
 	let bootstrapComponent = () => {
 		wrapper = mount(MoodboardEditor, {
+			localVue,
+			store,
 			propsData: { 
 				dataPageImages: moodboardHelper.getImages(), 
 				dataEndpoint: '/pages/1/images',

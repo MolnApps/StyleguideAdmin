@@ -1,13 +1,19 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import PersonForm from '@/components/PersonForm.vue'
-import {TestHelper, AjaxHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('PersonForm.vue', () => {
 	let wrapper;
 	let ui;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		ajaxHelper = new AjaxHelper();
 
 	    ajaxHelper.install();
@@ -38,11 +44,11 @@ describe('PersonForm.vue', () => {
 	})
 
 	it ('displays a save button', () => {
-		ui.seeInput('button[id="save"]');
+		ui.seeButton('$save');
 	})
 
 	it ('displays a cancel button', () => {
-		ui.seeInput('button[id="cancel"]');
+		ui.seeButton('$cancel');
 	})
 
 	it ('performs an api call if the save button is clicked', (done) => {
@@ -67,7 +73,7 @@ describe('PersonForm.vue', () => {
 		ui.type('li[data-id="4"] input[name="prefix"]', '+1');
 		ui.type('li[data-id="4"] input[name="number"]', '345 67 89 000');
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/people/1', {
@@ -88,7 +94,7 @@ describe('PersonForm.vue', () => {
 	it ('displays feedback if the api call is successful', (done) => {
 		mockSuccessfullRequest();
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated.');
@@ -109,7 +115,7 @@ describe('PersonForm.vue', () => {
 
 		ui.notExpectEvent('success');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -120,7 +126,7 @@ describe('PersonForm.vue', () => {
 	it ('emits an event when the cancel button is clicked', () => {
 		ui.notExpectEvent('cancel');
 		
-		ui.click('#cancel');
+		ui.click('$cancel');
 		
 		ui.expectEvent('cancel');
 	})
@@ -128,7 +134,7 @@ describe('PersonForm.vue', () => {
 	it ('displays validation errors', (done) => {
 		mockRequestWithValidationErrors();
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('Please provide a first name');
@@ -141,7 +147,7 @@ describe('PersonForm.vue', () => {
 	it ('does not emit any event in case of validation errors', (done) => {
 		mockRequestWithValidationErrors();
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.notExpectEvent('success');
@@ -161,7 +167,7 @@ describe('PersonForm.vue', () => {
 		ui.type('input[name="last_name"]', 'Redford');
 		ui.type('input[name="job_title"]', 'Actor');
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeInput('input[name="first_name"]', 'Clint');
@@ -179,7 +185,7 @@ describe('PersonForm.vue', () => {
 		ui.type('input[name="last_name"]', 'Redford');
 		ui.type('input[name="job_title"]', 'Actor');
 		
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.seeInput('input[name="first_name"]', 'John');
 		ui.seeInput('input[name="middle_name"]', 'Johnathan');
@@ -194,20 +200,20 @@ describe('PersonForm.vue', () => {
 	})
 
 	it ('displays button to add a contact', () => {
-		ui.seeInput('button[id="add_email"]');
+		ui.seeInput('#add_email');
 		ui.seeInput('button[id="add_telephone"]');
 	})
 
 	it ('displays a button to remove a contact', () => {
-		ui.seeElement('li[data-id="1"] span.del');
-		ui.seeElement('li[data-id="2"] span.del');
+		ui.seeElement('li[data-id="1"] .del');
+		ui.seeElement('li[data-id="2"] .del');
 	})
 
 	it ('removes a contact when the remove button is clicked', () => {
 		ui.seeElement('li[data-id="1"]');
 		ui.seeElement('li[data-id="2"]');
 
-		ui.click('li[data-id="2"] span.del');
+		ui.click('li[data-id="2"] .del');
 
 		ui.seeElement('li[data-id="1"]');
 		ui.notSeeElement('li[data-id="2"]');
@@ -246,6 +252,8 @@ describe('PersonForm.vue', () => {
 			]
 		};
 		wrapper = mount(PersonForm, {
+			localVue,
+	    	store,
 			propsData: { 
 				dataPerson: person, 
 				dataEndpoint: '/people',

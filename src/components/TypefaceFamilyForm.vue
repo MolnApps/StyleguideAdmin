@@ -47,19 +47,16 @@
                         </div>
                     </div>
                     <div class="List__right">
-    				    <button 
-                            @click="removeWeight(index)" 
-                            class="del Button Button--secondary"
-                        >Remove</button>
+                        <btn class="del" @click="removeWeight(index)" type="secondary">Remove</btn>
                     </div>
     			</div>
                 <div class="List__actions">
-                    <button @click="addWeight(index)" class="add Button Button--primary">Add weight</button>
+                    <btn ref="add" @click="addWeight(index)">Add weight</btn>
                 </div>
             </div>
             <div class="Actions">
-                <button id="cancel" @click="onCancel" class="Button Button--secondary">Cancel</button>
-                <button id="save" @click="onSave" class="Button Button--primary">Save</button>
+                <btn id="cancel" ref="cancel" @click="onCancel" type="secondary">Cancel</btn>
+                <btn id="save" ref="save" @click="onSave">Save</btn>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>
         </form>
@@ -68,7 +65,9 @@
 
 <script>
 import StyleguideForm from './../StyleguideForm.js'
+import Btn from './Btn.vue'
 export default {
+    components: {Btn},
 	props: ['dataTypefaceFamily', 'dataEndpoint'],
     data() {
     	return {

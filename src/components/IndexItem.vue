@@ -24,19 +24,15 @@
                     <span>{{ i.page.component || 'none' }}</span>
                 </div>
                 <div class="List__right">
-                    <span 
-                        class="visibility Button Button--secondary Button--xs"
-                        @click="onToggle(i)"
+                    <btn 
+                        class="visibility" 
+                        size="xs" 
+                        type="secondary" 
+                        @click="onToggle(i)" 
                         v-text="getVisibilityLabel(i)"
-                    ></span>
-                    <span 
-                        class="edit Button Button--secondary Button--xs" 
-                        @click="onEdit(i)"
-                    >Edit</span>
-                    <span 
-                        class="del Button Button--secondary Button--xs"
-                        @click="onRemove(k)"
-                    >Remove</span>
+                    ></btn>
+                    <btn class="edit" size="xs" type="secondary" @click="onEdit(i)" >Edit</btn>
+                    <btn class="del" size="xs" type="secondary" @click="onRemove(k)" >Remove</btn>
                 </div>
             </div>
             <index-item 
@@ -53,9 +49,10 @@
 
 <script>
 import Draggable from 'vuedraggable'
+import Btn from './Btn.vue'
 export default {
     name: 'IndexItem',
-    components: {Draggable},
+    components: {Draggable, Btn},
     data() {
         return {
             forceRender: 0

@@ -1,15 +1,21 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import IndexItem from '@/components/IndexItem.vue'
-import {TestHelper, IndexHelper} from './../helpers/Helpers.js'
+import {TestHelper, IndexHelper, StateHelper} from './../helpers/Helpers.js'
 import Draggable from 'vuedraggable'
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('IndexItem.vue', () => {
 	let wrapper;
 	let ui;
 	let indexHelper;
 	let index;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+		
 		indexHelper = new IndexHelper();
 		index = indexHelper.makeStructure();
 	})
@@ -97,19 +103,19 @@ describe('IndexItem.vue', () => {
 	it ('displays a button to edit the page', () => {
 		bootstrapWrapper();
 
-		ui.seeElement('li.index_1 span.edit');
+		ui.seeElement('li.index_1 .edit');
 	})
 
 	it ('displays a button to remove the page', () => {
 		bootstrapWrapper();
 
-		ui.seeElement('li.index_1 span.del');
+		ui.seeElement('li.index_1 .del');
 	})
 
 	it ('displays a button to toggle page visibility', () => {
 		bootstrapWrapper();
 
-		ui.seeElement('li.index_1 span.visibility');
+		ui.seeElement('li.index_1 .visibility');
 		ui.see('Hide', 'li.index_1');
 	})
 
@@ -118,7 +124,7 @@ describe('IndexItem.vue', () => {
 
 		ui.notExpectEvent('edit');
 
-		ui.click('li.index_1 span.edit');
+		ui.click('li.index_1 .edit');
 
 		ui.expectEvent('edit');
 		ui.expectEventData('edit', [index[0]]);
@@ -129,7 +135,7 @@ describe('IndexItem.vue', () => {
 
 		ui.notExpectEvent('toggle');
 
-		ui.click('li.index_1 span.visibility');
+		ui.click('li.index_1 .visibility');
 
 		ui.expectEvent('toggle');
 		ui.expectEventData('toggle', [index[0]]);
@@ -140,7 +146,7 @@ describe('IndexItem.vue', () => {
 
 		ui.notExpectEvent('toggle');
 
-		ui.click('li.index_2 span.visibility');
+		ui.click('li.index_2 .visibility');
 
 		ui.expectEvent('toggle');
 		ui.expectEventData('toggle', [index[0]['children'][0]]);
@@ -151,7 +157,7 @@ describe('IndexItem.vue', () => {
 
 		ui.notSee('Publish');
 
-		ui.click('li.index_1 span.visibility');
+		ui.click('li.index_1 .visibility');
 
 		ui.see('Publish', 'li.index_1');
 	})
@@ -161,13 +167,15 @@ describe('IndexItem.vue', () => {
 
 		ui.notSee('Publish');
 
-		ui.click('li.index_2 span.visibility');
+		ui.click('li.index_2 .visibility');
 
 		ui.see('Publish', 'li.index_2');
 	})
 
 	let bootstrapWrapper = () => {
 		wrapper = mount(IndexItem, {
+			localVue,
+			store,
 			propsData: {
 				index: index,
 				owner: {id: 0, children: index}

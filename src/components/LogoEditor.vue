@@ -14,7 +14,7 @@
                     @remove="removeLogo"
                     @edit="editLogoBackground"
                 ></logo>
-                <button id="add" class="Button Button--primary" @click="toggleForm">Add new logo</button>
+                <btn ref="add" @click="toggleForm">Add new logo</btn>
             </draggable>
             <h3 class="Title Title--small">Library</h3>
             <div class="all PageItem__container">
@@ -29,16 +29,8 @@
                 ></logo>
             </div>
             <div class="Actions">
-                <button 
-                    id="cancelChanges" 
-                    @click="cancelChanges" 
-                    class="Button Button--secondary Button--xl"
-                >Cancel changes</button>
-                <button 
-                    id="saveChanges" 
-                    @click="saveChanges" 
-                    class="Button Button--primary Button--xl"
-                >Save changes</button>
+                <btn ref="cancelChanges" type="secondary" @click="cancelChanges">Cancel changes</btn>
+                <btn ref="saveChanges" @click="saveChanges">Save changes</btn>
             </div>
         </div>
         <logo-form 
@@ -65,14 +57,15 @@
 </template>
 
 <script>
-import StyleguideForm from './../StyleguideForm.js';
-import Logo from './Logo.vue';
-import LogoForm from './LogoForm.vue';
-import LogoBgForm from './LogoBgForm.vue';
-import LogoSpecForm from './LogoSpecForm.vue';
-import Draggable from 'vuedraggable';
+import StyleguideForm from './../StyleguideForm.js'
+import Logo from './Logo.vue'
+import LogoForm from './LogoForm.vue'
+import LogoBgForm from './LogoBgForm.vue'
+import LogoSpecForm from './LogoSpecForm.vue'
+import Draggable from 'vuedraggable'
+import Btn from './Btn.vue'
 export default {
-    components: {Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable},
+    components: {Btn, Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable},
     props: ['dataPageLogos', 'dataAllLogos', 'dataEndpoint'],
     data() {
     	return {

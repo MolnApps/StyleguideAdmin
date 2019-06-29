@@ -1,15 +1,21 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import LogoForm from '@/components/LogoForm.vue'
-import {TestHelper, AjaxHelper, LogoHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, LogoHelper, StateHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('LogoForm.vue', () => {
 	let wrapper;
 	let ui;
 	let logoHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
+		store = stateHelper.freshStore();
+
 		logoHelper = new LogoHelper();
 
 		ajaxHelper = new AjaxHelper();
@@ -32,13 +38,13 @@ describe('LogoForm.vue', () => {
 	it ('display a save button', () => {
 		bootstrapWrapper();
 
-		ui.seeInput('button[id="save"]', '');
+		ui.seeButton('$save');
 	})
 
 	it ('display a cancel button', () => {
 		bootstrapWrapper();
 
-		ui.seeInput('button[id="cancel"]', '');
+		ui.seeButton('$cancel');
 	})
 
 	it ('performs an api call when the save button is clicked', (done) => {
@@ -50,7 +56,7 @@ describe('LogoForm.vue', () => {
 
 		ui.type('input[name="title"]', logo.title);
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ajaxHelper.expectRequest('/logos/2', {
@@ -68,7 +74,7 @@ describe('LogoForm.vue', () => {
 
 		ui.type('input[name="title"]', logo.title);
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
@@ -89,7 +95,7 @@ describe('LogoForm.vue', () => {
 
 		ui.notSee('The page was updated');
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('The page was updated');
@@ -101,7 +107,7 @@ describe('LogoForm.vue', () => {
 
 		mockRequestWithValidationErrors();
 
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.see('Title is required');
@@ -120,7 +126,7 @@ describe('LogoForm.vue', () => {
 
 		ui.seeInput('input[name="title"]', logo.title);
 		
-		ui.click('#save');
+		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeInput('input[name="title"]', 'My logo returned');
@@ -130,7 +136,7 @@ describe('LogoForm.vue', () => {
 	it ('emits an event when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ui.expectEvent('cancel');
 	})
@@ -138,7 +144,7 @@ describe('LogoForm.vue', () => {
 	it ('does not make any api call when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ajaxHelper.expectNoRequests();
 	})
@@ -152,7 +158,7 @@ describe('LogoForm.vue', () => {
 
 		ui.type('input[name="title"]', logo.title);
 		
-		ui.click('#cancel');
+		ui.click('$cancel');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeInput('input[name="title"]', '');
@@ -165,6 +171,8 @@ describe('LogoForm.vue', () => {
 			: logoHelper.make('Primary logo', {id: 2});
 
 		wrapper = shallowMount(LogoForm, {
+			localVue,
+			store,
 			propsData: { 
 				dataLogo: logo, 
 				dataEndpoint: '/logos'

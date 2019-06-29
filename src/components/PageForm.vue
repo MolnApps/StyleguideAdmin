@@ -22,18 +22,8 @@
             <input type="hidden" name="type" v-model="form.type" />
             <input type="hidden" name="component" v-model="form.component" />
             <div class="Actions Actions--noMargin">
-                <button 
-                    type="button" 
-                    id="cancel" 
-                    @click="onCancel" 
-                    class="Button Button--secondary Button--xl"
-                >Cancel</button>
-                <button 
-                    type="submit" 
-                    id="save" 
-                    @click="onSave" 
-                    class="Button Button--primary Button--xl"
-                >Save</button>
+                <btn ref="cancel" @click="onCancel" type="secondary">Cancel</btn>
+                <btn id="save" ref="save" @click="onSave">Save</btn>
             </div>
         </form>
         <p v-for="message in form.feedback" v-text="message"></p>
@@ -42,8 +32,9 @@
 
 <script>
 import StyleguideForm from './../StyleguideForm';
-
+import Btn from './Btn.vue';
 export default {
+    components: {Btn},
     props: ['dataPage', 'dataEndpoint'],
     data() {
         return {

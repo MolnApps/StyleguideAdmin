@@ -1,15 +1,21 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import TypefaceFamilyForm from '@/components/TypefaceFamilyForm.vue'
-import {TestHelper, AjaxHelper, TypographyHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, TypographyHelper, StateHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('TypefaceFamilyForm.vue', () => {
 	let wrapper;
 	let ui;
 	let typographyHelper;
 	let ajaxHelper;
+    let store;
 
 	beforeEach(() => {
+        store = stateHelper.freshStore();
+
 		typographyHelper = new TypographyHelper();
 
 		ajaxHelper = new AjaxHelper();
@@ -40,8 +46,8 @@ describe('TypefaceFamilyForm.vue', () => {
     	ui.seeInput('input[name="weights[1][weight]"]', '400');
     	ui.seeInput('input[name="weights[2][weight]"]', '300');
     	
-    	ui.seeInput('button[id="save"]');
-    	ui.seeInput('button[id="cancel"]');
+    	ui.seeButton('$save');
+    	ui.seeButton('$cancel');
     })
 
     it ('performs an api call when the save button is clicked', (done) => {
@@ -49,7 +55,7 @@ describe('TypefaceFamilyForm.vue', () => {
 
     	mockSuccessfullRequest();
 
-    	ui.click('#save');
+    	ui.click('$save');
 
     	ajaxHelper.expectAfterRequest(() => {
     		ajaxHelper.expectRequest('/typography/2', {
@@ -72,7 +78,7 @@ describe('TypefaceFamilyForm.vue', () => {
 
     	mockSuccessfullRequest(typefaceFamily);
 
-    	ui.click('#save');
+    	ui.click('$save');
 
     	ajaxHelper.expectAfterRequest(() => {
     		ui.expectEvent('success');
@@ -92,7 +98,7 @@ describe('TypefaceFamilyForm.vue', () => {
 
         ui.notSee('The page was updated');
 
-        ui.click('#save');
+        ui.click('$save');
 
         ajaxHelper.expectAfterRequest(() => {
             ui.see('The page was updated');
@@ -102,7 +108,7 @@ describe('TypefaceFamilyForm.vue', () => {
     it ('does not perform any api call when the cancel button is clicked', () => {
     	bootstrapWrapper();
 
-    	ui.click('#cancel');
+    	ui.click('$cancel');
 
     	ajaxHelper.expectNoRequests();
     })
@@ -110,7 +116,7 @@ describe('TypefaceFamilyForm.vue', () => {
     it ('emits an event when the cancel button is clicked', () => {
     	bootstrapWrapper();
 
-    	ui.click('#cancel');
+    	ui.click('$cancel');
 
     	ui.expectEvent('cancel');
     })
@@ -120,7 +126,7 @@ describe('TypefaceFamilyForm.vue', () => {
 
     	mockRequestWithValidationErrors();
 
-    	ui.click('#save');
+    	ui.click('$save');
 
     	ajaxHelper.expectAfterRequest(() => {
     		ui.see('Title is required');
@@ -136,7 +142,7 @@ describe('TypefaceFamilyForm.vue', () => {
 
     	ui.type('input[name="title"]', 'Roboto');
 
-    	ui.click('#save');
+    	ui.click('$save');
 
     	ajaxHelper.expectAfterRequest(() => {
     		ui.seeInput('input[name="title"]', 'Lato');
@@ -148,7 +154,7 @@ describe('TypefaceFamilyForm.vue', () => {
 
     	ui.type('input[name="title"]', 'Roboto');
 
-    	ui.click('#cancel');
+    	ui.click('$cancel');
 
     	ui.seeInput('input[name="title"]', 'Rubik');
     })
@@ -163,7 +169,7 @@ describe('TypefaceFamilyForm.vue', () => {
     	ui.seeInput('input[name="weights[1][weight]"]', '400');
     	ui.seeInput('input[name="weights[2][weight]"]', '300');
 
-    	ui.click('button.del');
+    	ui.click('.del');
 
     	ui.seeInput('input[name="weights[0][name]"]', 'Rubik regular');
     	ui.seeInput('input[name="weights[1][name]"]', 'Rubik light');
@@ -177,7 +183,7 @@ describe('TypefaceFamilyForm.vue', () => {
     	ui.notSeeInput('input[name="weights[3][name]"]', '');
     	ui.notSeeInput('input[name="weights[3][weight]"]', '');
 
-    	ui.click('button.add');
+    	ui.click('$add');
 
 		ui.seeInput('input[name="weights[3][name]"]', '');
     	ui.seeInput('input[name="weights[3][weight]"]', '');
@@ -188,7 +194,9 @@ describe('TypefaceFamilyForm.vue', () => {
 			? typefaceFamily 
 			: typographyHelper.make(2, 'Rubik', [700, 400, 300]);
 
-        wrapper = shallowMount(TypefaceFamilyForm, {
+        wrapper = mount(TypefaceFamilyForm, {
+            localVue,
+            store,
 			propsData: { 
 				dataTypefaceFamily: typefaceFamily, 
 				dataEndpoint: '/typography'

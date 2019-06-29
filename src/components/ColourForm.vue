@@ -58,16 +58,8 @@
                     />Live update</label>
                 </div>
                 <div class="Actions">
-                    <button 
-                        id="cancel" 
-                        @click="onCancel" 
-                        class="Button Button--secondary Button--xl"
-                    >Cancel</button>
-                    <button 
-                        id="save" 
-                        @click="onSave" 
-                        class="Button Button--primary Button--xl"
-                    >Save</button>
+                    <btn ref="cancel" id="cancel" type="secondary" @click="onCancel">Cancel</btn>
+                    <btn ref="save" id="save" @click="onSave">Save</btn>
                 </div>
                 <p v-for="message in form.feedback" v-text="message"></p>
             </form>
@@ -86,9 +78,11 @@ import hexToPantone from './../HexToPantone.js';
 import chroma from 'chroma-js';
 import colorNamer from 'color-namer';
 import {Sketch} from 'vue-color';
+import Btn from './Btn';
 export default {
     components: {
-        'sketch-picker': Sketch
+        'sketch-picker': Sketch,
+        Btn
     },
     props: ['dataColour', 'dataEndpoint', 'dataLiveUpdate'],
     data() {
