@@ -19,6 +19,8 @@
     min-height: 100px;
 }
 .PageItem__fill--circle {
+    max-width: 100px;
+    max-height: 100px;
     border-radius: 50px;
 }
 .PageItem__fill--noWidth {
@@ -34,6 +36,10 @@
     min-width: 50px;
     min-height: 50px;
     font-size: 10px;
+}
+.PageItem--small .PageItem__fill--circle {
+    max-width: 50px;
+    max-height: 50px;
 }
 .PageItem__title {
     @apply text-center truncate;

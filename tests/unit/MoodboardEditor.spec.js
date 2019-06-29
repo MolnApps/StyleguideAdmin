@@ -35,7 +35,7 @@ describe('MoodboardEditor.vue', () => {
 	})
 
 	it ('displays a remove button', () => {
-		expect(wrapper.findAll('div.page div.image span.del').length).toBe(3);
+		expect(wrapper.findAll('div.page div.image .del').length).toBe(3);
 	})
 
 	it ('removes the image when the remove button is clicked', () => {
@@ -44,7 +44,7 @@ describe('MoodboardEditor.vue', () => {
 		expect(wrapper.find('div.page div.image[data-id="2"]').exists()).toBe(true);
 		expect(wrapper.find('div.page div.image[data-id="3"]').exists()).toBe(true);
 
-		expect(wrapper.findAll('div.page div.image span.del').at(1).trigger('click'))
+		expect(wrapper.findAll('div.page div.image .del').at(1).trigger('click'))
 
 		expect(wrapper.findAll('div.page div.image').length).toBe(2);
 		expect(wrapper.find('div.page div.image[data-id="1"]').exists()).toBe(true);

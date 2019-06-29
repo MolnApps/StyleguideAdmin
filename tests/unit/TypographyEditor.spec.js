@@ -61,13 +61,13 @@ describe('TypographyEditor.vue', () => {
 	it ('provides a way to remove typeface weights from the page', () => {
 		bootstrapWrapper();
 
-		ui.seeElement('div.page div span.del');
+		ui.seeElement('div.page div .del');
 	})
 
 	it ('does not provide a way to remove weights from the library', () => {
 		bootstrapWrapper();
 
-		ui.notSeeElement('div.all div span.del');
+		ui.notSeeElement('div.all div .del');
 	})
 
 	it ('displays a button to add a new typeface family', () => {
@@ -157,7 +157,7 @@ describe('TypographyEditor.vue', () => {
 
 		ui.see('Rubik bold', 'div.page');
 
-		ui.click('div.page div:nth-child(1) span.del');
+		ui.click('div.page div:nth-child(1) .del');
 
 		ui.notSee('Rubik bold', 'div.page');
 	})
@@ -165,13 +165,13 @@ describe('TypographyEditor.vue', () => {
 	it ('library typeface families are editable', () => {
 		bootstrapWrapper();
 
-		ui.seeElement('div.all span.edit');
+		ui.seeElement('div.all .edit');
 	})
 
 	it ('displays a form when a library typeface family edit button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.click('div.all span.edit');
+		ui.click('div.all .edit');
 
 		ui.seeForm('#typefaceFamilyForm');
 	})
@@ -181,7 +181,7 @@ describe('TypographyEditor.vue', () => {
 
 		ui.see('Rubik regular', 'div.all');
 
-		ui.click('div.all span.edit');
+		ui.click('div.all .edit');
 
 		ui.click('button.del');
 		ui.click('button.del');
@@ -200,7 +200,7 @@ describe('TypographyEditor.vue', () => {
 		ui.see('Rubik regular', 'div.all');
 		ui.see('Rubik light', 'div.all');
 
-		ui.click('div.all span.edit');
+		ui.click('div.all .edit');
 
 		ui.click('#save');
 

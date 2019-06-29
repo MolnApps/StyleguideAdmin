@@ -25,11 +25,13 @@
                         :data-typeface-family="family"
                          @add="addWeight"
                     ></typeface-weight>
-                    <div class="PageItem__actions">
-                        <span 
-                            class="edit PageItem__action" 
+                    <div class="Actions Actions--small">
+                        <btn 
+                            class="edit" 
                             @click="editTypefaceFamily(family)"
-                        >Edit</span>
+                            type="secondary"
+                            size="xs"
+                        >Edit</btn>
                     </div>
                 </div>
                 <btn ref="add" @click="addTypefaceFamily">Add</btn>

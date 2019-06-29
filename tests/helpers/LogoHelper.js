@@ -88,17 +88,17 @@ class LogoHelper {
 
 	removeLogoFromPage()
 	{
-		this.ui.click('div.page div[data-id="1"][data-background="#000000"] span.del');
+		this.ui.click('div.page div[data-id="1"][data-background="#000000"] .del');
 	}
 
 	clickEditLogo()
 	{
-		this.ui.click('div.all div[data-id="2"] span.edit');
+		this.ui.click('div.all div[data-id="2"] .edit');
 	}
 
 	clickEditLogoBg()
 	{
-		this.ui.click('div.page div[data-id="1"][data-background="#000000"] span.edit');
+		this.ui.click('div.page div[data-id="1"][data-background="#000000"] .edit');
 	}
 
 	seePageLogo(id, hex)

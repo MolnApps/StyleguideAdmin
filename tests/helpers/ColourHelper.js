@@ -59,7 +59,7 @@ class ColourHelper {
 
 	remove (id) {
 		id = id ? id : 1;
-		this.ui.click('div.page div[data-id="' + id + '"] span.del');
+		this.ui.click('div.page div[data-id="' + id + '"] .del');
 	}
 
 	fillForm (colour) {

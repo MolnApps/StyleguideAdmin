@@ -1,12 +1,19 @@
 .Actions {
-    @apply flex mt-4;
+    @apply flex justify-center mt-4;
 }
 .Actions--noMargin {
     @apply mt-0;
 }
+.Actions--small {
+    @apply my-2;
+}
 .Actions .Button {
     flex: 1;
     margin: 0px 12px;
+}
+.Actions--small .Button {
+    flex: auto;
+    margin: 0px 2px;
 }
 .Actions .Button:first-child {
     margin-left: 0px;

@@ -783,6 +783,9 @@ table {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   margin-top: 1rem;
 }
 
@@ -790,11 +793,23 @@ table {
   margin-top: 0;
 }
 
+.Actions--small {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
 .Actions .Button {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
   margin: 0px 12px;
+}
+
+.Actions--small .Button {
+  -webkit-box-flex: 1;
+      -ms-flex: auto;
+          flex: auto;
+  margin: 0px 2px;
 }
 
 .Actions .Button:first-child {
@@ -926,6 +941,8 @@ table {
 }
 
 .PageItem__fill--circle {
+  max-width: 100px;
+  max-height: 100px;
   border-radius: 50px;
 }
 
@@ -945,6 +962,11 @@ table {
   min-width: 50px;
   min-height: 50px;
   font-size: 10px;
+}
+
+.PageItem--small .PageItem__fill--circle {
+  max-width: 50px;
+  max-height: 50px;
 }
 
 .PageItem__title {

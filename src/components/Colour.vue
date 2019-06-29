@@ -10,21 +10,17 @@
             :style="backgroundColour" 
             class="PageItem__fill PageItem__fill--circle"
         ></div>
-        <div class="PageItem__actions" v-if="editable">
-            <span 
-                @click.prevent="$emit('remove', colour)" 
-                class="del PageItem__action"
-            >Remove</span>
-            <span 
-                @click.prevent="$emit('edit', colour)" 
-                class="edit PageItem__action"
-            >Edit</span>
+        <div class="Actions Actions--small" v-if="editable">
+            <btn class="del" @click="$emit('remove', colour)" type="secondary" size="xs">Remove</btn>
+            <btn class="edit" @click="$emit('edit', colour)" type="secondary" size="xs">Edit</btn>
         </div>
     </div>
 </template>
 
 <script>
+import Btn from './Btn.vue'
 export default {
+    components: {Btn},
     props: ['dataColour', 'dataEditable', 'dataMod'],
     data() {
         return {

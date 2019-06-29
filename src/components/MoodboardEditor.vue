@@ -20,8 +20,8 @@
                         class="PageItem__image"
                     />
                 </div>
-                <div class="PageItem__actions">
-                    <span class="del PageItem__action" @click="onRemove(index)">Remove</span>
+                <div class="Actions Actions--small">
+                    <btn class="del" type="secondary" size="xs" @click="onRemove(index)">Remove</btn>
                 </div>
             </div>
         </draggable>

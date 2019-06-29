@@ -221,7 +221,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.see('Red', 'div.page');
 		ui.see('Blue', 'div.page');
 
-		ui.click('div.page div[data-id="3"] span.del');
+		ui.click('div.page div[data-id="3"] .del');
 
 		ui.see('Red', 'div.page');
 		ui.notSee('Blue', 'div.page');
@@ -236,7 +236,7 @@ describe('ColourPaletteEditor.vue', () => {
 
 		colourHelper.bootstrapColours();
 
-		ui.click('div.page div[data-id="3"] span.edit');
+		ui.click('div.page div[data-id="3"] .edit');
 
 		ui.seeForm('#colourForm');
 		

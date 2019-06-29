@@ -14,19 +14,18 @@
                     >Aa</span>
             </div>
             <span class="PageItem__title">{{weight.name}}</span>
-            <div class="PageItem__actions" v-if="dataEditable">
-                <span 
-                    @click="onRemove(weight)"
-                    class="del PageItem__action"
-                >Remove</span>
+            <div class="Actions Actions--small" v-if="dataEditable">
+                <btn class="del" @click="onRemove(weight)" type="secondary" size="xs">Remove</btn>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import StyleguideForm from './../StyleguideForm.js';
+import StyleguideForm from './../StyleguideForm.js'
+import Btn from './Btn.vue'
 export default {
+    components: {Btn},
     props: ['dataTypefaceFamily', 'displayCallback', 'dataEditable'],
     data() {
         return {

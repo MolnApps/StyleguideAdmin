@@ -12,18 +12,20 @@
             <img :src="logo.url" class="PageItem__image" />
         </div>
         <span v-if="displayTitle" v-text="logo.title" class="PageItem__title"></span>
-        <div class="PageItem__actions" v-if="editableBg">
-            <span class="del PageItem__action" @click="$emit('remove', logo)">Remove</span>
-            <span class="edit PageItem__action" @click="$emit('edit', logo)">Edit</span>
+        <div class="Actions Actions--small" v-if="editableBg">
+            <btn class="del" size="xs" type="secondary" @click="$emit('remove', logo)">Remove</btn>
+            <btn class="edit" size="xs" type="secondary" @click="$emit('edit', logo)">Edit</btn>
         </div>
-        <div class="PageItem__actions" v-if="editableSpec">
-            <span class="edit PageItem__action" @click="$emit('edit-spec', logo)">Edit</span>
+        <div class="Actions Actions--small" v-if="editableSpec">
+            <btn class="edit" size="xs" type="secondary" @click="$emit('edit-spec', logo)">Edit</btn>
         </div>
     </div>
 </template>
 
 <script>
+import Btn from './Btn.vue'
 export default {
+    components: {Btn},
     props: {
         logo: {
             default: {},
