@@ -1,5 +1,4 @@
 Implementation
-- Refactor MoodboardDropzone to use Endpoint class for headers and api token.
 — Colour Palette Editor: I should be able to edit/remove colours in the library.
 — Allow to choose a page type and component when creating a page
 —— We should display qualified component after the page was created (possibly programmatically)

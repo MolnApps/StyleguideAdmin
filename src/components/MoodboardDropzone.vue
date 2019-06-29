@@ -8,11 +8,8 @@
 </template>
 
 <script>
-let apiToken = (document.head.querySelector('[name="api-token"]')) 
-    ? document.head.querySelector('[name="api-token"]').content
-    : '';
-
 import Dropzone from 'vue2-dropzone';
+import Endpoint from './../Endpoint.js';
 export default {
     components: {Dropzone},
     props: ['dataEndpoint', 'dataOptions'],
@@ -23,7 +20,7 @@ export default {
                 thumbnailWidth: 150,
                 maxFilesize: 0.5,
                 acceptedFiles: 'image/*',
-                headers: {'Authorization': 'Bearer ' + apiToken}
+                headers: this.getHeaders()
             }, this.dataOptions)
         }
     },
@@ -31,6 +28,11 @@ export default {
         onSuccess: function(file, response) {
             this.$emit('success', response.record);
             this.$refs.dropzone.removeFile(file);
+        },
+        getHeaders: function() {
+            let endpoint = new Endpoint();
+            endpoint.addHeader('authorization');
+            return endpoint.getHeaders();
         }
     }
 }
