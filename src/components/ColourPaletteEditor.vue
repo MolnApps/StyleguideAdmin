@@ -12,8 +12,8 @@
                     :key="colour.id"
                     :data-colour="colour"
                     :data-editable="true"
-                    @remove="removeColour"
-                    @edit="editColour"
+                    @remove="removePageColour"
+                    @edit="editPageColour"
                 ></colour>
             </draggable>
             <h3 class="Title Title--small">Library</h3>
@@ -24,9 +24,11 @@
                     v-if="! isInPalette(colour)"
                     :key="index"
                     :data-colour="colour"
-                    :data-editable="false"
+                    :data-editable="true"
                     data-mod="small"
-                    @click="addColour"
+                    @add="addPageColour"
+                    @edit="editLibraryColour"
+                    @remove="removeLibraryColour"
                 ></colour>
                 <btn ref="add" size="m" @click="toggleForm">Add</btn>
             </div>
@@ -35,6 +37,7 @@
                 <btn ref="saveChanges" @click="saveChanges" asynch>Save changes</btn>
             </div>
         </div>
+        <p v-for="message in feedback" v-text="message"></p>
         <!-- Form -->
         <colour-form 
             v-if="displayForm" 
@@ -42,7 +45,7 @@
             :data-colour="colour"
             :data-live-update="dataLiveUpdate"
             @success="onSaveColour"
-            @cancel="resetColourAndClose"
+            @cancel="resetAndClose"
         ></colour-form>
     </div>
 </template>
@@ -69,7 +72,9 @@ export default {
             pageEndpoint: this.dataPageEndpoint,
             displayForm: false,
             colour: {},
-            colourId: null
+            colourId: null,
+            editingLibraryColour: false,
+            feedback: []
         }
     },
     created() {
@@ -81,26 +86,53 @@ export default {
                 return c.id == colour.id;
             }).length > 0;
         },
-        addColour: function(colour) {
+        addPageColour: function(colour) {
             this.pageColours.push(colour);
         },
-        removeColour: function(colour) {
+        removePageColour: function(colour) {
             this.pageColours = this.pageColours.filter((c) => {
                 return c.id != colour.id;
             });
         },
-        editColour: function(colour) {
+        editPageColour: function(colour) {
             this.colourId = colour.id;
-            let newColour = JSON.parse(JSON.stringify(colour));
-            newColour.id = null;
-            this.colour = newColour;
+            this.colour = JSON.parse(JSON.stringify(colour));
+            this.colour.id = null;
             this.toggleForm();
         },
+        addLibraryColour: function(colour) {
+            this.allColours.push(colour);
+        },
+        editLibraryColour: function(colour) {
+            this.editingLibraryColour = true;
+            this.colour = colour;
+            this.toggleForm();
+        },
+        removeLibraryColour: function(colour) {
+            let form  = new StyleguideForm({_method: 'delete'});
+            form.on('success', (response) => {
+                this.feedback = form.feedback;
+                this.allColours = this.allColours.filter((el) => {
+                    return el.id !== colour.id;
+                });
+            });
+            form.submit(this.dataEndpoint + '/' + colour.id);
+        },
+        overrideLibraryColour: function(record) {
+            this.allColours = this.allColours.map((colour) => {
+                return colour.id == this.colour.id ? record : colour;
+            });
+        },
         onSaveColour: function(record) {
-            this.removeColour({id: this.colourId});
-            this.pageColours.push(record);
-            this.allColours.push(record);
-            this.resetColourAndClose();
+            if (this.editingLibraryColour) {
+                this.overrideLibraryColour(record);
+                this.resetAndClose();
+            } else {
+                this.removePageColour({id: this.colourId});
+                this.addPageColour(record);
+                this.addLibraryColour(record);
+                this.resetAndClose();
+            }
 
             this.$emit('success', record);
         },
@@ -120,8 +152,9 @@ export default {
         cancelChanges: function() {
             this.$emit('cancel');
         },
-        resetColourAndClose: function() {
+        resetAndClose: function() {
             this.resetColour();
+            this.editingLibraryColour = false;
             this.colourId = null;
             this.toggleForm();
         },
@@ -137,7 +170,7 @@ export default {
         },
         toggleForm: function() {
             this.displayForm = ! this.displayForm;
-        },
+        }
     }
 }
 </script>

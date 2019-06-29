@@ -200,7 +200,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.notSee('Green', 'div.page');
 		ui.see('Green', 'div.all');
 
-		ui.click('div.all div[data-id="2"]');
+		ui.click('div.all div[data-id="2"] .add');
 
 		ui.see('Green', 'div.page');
 		ui.notSee('Green', 'div.all');
@@ -334,7 +334,124 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.expectEvent('cancel');
 	})
 
+	it ('displays an edit button for a colour in the library', () => {
+		colourHelper.bootstrapColours();
+
+		ui.seeElement('div.all div[data-id="2"] .edit');
+	})
+
+	it ('displays a remove button for a colour in the library', () => {
+		colourHelper.bootstrapColours();
+
+		ui.seeElement('div.all div[data-id="2"] .del');
+	})
+
+	it ('displays a filled form if the edit button of a colour in the library is clicked', () => {
+		colourHelper.bootstrapColours();
+
+		ui.click('div.all div[data-id="2"] .edit');
+
+		ui.seeForm('#colourForm');
+		ui.seeInput('input[name="title"]', 'Green');
+	})
+
+	it ('updates an existing colour in the library', (done) => {
+		colourHelper.bootstrapColours();
+
+		let returnedColour = colourHelper.make('Lime', '#00ffff');
+
+		mockSuccessfullRequest(returnedColour, {id: 2});
+
+		ui.notSee('Lime');
+
+		ui.click('div.all div[data-id="2"] .edit');
+
+		ui.seeForm('#colourForm');
+		
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.see('Lime', 'div.all');
+			ui.notSee('Green', 'div.all');
+			ui.notSee('Lime', 'div.page');
+		}, done);
+	})
+
+	it ('emits an event after updating a colour in the library', (done) => {
+		colourHelper.bootstrapColours();
+
+		let returnedColour = colourHelper.make('Lime', '#00ffff', 2);
+
+		mockSuccessfullRequest(returnedColour);
+
+		ui.notExpectEvent('success');
+
+		ui.click('div.all div[data-id="2"] .edit');
+
+		ui.seeForm('#colourForm');
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.expectEvent('success');
+			ui.expectEventData('success', [returnedColour]);
+		}, done);
+	})
+
+	it ('will edit a page colour after editing a library colour', (done) => {
+		colourHelper.bootstrapColours();
+
+		mockSuccessfullRequest(colourHelper.make('Lime', '#00ffff'), {id: 2});
+
+		ui.see('Green', 'div.all');
+		ui.notSee('Lime', 'div.all');
+
+		ui.click('div.all div[data-id="2"] .edit');
+		ui.seeForm('#colourForm');
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.notSee('Green', 'div.all');
+			ui.see('Lime', 'div.all');
+
+			ui.see('Red', 'div.page');
+			ui.see('Blue', 'div.page');
+			ui.notSee('Lime', 'div.page');
+		}, () => {
+			ui.click('div.page div[data-id="1"] .edit');
+
+			ui.seeForm('#colourForm');
+			ui.click('#save');
+
+			ajaxHelper.expectAfterRequest(() => {
+				ui.notSee('Red', 'div.page');
+				ui.see('Lime', 'div.page');
+				ui.see('Red', 'div.all');
+			}, done)
+		});
+	})
+
+	it ('performs an api call when a library colour remove button is clicked', (done) => {
+		colourHelper.bootstrapColours();
+
+		let returnedColour = colourHelper.make('Green', '#00ff00', 2);
+		mockDeleteRequest(returnedColour);
+
+		ui.see('Green', 'div.all');
+
+		ui.click('div.all div[data-id="2"] .del');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.notSee('Green', 'div.all');
+			ajaxHelper.expectRequest('/colours/2', {'_method': 'delete'});
+			ui.see('The page was updated');
+		}, done);
+	})
+
 	let mockSuccessfullRequest = (record, override) => {
+		ajaxHelper.stubRequest(/colours/, ajaxHelper.getSuccessfulResponse(record, override));
+	}
+
+	let mockDeleteRequest = (record, override) => {
 		ajaxHelper.stubRequest(/colours/, ajaxHelper.getSuccessfulResponse(record, override));
 	}
 

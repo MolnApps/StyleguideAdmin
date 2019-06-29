@@ -1,8 +1,9 @@
 Implementation
-— Colour Palette Editor: I should be able to edit/remove colours in the library.
 — Allow to choose a page type and component when creating a page
 —— We should display qualified component after the page was created (possibly programmatically)
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
+- We should ask for confirmation before deleting an item from the library.
+- Make feedback disappears through a new 'Feedback' component that has a setTimeout function.
 
 
 — Bugs

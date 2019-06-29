@@ -2,13 +2,13 @@
     <div 
         :data-id="colour.id" 
         class="PageItem" 
-        :class="modifierClass" 
-        @click="$emit('click', colour)"
+        :class="modifierClass"
     >
         <div 
             v-text="colour.title" 
             :style="backgroundColour" 
-            class="PageItem__fill PageItem__fill--circle"
+            class="add PageItem__fill PageItem__fill--circle"
+            @click="$emit('add', colour)"
         ></div>
         <div class="Actions Actions--small" v-if="editable">
             <btn class="del" @click="$emit('remove', colour)" type="secondary" size="xs">Remove</btn>

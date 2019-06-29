@@ -1,8 +1,5 @@
 <template>
 	<div id="app" class="">
-		<btn class="Button--primary">Save</btn>
-		<btn class="Button--secondary">Cancel</btn>
-
 		<page-steps 
 			:data-endpoint="endpoint('/pages')"
 		></page-steps>
