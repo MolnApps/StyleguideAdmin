@@ -64,13 +64,13 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('displays a button to add new colour', () => {
-		ui.seeInput('button[id="add"]');
+		ui.seeButton('$add');
 	})
 
 	it ('displays a form when the add button is clicked', () => {
 		ui.notSeeForm('#colourForm');
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.seeForm('#colourForm');
 	})
@@ -78,15 +78,15 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('hides all other elements when the add form is shown', () => {
 		ui.seeElement('div.page');
 		ui.seeElement('div.all');
-		ui.seeInput('button[id="add"]');
+		ui.seeButton('$add');
 		ui.seeButton('$saveChanges');
 		ui.seeButton('$cancelChanges');
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.notSeeElement('div.page');
 		ui.notSeeElement('div.all');
-		ui.notSeeInput('button[id="add"]');
+		ui.notSeeButton('$add');
 		ui.notSeeButton('$saveChanges');
 		ui.notSeeButton('$cancelChanges');
 	})
@@ -99,7 +99,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.notSee(colour.title, 'div.page');
 		ui.notSee(colour.title, 'div.all');
 
-		ui.click('#add');
+		ui.click('$add');
 
 		colourHelper.fillForm(colour);
 
@@ -118,7 +118,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.notSee(colour.title, 'div.page');
 		ui.notSee(colour.title, 'div.all');
 
-		ui.click('#add');
+		ui.click('$add');
 
 		colourHelper.fillForm(colour);
 
@@ -134,7 +134,7 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('displays validation errors', (done) => {
 		mockRequestWithValidationErrors();
 
-		ui.click('#add');
+		ui.click('$add');
 
 		ui.click('#save');
 
@@ -154,14 +154,14 @@ describe('ColourPaletteEditor.vue', () => {
 
 		mockSuccessfullRequest(colour);
 
-		ui.click('#add');
+		ui.click('$add');
 
 		colourHelper.fillForm(colour);
 
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.click('#add');
+			ui.click('$add');
 
 			ui.seeInput('input[name="title"]', '');
 			ui.seeInput('input[name="hex"]', '');	

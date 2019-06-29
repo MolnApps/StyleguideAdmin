@@ -23,7 +23,7 @@
             <input type="hidden" name="component" v-model="form.component" />
             <div class="Actions Actions--noMargin">
                 <btn ref="cancel" @click="onCancel" type="secondary">Cancel</btn>
-                <btn id="save" ref="save" @click="onSave">Save</btn>
+                <btn id="save" ref="save" @click="onSave" asynch>Save</btn>
             </div>
         </form>
         <p v-for="message in form.feedback" v-text="message"></p>

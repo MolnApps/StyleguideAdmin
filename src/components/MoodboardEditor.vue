@@ -31,7 +31,7 @@
         ></moodboard-dropzone>
         <div class="Actions">
             <btn ref="cancelChanges" @click="onCancel" type="secondary">Cancel changes</btn>
-            <btn ref="saveChanges" @click="onSave">Save changes</btn>
+            <btn ref="saveChanges" @click="onSave" asynch>Save changes</btn>
         </div>
         <p v-for="message in feedback" v-text="message"></p>
     </div>

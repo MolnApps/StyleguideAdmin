@@ -18,7 +18,7 @@
             </div>
             <div class="Actions">
                 <btn ref="cancelChanges" @click="onCancelChanges" type="secondary">Cancel changes</btn>
-                <btn ref="saveChanges" @click="onSaveChanges">Save changes</btn>
+                <btn ref="saveChanges" @click="onSaveChanges" asynch>Save changes</btn>
             </div>
         </div>
         <person-form 

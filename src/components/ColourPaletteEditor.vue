@@ -28,15 +28,11 @@
                     data-mod="small"
                     @click="addColour"
                 ></colour>
-                <button 
-                    id="add" 
-                    @click="toggleForm" 
-                    class="Button Button--primary"
-                >Add</button>
+                <btn ref="add" @click="toggleForm">Add</btn>
             </div>
             <div class="Actions">
                 <btn ref="cancelChanges" type="secondary" @click="cancelChanges">Cancel</btn>
-                <btn ref="saveChanges" @click="saveChanges">Save changes</btn>
+                <btn ref="saveChanges" @click="saveChanges" asynch>Save changes</btn>
             </div>
         </div>
         <!-- Form -->

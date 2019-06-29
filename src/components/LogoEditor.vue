@@ -30,7 +30,7 @@
             </div>
             <div class="Actions">
                 <btn ref="cancelChanges" type="secondary" @click="cancelChanges">Cancel changes</btn>
-                <btn ref="saveChanges" @click="saveChanges">Save changes</btn>
+                <btn ref="saveChanges" @click="saveChanges" asynch>Save changes</btn>
             </div>
         </div>
         <logo-form 

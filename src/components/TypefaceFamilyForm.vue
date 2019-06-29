@@ -56,7 +56,7 @@
             </div>
             <div class="Actions">
                 <btn id="cancel" ref="cancel" @click="onCancel" type="secondary">Cancel</btn>
-                <btn id="save" ref="save" @click="onSave">Save</btn>
+                <btn id="save" ref="save" @click="onSave" asynch>Save</btn>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>
         </form>

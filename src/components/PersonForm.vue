@@ -45,7 +45,7 @@
             <contact-form :data-contacts="form.contacts"></contact-form>
             <div class="Actions">
                 <btn ref="cancel" @click="onCancel" type="secondary">Cancel</btn>
-                <btn ref="save" @click="onSave">Save</btn>
+                <btn ref="save" @click="onSave" asynch>Save</btn>
             </div>
         </form>
         <p v-for="message in form.feedback" v-text="message"></p>

@@ -16,7 +16,7 @@
                 </div>
                 <div class="List__right">
                     <btn ref="cancel" @click="cancel" type="secondary">Cancel</btn>
-                    <btn ref="save" @click="save">Save</btn>
+                    <btn ref="save" @click="save" asynch>Save</btn>
                 </div>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>

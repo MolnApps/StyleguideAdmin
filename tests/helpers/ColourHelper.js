@@ -52,7 +52,7 @@ class ColourHelper {
 			colour = this.make('Cyan', '#00ffff');
 		}
 		
-		this.ui.click('#add');
+		this.ui.click('$add');
 		this.fillForm(colour);
 		this.ui.click('#save');
 	}

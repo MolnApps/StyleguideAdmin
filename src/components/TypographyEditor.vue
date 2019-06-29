@@ -36,7 +36,7 @@
             </div>
             <div class="Actions">
                 <btn ref="cancelChanges" @click="cancelChanges" type="secondary">Cancel changes</btn>
-                <btn ref="saveChanges" @click="saveChanges">Save changes</btn>
+                <btn ref="saveChanges" @click="saveChanges" asynch>Save changes</btn>
             </div>
             <p v-for="message in form.feedback" v-text="message"></p>
         </div>
