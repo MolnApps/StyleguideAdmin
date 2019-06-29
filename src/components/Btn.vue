@@ -22,7 +22,7 @@ export default {
         }
     },
     created() {
-        bus.$on('success', this.resetStatus.bind(this));
+        bus.$on('done', this.resetStatus.bind(this));
     },
     computed: {
         modifier: function() {

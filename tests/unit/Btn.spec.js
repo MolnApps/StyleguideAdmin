@@ -59,7 +59,7 @@ describe('Btn.vue', () => {
 		ui.notSee('Button--enabled');
 		ui.notSee('Button--disabled');
 
-		stateHelper.emit('success');
+		stateHelper.emit('done');
 
 		ui.see('Button--enabled');
 		ui.notSee('Button--disabled');
@@ -105,7 +105,7 @@ describe('Btn.vue', () => {
 		ui.click('button');
 		ui.expectEvent('click', 1),
 
-		stateHelper.emit('success');
+		stateHelper.emit('done');
 		ui.click('button');
 		ui.expectEvent('click', 2);
 	})

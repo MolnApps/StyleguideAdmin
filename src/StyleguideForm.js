@@ -124,7 +124,7 @@ class StyleguideForm extends EventEmitter
                 }
 
                 this.emit('success', data);
-                bus.$emit('success');
+                bus.$emit('done');
             })
             .catch((error) => {
             	if (error.response) {
@@ -136,7 +136,7 @@ class StyleguideForm extends EventEmitter
             	}
             	
             	this.emit('fail');
-            	bus.$emit('success');
+            	bus.$emit('done');
             });
 	}
 }
