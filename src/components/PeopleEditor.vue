@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="List__actions">
-                    <btn ref="add" @click="onAdd">Add</btn>
+                    <btn ref="add" @click="onAdd" size="m">Add</btn>
                 </div>
             </div>
             <div class="Actions">

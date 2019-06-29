@@ -47,11 +47,11 @@
                         </div>
                     </div>
                     <div class="List__right">
-                        <btn class="del" @click="removeWeight(index)" type="secondary">Remove</btn>
+                        <btn class="del" @click="removeWeight(index)" type="secondary" size="m">Remove</btn>
                     </div>
     			</div>
                 <div class="List__actions">
-                    <btn ref="add" @click="addWeight(index)">Add weight</btn>
+                    <btn ref="add" @click="addWeight(index)" size="m">Add weight</btn>
                 </div>
             </div>
             <div class="Actions">

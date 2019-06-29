@@ -734,6 +734,10 @@ table {
   line-height: 1.5;
 }
 
+.Form__inputContainer {
+  width: 100%;
+}
+
 .Form__input {
   border-width: 1px;
   border-radius: .25rem;
@@ -984,22 +988,6 @@ table {
 
 .PageItem--small .PageItem__image {
   height: 50px;
-}
-
-.PageItem__actions {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.PageItem__action {
-  font-size: 10px;
-  color: #ccc;
-  margin: 6px;
-  cursor: pointer;
 }
 
 .Contact__telephone {

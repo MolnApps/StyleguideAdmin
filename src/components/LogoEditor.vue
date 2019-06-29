@@ -14,7 +14,7 @@
                     @remove="removeLogo"
                     @edit="editLogoBackground"
                 ></logo>
-                <btn ref="add" @click="toggleForm">Add new logo</btn>
+                <btn ref="add" size="m" @click="toggleForm">Add new logo</btn>
             </draggable>
             <h3 class="Title Title--small">Library</h3>
             <div class="all PageItem__container">

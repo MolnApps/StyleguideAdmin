@@ -9,7 +9,7 @@
                 class="List__item"
             >
                 <div class="List__left">
-                    <div v-if="contact.type == 'email'">
+                    <div v-if="contact.type == 'email'" class="Form__inputContainer">
                         <input type="hidden" name="type" value="email" />
                         <input 
                             type="text" 
@@ -19,7 +19,7 @@
                             class="Form__input Contact__email" 
                         />
                     </div>
-                    <div v-if="contact.type == 'telephone'" class="Contact__telephone">
+                    <div v-if="contact.type == 'telephone'" class="Form__inputContainer Contact__telephone">
                         <input type="hidden" name="type" value="telephone" />
                         <input 
                             type="text" 
@@ -38,12 +38,12 @@
                     </div>
                 </div>
                 <div class="List__right">
-                    <btn class="del" type="secondary" size="xs" @click="onRemove(index)">Remove</btn>
+                    <btn class="del" type="secondary" size="m" @click="onRemove(index)">Remove</btn>
                 </div>
             </li>
             <li class="List__actions">
-                <btn id="add_email" ref="addEmail" type="secondary" @click="onAddEmail">Add email</btn>
-                <btn id="add_telephone" ref="addTelephone" type="secondary" @click="onAddTelephone">Add telephone</btn>
+                <btn id="add_email" ref="addEmail" type="secondary" size="m" @click="onAddEmail">Add email</btn>
+                <btn id="add_telephone" ref="addTelephone" type="secondary" size="m" @click="onAddTelephone">Add telephone</btn>
             </li>
         </ul>
     </div>

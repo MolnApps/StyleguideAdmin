@@ -13,7 +13,7 @@
                     @toggle="onToggle"
                 ></index-item>
                 <div class="List__actions">
-                    <btn ref="add" type="primary" @click="onAdd">Add</btn>
+                    <btn ref="add" size="m" @click="onAdd">Add</btn>
                 </div>
             </div>
             <div class="Actions">

@@ -28,7 +28,7 @@
                     data-mod="small"
                     @click="addColour"
                 ></colour>
-                <btn ref="add" @click="toggleForm">Add</btn>
+                <btn ref="add" size="m" @click="toggleForm">Add</btn>
             </div>
             <div class="Actions">
                 <btn ref="cancelChanges" type="secondary" @click="cancelChanges">Cancel</btn>

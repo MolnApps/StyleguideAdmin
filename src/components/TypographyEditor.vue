@@ -34,7 +34,7 @@
                         >Edit</btn>
                     </div>
                 </div>
-                <btn ref="add" @click="addTypefaceFamily">Add</btn>
+                <btn ref="add" @click="addTypefaceFamily" size="m">Add</btn>
             </div>
             <div class="Actions">
                 <btn ref="cancelChanges" @click="cancelChanges" type="secondary">Cancel changes</btn>
