@@ -20,7 +20,6 @@
                 <btn ref="cancelChanges" @click="onCancelChanges" type="secondary">Cancel changes</btn>
                 <btn ref="saveChanges" @click="onSaveChanges" asynch>Save changes</btn>
             </div>
-            <p v-for="message in form.feedback" v-text="message"></p>
         </div>
         <video-form 
             v-if="displayForm"
@@ -76,6 +75,7 @@ export default {
         },
         onSuccessChanges: function() {
             this.$emit('success');
+            this.$emit('feedback', this.form.feedback);
         },
         onCancelChanges: function() {
             this.$emit('cancel');

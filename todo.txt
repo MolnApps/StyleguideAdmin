@@ -1,5 +1,10 @@
 Implementation
 - Make feedback disappears through a new 'Feedback' component that has a setTimeout function.
+—— People editor will not display feedback on save changes.
+—— Video editor will not display feedback on save changes.
+—— Video form will not display feedback on embed.
+—— Logos editor will not display feedback on save changes.
+—— Colour Palette editor will not display feedback on save changes.
 — Allow to choose a page type and component when creating a page
 —— We should display qualified component after the page was created (possibly programmatically)
 - When the user removes a page with children from the index, ask where to append the children of the deleted page

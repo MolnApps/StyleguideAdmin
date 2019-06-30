@@ -443,7 +443,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ajaxHelper.expectAfterRequest(() => {
 			ui.notSee('Green', 'div.all');
 			ajaxHelper.expectRequest('/colours/2', {'_method': 'delete'});
-			ui.see('The page was updated');
+			ui.seeFeedback();
 		}, done);
 	})
 

@@ -96,12 +96,12 @@ describe('TypefaceFamilyForm.vue', () => {
 
         mockSuccessfullRequest();
 
-        ui.notSee('The page was updated');
+        ui.notSeeFeedback();
 
         ui.click('$save');
 
         ajaxHelper.expectAfterRequest(() => {
-            ui.see('The page was updated');
+            ui.seeFeedback();
         }, done);
     })
 

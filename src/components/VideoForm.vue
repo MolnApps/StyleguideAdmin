@@ -7,6 +7,7 @@
         <video-url 
             :data-endpoint="dataEndpoint + '/url'" 
             @success="onEmbed"
+            @feedback="onFeedback"
         ></video-url>
         <input type="hidden" name="provider" v-model="form.provider" />
         <input type="hidden" name="provider_id" v-model="form.provider_id" />
@@ -14,7 +15,6 @@
             <btn ref="cancel" @click="cancel" size="m" type="secondary">Cancel</btn>
             <btn ref="save" @click="save" size="m" asynch>Save</btn>
         </div>
-        <p v-for="message in form.feedback" v-text="message"></p>
     </form>
 </template>
 
@@ -46,11 +46,15 @@ export default {
         },
         onSuccess: function(data) {
             this.$emit('success', data.record);
+            this.$emit('feedback', data.feedback);
         },
         onEmbed: function(data) {
             Object.assign(this.form, data.record);
 
             this.$emit('embedded');
+        },
+        onFeedback: function(feedback) {
+            this.$emit('feedback', feedback);
         }
     }
 }

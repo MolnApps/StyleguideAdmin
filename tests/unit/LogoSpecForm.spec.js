@@ -86,12 +86,12 @@ describe('LogoSpecForm.vue', () => {
 
 		logoHelper.fillSpecForm();
 
-		ui.notSee('The page was updated');
+		ui.notSeeFeedback();
 
 		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.see('The page was updated');
+			ui.seeFeedback();
 		}, done);
 	})
 

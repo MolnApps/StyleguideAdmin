@@ -58,7 +58,6 @@
                 <btn id="cancel" ref="cancel" @click="onCancel" type="secondary">Cancel</btn>
                 <btn id="save" ref="save" @click="onSave" asynch>Save</btn>
             </div>
-            <p v-for="message in form.feedback" v-text="message"></p>
         </form>
     </div>
 </template>
@@ -93,6 +92,7 @@ export default {
     	},
     	onSuccess: function(data) {
             this.$emit('success', {data: data});
+            this.$emit('feedback', data.feedback);
     	},
     	removeWeight: function(index) {
     		this.form.weights.splice(index, 1);

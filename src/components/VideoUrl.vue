@@ -8,7 +8,6 @@
             name="url" 
             class="Form__input" 
         />
-        <p v-for="message in form.feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -22,14 +21,18 @@ export default {
         }
     },
     created() {
-        this.form.on('success', this.onUrlSuccess.bind(this));
+        this.form.on('success', this.onSuccess.bind(this));
+        this.form.on('fail', this.onFail.bind(this));
     },
     methods: {
         onInput: function() {
             this.form.submit(this.dataEndpoint);
         },
-        onUrlSuccess: function(data) {
+        onSuccess: function(data) {
             this.$emit('success', data);
+        },
+        onFail: function(data) {
+            this.$emit('feedback', data.feedback);
         },
         getRandomPlaceholder: function() {
             return 'https://www.youtube.com/watch?v=abc123';

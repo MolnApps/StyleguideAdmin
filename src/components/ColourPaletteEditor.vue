@@ -37,7 +37,6 @@
                 <btn ref="saveChanges" @click="saveChanges" asynch>Save changes</btn>
             </div>
         </div>
-        <p v-for="message in feedback" v-text="message"></p>
         <!-- Form -->
         <colour-form 
             v-if="displayForm" 
@@ -73,8 +72,7 @@ export default {
             displayForm: false,
             colour: {},
             colourId: null,
-            editingLibraryColour: false,
-            feedback: []
+            editingLibraryColour: false
         }
     },
     created() {
@@ -111,7 +109,7 @@ export default {
         removeLibraryColour: function(colour) {
             let form  = new StyleguideForm({_method: 'delete'});
             form.on('success', (response) => {
-                this.feedback = form.feedback;
+                this.$emit('feedback', form.feedback);
                 this.allColours = this.allColours.filter((el) => {
                     return el.id !== colour.id;
                 });

@@ -1,7 +1,7 @@
 <template>
 	<div id="app" class="">
 		<notifications position="bottom center" classes="Feedback" width="50%" />
-		<btn @click="displayFeedback">Display feedback</btn>
+		<btn @click="displayFeedback(['Hello world'])">Display feedback</btn>
 		<page-steps 
 			:data-endpoint="endpoint('/pages')"
 		></page-steps>
@@ -12,18 +12,21 @@
 			:data-endpoint="endpoint('/index')"
 			:data-page-endpoint="endpoint('/pages')"
 			:data-toggle-endpoint="endpoint('/pages/toggle')"
+			@feedback="displayFeedback"
 		></index-editor>
 
 		<chapter-form 
 			:data-page="chapter" 
 			:key="'chapter.' + chapter.id"
 			:data-endpoint="endpoint('/pages')"
+			@feedback="displayFeedback"
 		></chapter-form>
 
 		<page-form 
 			:data-page="page" 
 			:key="'page.' + page.id"
 			:data-endpoint="endpoint('/pages')"
+			@feedback="displayFeedback"
 		></page-form>
 
 		<people-editor 
@@ -37,6 +40,7 @@
 			:data-person="person" 
 			:key="'person.' + person.id"
 			:data-endpoint="endpoint('/people')"
+			@feedback="displayFeedback"
 		></person-form>
 		
 		<video-editor 
@@ -50,6 +54,7 @@
 			:data-video="video" 
 			:key="'video.' + video.id"
 			:data-endpoint="endpoint('/videos')"
+			@feedback="displayFeedback"
 		></video-form>
 		
 		<moodboard-editor 
@@ -57,6 +62,7 @@
 			:key="'images.' + images.length"
 			:data-endpoint="endpoint('/pages/17/images')"
 			:data-upload-endpoint="endpoint('/images')"
+			@feedback="displayFeedback"
 		></moodboard-editor>
 		
 		<typography-editor
@@ -64,12 +70,14 @@
 			:data-all-typeface-families="typefacesLibrary"
 			:key="'typefaces.' + typefaces.length"
 			:data-endpoint="endpoint('/pages/15/typefaces')"
+			@feedback="displayFeedback"
 		></typography-editor>
 
 		<typeface-family-form 
 			:data-typeface-family="typeface"
 			:key="'typeface.' + typeface.id"
 			:data-endpoint="endpoint('/typefaces')"
+			@feedback="displayFeedback"
 		></typeface-family-form>
 		
 		<logo-editor 
@@ -77,6 +85,7 @@
 			:key="'logos.' + logos.length"
 			:data-all-logos="logosLibrary"
 			:data-endpoint="endpoint('/pages/10/logos')"
+			@feedback="displayFeedback"
 		></logo-editor>
 		<logo-bg-form 
 			v-if="logoWithBg.id"
@@ -87,12 +96,14 @@
 			:data-logo="logo"
 			:key="'logo.' + logo.id"
 			:data-endpoint="endpoint('/logos')"
+			@feedback="displayFeedback"
 		></logo-form>
 		<logo-spec-form 
 			v-if="logoWithSpecs.id"
 			:data-logo="logoWithSpecs"
 			:key="'logo.specs.' + logoWithSpecs.id"
 			:data-endpoint="endpoint('/logos')"
+			@feedback="displayFeedback"
 		></logo-spec-form>
 		
 		<colour-palette-editor 
@@ -101,6 +112,7 @@
 			:key="'colours.' + colours.length"
 			:data-endpoint="endpoint('/colours')"
 			:data-page-endpoint="endpoint('/pages/14/colours')"
+			@feedback="displayFeedback"
 		></colour-palette-editor>
 
 		<colour-form 
@@ -108,6 +120,7 @@
 			:data-colour="colour"
 			:key="'colour.' + colour.id"
 			:data-endpoint="endpoint('/colours')"
+			@feedback="displayFeedback"
 		></colour-form>
 	</div>
 </template>
@@ -232,12 +245,10 @@ export default {
 		endpoint: function(path) {
 			return 'http://styleguide-api.test/api/v1/1' + path;
 		},
-		displayFeedback: function() {
-			this.$notify({
-			  type: 'success',
-			  title: 'Foobar',
-			  text: 'Foo bar baz'
-			});
+		displayFeedback: function(feedback) {
+			feedback.forEach((message) => {
+                this.$notify({type:'success', text: message});
+            });
 		}
 	}
 }

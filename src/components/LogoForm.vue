@@ -25,7 +25,6 @@
                 <btn id="cancel" ref="cancel" @click="cancel" type="secondary">Cancel</btn>
                 <btn id="save" ref="save" @click="save" asynch>Save</btn>
             </div>
-            <p v-for="message in form.feedback" v-text="message"></p>
         </form>
     </div>
 </template>
@@ -62,6 +61,7 @@ export default {
                 data: data, 
                 id: data.record.id
             });
+            this.$emit('feedback', data.feedback);
         }
     }
 }

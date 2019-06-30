@@ -44,9 +44,7 @@ export default {
         },
         onSuccess: function(response) {
             this.$emit('success', response.record);
-            response.feedback.forEach((feedback) => {
-                this.$notify({type:'success', text: feedback});
-            });
+            this.$emit('feedback', response.feedback);
         }
     }
 }

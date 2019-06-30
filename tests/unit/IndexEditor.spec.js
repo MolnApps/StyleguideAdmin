@@ -87,7 +87,7 @@ describe('IndexEditor.vue', () => {
 		wrapper.find(Draggable).vm.$emit('end');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.see('The index could not be updated.');
+			ui.seeFeedback('The index could not be updated.');
 		}, done);
 	})
 
@@ -203,7 +203,7 @@ describe('IndexEditor.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('toggleSuccess');
-			ui.see('The page was updated');
+			ui.seeFeedback();
 		}, done);
 	})
 

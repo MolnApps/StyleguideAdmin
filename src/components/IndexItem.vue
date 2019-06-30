@@ -30,6 +30,7 @@
                         type="secondary" 
                         @click="onToggle(i)" 
                         v-text="getVisibilityLabel(i)"
+                        asynch
                     ></btn>
                     <btn class="edit" size="xs" type="secondary" @click="onEdit(i)" >Edit</btn>
                     <btn class="del" size="xs" type="secondary" @click="onRemove(k)" >Remove</btn>

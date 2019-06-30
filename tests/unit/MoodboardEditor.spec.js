@@ -91,12 +91,12 @@ describe('MoodboardEditor.vue', () => {
 	it ('displays feedback when the changes are saved', (done) => {
 		mockSuccessfullRequest();
 
-		ui.notSee('The page was updated.');
+		ui.notSeeFeedback();
 
 		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.see('The page was updated.');
+			ui.seeFeedback();
 		}, done);
 	})
 

@@ -2,8 +2,6 @@
     <div>
         <div v-if="! displayPageForm" class="Container" id="editor">
             <h3 class="Title">Index</h3>
-            <p v-for="message in indexForm.feedback" v-text="message"></p>
-            <p v-for="message in toggleForm.feedback" v-text="message"></p>
             <div class="List">
                 <index-item 
                     :index="index" 
@@ -65,8 +63,9 @@ export default {
         },
         onToggle: function(index) {
             this.toggleForm = new StyleguideForm({id: index.page.id});
-            this.toggleForm.on('success', () => {
+            this.toggleForm.on('success', (response) => {
                 this.$emit('toggleSuccess');
+                this.$emit('feedback', response.feedback);
             })
             this.toggleForm.submit(this.dataToggleEndpoint);
         },
@@ -106,8 +105,12 @@ export default {
                 index: this.serializeIndex(this.index, [])
             });
 
-            this.indexForm.on('success', () => {
+            this.indexForm.on('success', (response) => {
                 this.$emit('success');
+                this.$emit('feedback', response.feedback)
+            });
+            this.indexForm.on('fail', (response) => {
+                this.$emit('feedback', response.feedback)
             });
 
             this.indexForm.submit(this.dataEndpoint);

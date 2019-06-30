@@ -94,10 +94,12 @@ describe('PersonForm.vue', () => {
 	it ('displays feedback if the api call is successful', (done) => {
 		mockSuccessfullRequest();
 
+		ui.notSeeFeedback();
+
 		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.see('The page was updated.');
+			ui.seeFeedback();
 		}, done);
 	})
 

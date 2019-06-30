@@ -48,7 +48,6 @@
                 <btn ref="save" @click="onSave" asynch>Save</btn>
             </div>
         </form>
-        <p v-for="message in form.feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -80,6 +79,7 @@ export default {
         },
         onSuccess: function(data) {
             this.$emit('success', data.record);
+            this.$emit('feedback', data.feedback);
         },
         onCancel: function() {
             this.form.reset();

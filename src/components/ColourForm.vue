@@ -61,7 +61,6 @@
                     <btn ref="cancel" id="cancel" type="secondary" @click="onCancel">Cancel</btn>
                     <btn ref="save" id="save" @click="onSave" asynch>Save</btn>
                 </div>
-                <p v-for="message in form.feedback" v-text="message"></p>
             </form>
             <sketch-picker 
                 :value="form.hex"  
@@ -108,6 +107,7 @@ export default {
         },
         onSuccess: function(data) {
             this.$emit('success', data.record);
+            this.$emit('feedback', data.feedback);
         },
         onInput: function() {
             if ( ! this.liveUpdate || ! this.form.hex) {

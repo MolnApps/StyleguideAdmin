@@ -8,32 +8,6 @@ class StateHelper {
 	{
 		this.localVue = createLocalVue()
 		this.localVue.use(Vuex)
-		
-		let notifyMock = jest.fn();
-		this.notifyMock = notifyMock;
-
-		this.localVue.use({
-			install(Vue, args = {}) {
-				Vue.prototype['$notify'] = notifyMock;
-				Vue['notify'] = notifyMock;
-			}
-		});
-	}
-
-	notSeeFeedback()
-	{
-		expect(this.notifyMock).toHaveBeenCalledTimes(0);
-	}
-
-	seeFeedback()
-	{
-		expect(this.notifyMock).toHaveBeenCalledTimes(1);
-		expect(this.notifyMock).toHaveBeenCalledWith({type: 'success', text: 'The page was updated.'});
-	}
-
-	notifyMockFn()
-	{
-		return this.notifyMock;
 	}
 
 	freshStore()
@@ -45,11 +19,6 @@ class StateHelper {
 	emit(eventName)
 	{
 		bus.$emit(eventName);
-	}
-
-	uninstall()
-	{
-		jest.clearAllMocks();
 	}
 }
 

@@ -154,10 +154,12 @@ describe('VideoEditor.vue', () => {
 
 		ajaxHelper.expectNoRequests();
 
+		ui.notSeeFeedback();
+
 		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.see('The page was updated');
+			ui.seeFeedback();
 		}, done);
 	})
 

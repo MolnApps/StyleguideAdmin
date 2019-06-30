@@ -136,7 +136,7 @@ class StyleguideForm extends EventEmitter
             		this.errors = {};
             	}
             	
-            	this.emit('fail');
+            	this.emit('fail', {feedback: this.feedback});
             	bus.$emit('done');
             });
 	}

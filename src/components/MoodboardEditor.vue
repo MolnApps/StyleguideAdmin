@@ -33,7 +33,6 @@
             <btn ref="cancelChanges" @click="onCancel" type="secondary">Cancel changes</btn>
             <btn ref="saveChanges" @click="onSave" asynch>Save changes</btn>
         </div>
-        <p v-for="message in feedback" v-text="message"></p>
     </div>
 </template>
 
@@ -52,8 +51,7 @@ export default {
     data() {
         return {
             pageImages: this.dataPageImages,
-            form: null,
-            feedback: []
+            form: null
         }
     },
     methods: {
@@ -74,8 +72,8 @@ export default {
             this.$emit('cancel');
         },
         onSuccess: function(response) {
-            this.feedback = this.form.feedback;
             this.$emit('success');
+            this.$emit('feedback', this.form.feedback);
         },
         onUploadSuccess: function(image) {
             this.pageImages.push(image);

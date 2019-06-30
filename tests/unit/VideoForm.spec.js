@@ -135,22 +135,22 @@ describe('VideoForm.vue', () => {
 	it ('displays a feedback after successul api call', (done) => {
 		mockSuccessfullRequest({id: 1, provider: 'youtube', provider_id: '1eMg23jjR_c'});
 
-		ui.notSee('The page was updated');
+		ui.notSeeFeedback();
 
 		ui.click('$save');
 		
 		ajaxHelper.expectAfterRequest(() => {
-			ui.see('The page was updated');
+			ui.seeFeedback();
 		}, done);
 	})
 
-	it ('displays error message if the url is not supported', (done) => {
+	it.only ('displays error message if the url is not supported', (done) => {
 		mockUrlRequestWithError('The url is not supported');
 
 		ui.type('input[name="url"]', 'foobar');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.see('The url is not supported');
+			ui.seeFeedback('The url is not supported');
 			ui.notExpectEvent('success');
 		}, done);
 	})

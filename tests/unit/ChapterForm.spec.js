@@ -2,10 +2,6 @@ import { mount, shallowMount } from '@vue/test-utils'
 import ChapterForm from '@/components/ChapterForm.vue'
 import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
 
-import Notifications from 'vue-notification'
-
-import Btn from '@/components/Btn'
-
 let stateHelper = new StateHelper();
 let localVue = stateHelper.localVue;
 
@@ -23,7 +19,6 @@ describe('ChapterForm.vue', () => {
 
 	afterEach(() => {
 		ajaxHelper.uninstall();
-		stateHelper.uninstall();
     })
 
 	it ('displays an empty form', () => {
@@ -63,12 +58,12 @@ describe('ChapterForm.vue', () => {
 
 		mockSuccessfullRequest();
 
-		stateHelper.notSeeFeedback();
+		ui.notSeeFeedback();
 		
 		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			stateHelper.seeFeedback();
+			ui.seeFeedback();
 		}, done);
 	})
 

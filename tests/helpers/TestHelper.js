@@ -5,6 +5,18 @@ class TestHelper {
 		this.wrapper = wrapper;
 	}
 
+	notSeeFeedback()
+	{
+		this.notExpectEvent('feedback');
+	}
+
+	seeFeedback(message)
+	{
+		message = message ? message : 'The page was updated.';
+		this.expectEvent('feedback');
+		this.expectEventData('feedback', [[message]]);
+	}
+
 	seeChildComponent(childComponent)
 	{
 		expect(this.wrapper.find(childComponent).exists()).toBe(true);

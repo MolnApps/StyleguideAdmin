@@ -40,7 +40,6 @@
                 <btn ref="cancelChanges" @click="cancelChanges" type="secondary">Cancel changes</btn>
                 <btn ref="saveChanges" @click="saveChanges" asynch>Save changes</btn>
             </div>
-            <p v-for="message in form.feedback" v-text="message"></p>
         </div>
         <typeface-family-form 
             v-if="display.typefaceFamilyForm" 
@@ -145,6 +144,7 @@ export default {
         },
         onSuccess() {
             this.$emit('success');
+            this.$emit('feedback', this.form.feedback);
         },
         cancelChanges() {
             this.$emit('cancel');
