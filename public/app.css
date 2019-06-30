@@ -885,6 +885,33 @@ table {
   height: 4rem;
 }
 
+.Feedback {
+  padding: .5rem;
+  margin: .5rem;
+  font-size: 1.25rem;
+  color: #fff;
+  text-align: center;
+  border-radius: .25rem;
+  background: #44a4fc;
+}
+
+.Feedback .notification-title {
+  text-align: center;
+  font-weight: 700;
+}
+
+.Feedback .notification-content {
+  text-align: center;
+}
+
+.Feedback.success {
+  background: #68cd86;
+}
+
+.Feedback.error {
+  background: #e54d42;
+}
+
 .PageItem__container {
   display: -webkit-box;
   display: -ms-flexbox;

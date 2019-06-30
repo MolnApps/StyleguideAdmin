@@ -1,8 +1,9 @@
 import axios from 'axios'
 import EventEmitter from 'events'
 import FormDataCollector from './FormDataCollector'
-import Endpoint from './Endpoint';
-import bus from './bus';
+import Endpoint from './Endpoint'
+import bus from './bus'
+import Vue from 'vue'
 
 class StyleguideForm extends EventEmitter
 {
@@ -118,7 +119,7 @@ class StyleguideForm extends EventEmitter
             .then(({data}) => {
             	this.feedback = data.feedback;
                 this.errors = {};
-                
+
                 if (this.preferences.shouldReset) {
                 	this.bootstrap(data.record);
                 }

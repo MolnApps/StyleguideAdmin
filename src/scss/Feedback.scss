@@ -1,0 +1,21 @@
+.Feedback {
+  @apply p-2 m-2 text-xl text-white text-center rounded;
+  background: #44A4FC;
+  
+  .notification-title {
+    @apply text-center;
+    @apply font-bold;
+  }
+
+  .notification-content {
+    @apply text-center;
+  }
+  
+  &.success {
+    background: #68CD86;
+  }
+
+  &.error {
+    background: #E54D42;
+  }
+}

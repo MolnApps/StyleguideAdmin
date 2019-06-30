@@ -1,5 +1,7 @@
 <template>
 	<div id="app" class="">
+		<notifications position="bottom center" classes="Feedback" width="50%" />
+		<btn @click="displayFeedback">Display feedback</btn>
 		<page-steps 
 			:data-endpoint="endpoint('/pages')"
 		></page-steps>
@@ -229,6 +231,13 @@ export default {
 		},
 		endpoint: function(path) {
 			return 'http://styleguide-api.test/api/v1/1' + path;
+		},
+		displayFeedback: function() {
+			this.$notify({
+			  type: 'success',
+			  title: 'Foobar',
+			  text: 'Foo bar baz'
+			});
 		}
 	}
 }

@@ -2,6 +2,8 @@ import { mount, shallowMount } from '@vue/test-utils'
 import ChapterForm from '@/components/ChapterForm.vue'
 import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
 
+import Notifications from 'vue-notification'
+
 import Btn from '@/components/Btn'
 
 let stateHelper = new StateHelper();
@@ -21,6 +23,7 @@ describe('ChapterForm.vue', () => {
 
 	afterEach(() => {
 		ajaxHelper.uninstall();
+		stateHelper.uninstall();
     })
 
 	it ('displays an empty form', () => {
@@ -58,14 +61,14 @@ describe('ChapterForm.vue', () => {
 	it ('displays feedback after a successful api call', (done) => {
 		bootstrapWrapper();
 
-	    mockSuccessfullRequest();
+		mockSuccessfullRequest();
 
-		ui.notSee('The page was updated.');
+		stateHelper.notSeeFeedback();
 		
 		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.see('The page was updated.');
+			stateHelper.seeFeedback();
 		}, done);
 	})
 
@@ -139,7 +142,7 @@ describe('ChapterForm.vue', () => {
 	let bootstrapWrapper = (page) => {
 		page = page ? page : {id: '1', title:'Foo', body: ''};
 
-		wrapper = shallowMount(ChapterForm, {
+		wrapper = mount(ChapterForm, {
 			localVue,
 			store,
 			propsData: {

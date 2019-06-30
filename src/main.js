@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 import App from './App.vue'
 
 import storePlugin from './storePlugin'
@@ -8,18 +7,10 @@ Vue.use(storePlugin)
 import busPlugin from './busPlugin'
 Vue.use(busPlugin)
 
-Vue.config.productionTip = false
+import Notifications from 'vue-notification'
+Vue.use(Notifications)
 
-const store = new Vuex.Store({
-  state: {
-    count: 0
-  },
-  mutations: {
-    increment (state) {
-      state.count++
-    }
-  }
-})
+Vue.config.productionTip = true
 
 new Vue({
   render: h => h(App),
