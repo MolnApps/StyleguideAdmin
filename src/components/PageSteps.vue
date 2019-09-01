@@ -35,35 +35,40 @@
             v-if="display.form" 
             @success="displayComponent"
         ></page-form>
-        <logo-editor v-if="display.editor"></logo-editor>
+        <component 
+            v-if="data.component && display.editor" 
+            :is="resolveComponent" 
+            v-bind="resolveProps"
+        ></component>
     </div>
 </template>
 
 <script>
 import PageForm from './PageForm';
+
 import LogoEditor from './LogoEditor';
+import ColourPaletteEditor from './ColourPaletteEditor';
+import TypographyEditor from './TypographyEditor';
+import MoodboardEditor from './MoodboardEditor';
+import VideoEditor from './VideoEditor';
+
+import ComponentResolver from './../ComponentResolver.js';
+
 export default {
-    components: {PageForm, LogoEditor},
+    components: {
+        PageForm, 
+        LogoEditor, 
+        ColourPaletteEditor, 
+        TypographyEditor, 
+        MoodboardEditor, 
+        VideoEditor
+    },
     props: ['dataEndpoint'],
     data() {
         return {
             display: {},
             data: {},
-            components: {
-                'text-side': {
-                    'logo': 'Logo', 
-                    'logo-safety': 'Logo safety areas', 
-                    'logo-size': 'Logo size', 
-                    'colour-palette': 'Colour palette', 
-                    'typography': 'Typography', 
-                    'moodboard': 'Moodboard', 
-                    'video': 'Video',
-                },
-                'chapter': {
-                    'none': 'None',
-                    'contacts': 'Contacts'
-                }
-            }
+            resolver: new ComponentResolver
         }
     },
     created() {
@@ -71,9 +76,13 @@ export default {
     },
     computed: {
         componentsForType() {
-            return this.components[this.data.type] !== undefined
-                ? this.components[this.data.type] 
-                : [];
+            return this.resolver.componentsForType(this.data.type);
+        },
+        resolveComponent: function() {
+            return this.resolver.resolve(this.data.component);
+        },
+        resolveProps: function() {
+            return this.resolver.resolveProps(this.data.component);
         }
     },
     methods: {
@@ -94,7 +103,7 @@ export default {
             this.display.form = true;
         },
         displayComponent: function() {
-            if (this.data.component == 'logo') {
+            if (this.resolver.hasComponent(this.data.component)) {
                 this.display.form = false;
                 this.display.editor = true;
             }

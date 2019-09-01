@@ -3,6 +3,10 @@ import PageSteps from '@/components/PageSteps.vue'
 import PageForm from '@/components/PageForm.vue'
 import ChapterForm from '@/components/ChapterForm.vue'
 import LogoEditor from '@/components/LogoEditor.vue'
+import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
+import TypographyEditor from '@/components/TypographyEditor.vue'
+import MoodboardEditor from '@/components/MoodboardEditor.vue'
+import VideoEditor from '@/components/VideoEditor.vue'
 import {TestHelper, AjaxHelper, StateHelper} from './../helpers/Helpers.js'
 
 let stateHelper = new StateHelper();
@@ -108,15 +112,50 @@ describe('PageSteps.vue', () => {
 	it ('displays logo editor for after successful page creation', (done) => {
 		mockSuccessfulRequest();
 
-		ui.click('#type-text-side');
-		ui.click('#component-logo');
-
-		ui.type('input[name="title"]', 'Foo');
-		ui.type('textarea[name="body"]', 'Bar');
-		ui.click('#save');
+		createPageWithComponent('logo');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeChildComponent(LogoEditor);
+		}, done);
+	})
+
+	it ('displays colour palette editor after successful page creation', (done) => {
+		mockSuccessfulRequest();
+
+		createPageWithComponent('colour-palette');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeChildComponent(ColourPaletteEditor);
+		}, done);
+	})
+
+	it ('displays typography editor after successful page creation', (done) => {
+		mockSuccessfulRequest();
+
+		createPageWithComponent('typography');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeChildComponent(TypographyEditor);
+		}, done);
+	})
+
+	it ('displays moodboard editor after successful page creation', (done) => {
+		mockSuccessfulRequest();
+
+		createPageWithComponent('moodboard');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeChildComponent(MoodboardEditor);
+		}, done);
+	})
+
+	it ('displays video editor after successful page creation', (done) => {
+		mockSuccessfulRequest();
+
+		createPageWithComponent('video');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeChildComponent(VideoEditor);
 		}, done);
 	})
 
@@ -147,5 +186,14 @@ describe('PageSteps.vue', () => {
 			/pages/, 
 			ajaxHelper.getSuccessfulResponse({id:1, title: 'Foo', body: 'Bar', type: 'text', component: ''})
 		);
+	}
+
+	let createPageWithComponent = (component) => {
+		ui.click('#type-text-side');
+		ui.click('#component-' + component);
+
+		ui.type('input[name="title"]', 'Foo');
+		ui.type('textarea[name="body"]', 'Bar');
+		ui.click('#save');
 	}
 })

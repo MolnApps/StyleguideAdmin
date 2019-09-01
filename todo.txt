@@ -1,13 +1,17 @@
 Implementation
-— Differentiate between feedback types (success, error, notice, etc.)
 — Allow to choose a page type and component when creating a page
-—— We should display qualified component after the page was created (possibly programmatically)
+—— When adding a page to the index, we should display the PageSteps component, not the page component.
+—— If the page has no components, ask the user where to put the page in the index. Then reload the styleguide.
+—— Inject props to component after the page was saved
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
 - We should ask for confirmation before deleting an item from the library.
+— Differentiate between feedback types (success, error, notice, etc.)
 
 — Bugs
-—— PeopleEditor
-——— When removing people and saving changes, changes will not be persisted.
+—— If I click Editor Save Changes without any resource, an error will be thrown.
+——— LogoEditor
+——— ColourPaletteEditor
+——— TypographyEditor
 —— MoodboardEditor: 
 ——— Only one image will be added to the list. 
 ——— Only two out of three images will be saved to the DB.
