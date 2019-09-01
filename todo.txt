@@ -1,12 +1,15 @@
 Implementation
 — Allow to choose a page type and component when creating a page
 —— Inject props to component after the page was saved
-—— Use store for all libraries
-——— Colours
-——— Typefaces
+——— Text Side/Video
+——— Text Side/Moodboard
+——— Text Side/Logo Safety Areas
+——— Text Side/Logo Size
+——— Chapter/Contacts
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
 - We should ask for confirmation before deleting an item from the library.
 — Differentiate between feedback types (success, error, notice, etc.)
+— TypefaceFamilyForm: onSuccess should return just the record, not the whole data structure.
 
 — Bugs
 —— If I click Editor Save Changes without any resource, an error will be thrown.

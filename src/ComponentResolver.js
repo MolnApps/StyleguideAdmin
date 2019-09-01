@@ -2,6 +2,8 @@ class ComponentResolver
 {
 	constructor()
 	{
+        this.page = {id: null};
+
 		this.maps = {
             componentsForPageType: {
                 'text-side': {
@@ -28,15 +30,31 @@ class ComponentResolver
             idToProps: {
                 'logo': {
                     dataPageLogos: [], 
-                    dataAllLogos: [], 
-                    dataEndpoint: '/pages/{id}/logos'
+                    dataEndpoint: '/logos',
+                    dataPageEndpoint: '/pages/{id}/logos'
+                },
+                'colour-palette': {
+                    dataPageColours: [],
+                    dataEndpoint: '/colours',
+                    dataPageEndpoint: '/pages/{id}/colours'
+                },
+                'typography': {
+                    dataPageTypefaceFamilies: [],
+                    dataEndpoint: '/colours',
+                    dataPageEndpoint: '/pages/{id}/typefaces'
                 },
                 'moodboard': {
-                    dataUploadEndpoint: '/foo' 
+                    dataPageEndpoint: '/pages/{id}/images',
+                    dataUploadEndpoint: '/images' 
                 },
             }
         }
 	}
+
+    setPage(page)
+    {
+        this.page = page;
+    }
 
 	componentsForType(type)
 	{
@@ -54,8 +72,8 @@ class ComponentResolver
 
 	resolveProps(id)
 	{
-		return this.hasProps(id)
-        	? this.maps.idToProps[id]
+        return this.hasProps(id)
+        	? this.overridePageId(this.maps.idToProps[id])
         	: null;
 	}
 
@@ -70,6 +88,14 @@ class ComponentResolver
 	hasProps(id) {
 		return this.maps.idToProps[id] !== undefined;
 	}
+
+    overridePageId(props) {
+        props = JSON.parse(JSON.stringify(props));
+        let baseUrl = 'http://styleguide-api.test/api/v1/1';
+        props['dataEndpoint'] = baseUrl + props['dataEndpoint']
+        props['dataPageEndpoint'] = baseUrl + props['dataPageEndpoint'].replace('{id}', this.page.id);
+        return props;
+    }
 }
 
 export default ComponentResolver;

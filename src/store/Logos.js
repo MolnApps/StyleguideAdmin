@@ -31,6 +31,16 @@ export default {
 		all (state) {
 			return state.all;
 		},
+		allById: (state) => (id) => {
+			return state.all.filter((el) => {
+                return el.id == id;
+            });
+		},
+		byId: (state) => (id) => {
+			return state.all.filter((el) => {
+				return el.id == id;
+			})[0];
+		},
 		byPageSlug: (state) => (slug) => {
 			return state.dictionary[slug];
 		},

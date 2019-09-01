@@ -62,16 +62,16 @@
 		<moodboard-editor 
 			:data-page-images="images" 
 			:key="'images.' + images.length"
-			:data-endpoint="endpoint('/pages/17/images')"
+			:data-page-endpoint="endpoint('/pages/17/images')"
 			:data-upload-endpoint="endpoint('/images')"
 			@feedback="displayFeedback"
 		></moodboard-editor>
 		
 		<typography-editor
 			:data-page-typeface-families="typefaces"
-			:data-all-typeface-families="typefacesLibrary"
 			:key="'typefaces.' + typefaces.length"
-			:data-endpoint="endpoint('/pages/15/typefaces')"
+			:data-page-endpoint="endpoint('/pages/15/typefaces')"
+			:data-endpoint="endpoint('/typefaces')"
 			@feedback="displayFeedback"
 		></typography-editor>
 
@@ -86,7 +86,8 @@
 			:data-page-logos="$store.getters['logos/byPageSlug']('logo-primary')" 
 			:key="'logos.' + $store.getters['logos/countByPageSlug']('logo-primary')"
 			:data-all-logos="$store.getters['logos/all']"
-			:data-endpoint="endpoint('/pages/10/logos')"
+			:data-endpont="endpoint('/logos')"
+			:data-page-endpoint="endpoint('/pages/10/logos')"
 			@feedback="displayFeedback"
 		></logo-editor>
 		<logo-bg-form 
@@ -192,16 +193,16 @@ export default {
 			
 			images: [],
 			
-			typefacesLibrary: [],
+			//typefacesLibrary: [],
 			typefaces: [],
 			typeface: {},
 			
-			logos: [],
+			//logos: [],
 			logoWithBg: {},
 			logoWithSpecs: {},
 			logo: {},
 
-			coloursLibrary: [],
+			//coloursLibrary: [],
 			colours: [],
 			colour: {}
 		}
@@ -224,17 +225,16 @@ export default {
 					this.video = this.videos[0];
 					this.images = r.data.images['moodboard'];
 					
-					this.typefacesLibrary = r.data.typefaces['_library'];
-					this.typefaces = r.data.typefaces['typography'];
-					this.typeface = this.typefacesLibrary[0];
+					this.$store.dispatch('typefaces/initialize', r.data['typefaces']);
+					this.typefaces = this.$store.getters['typefaces/byPageSlug']('typography');
+					this.typeface = this.$store.getters['typefaces/all'][0];
 
-					this.$store.dispatch('logos/initialize', r.data.logos);
+					this.$store.dispatch('logos/initialize', r.data['logos']);
 					this.logoWithBg = this.$store.getters['logos/byPageSlug']('logo-primary')[1];
 					this.logoWithSpecs = this.$store.getters['logos/all'][0];
 					this.logo = this.$store.getters['logos/all'][0];
 
 					this.$store.dispatch('colours/initialize', r.data['colour-palette']);
-					//this.coloursLibrary = r.data['colour-palette']['_library'];
 					this.colours = r.data['colour-palette']['colour-palette'];
 					this.colour = r.data['colour-palette']['_library'][0];
 				})

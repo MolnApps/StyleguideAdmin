@@ -315,7 +315,8 @@ describe('LogoEditor.vue', () => {
 			store,
 			propsData: { 
 				dataPageLogos: pageLogos, 
-				dataEndpoint: '/pages/1/logos'
+				dataPageEndpoint: '/pages/1/logos',
+				dataEndpoint: '/logos'
 			}
 		});
 

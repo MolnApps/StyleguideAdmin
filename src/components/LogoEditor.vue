@@ -35,7 +35,7 @@
         </div>
         <logo-form 
             v-if="displayForm"
-            :data-endpoint="dataEndpoint" 
+            :data-endpoint="dataEndpoint + '/' + logo.id" 
             :data-logo="logo" 
             @success="onSaveLogo"
             @cancel="resetLogoAndClose"
@@ -49,7 +49,7 @@
         <logo-spec-form 
             v-if="displaySpecForm" 
             :data-logo="logo" 
-            :data-endpoint="'/logos/' + logo.id"
+            :data-endpoint="dataEndpoint + '/' + logo.id"
             @success="toggleSpecForm"
             @cancel="toggleSpecForm"
         ></logo-spec-form>
@@ -66,7 +66,7 @@ import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
 export default {
     components: {Btn, Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable},
-    props: ['dataPageLogos', 'dataEndpoint'],
+    props: ['dataPageLogos', 'dataPageEndpoint', 'dataEndpoint'],
     data() {
     	return {
     		pageLogos: this.dataPageLogos,
@@ -159,7 +159,7 @@ export default {
                 this.$emit('feedback', data.feedback);
             });
 
-            form.submit(this.dataEndpoint);
+            form.submit(this.dataPageEndpoint);
         }
     },
     computed: {

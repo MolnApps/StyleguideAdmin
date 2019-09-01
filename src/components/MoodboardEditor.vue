@@ -45,7 +45,7 @@ export default {
     components: {Btn, Draggable, MoodboardDropzone},
     props: [
         'dataPageImages', 
-        'dataEndpoint',
+        'dataPageEndpoint',
         'dataUploadEndpoint'
     ],
     data() {
@@ -66,7 +66,7 @@ export default {
             };
             this.form = new StyleguideForm(data);
             this.form.on('success', this.onSuccess);
-            this.form.submit(this.dataEndpoint);
+            this.form.submit(this.dataPageEndpoint);
         },
         onCancel: function() {
             this.$emit('cancel');

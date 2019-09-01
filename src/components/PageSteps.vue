@@ -39,6 +39,7 @@
             v-if="data.component && display.editor" 
             :is="resolveComponent" 
             v-bind="resolveProps"
+            @success="onSuccess"
         ></component>
     </div>
 </template>
@@ -68,7 +69,8 @@ export default {
         return {
             display: {},
             data: {},
-            resolver: new ComponentResolver
+            resolver: new ComponentResolver,
+            page: null
         }
     },
     created() {
@@ -102,13 +104,19 @@ export default {
             this.display.components = false;
             this.display.form = true;
         },
-        displayComponent: function(data) {
+        displayComponent: function(record) {
+            this.page = record;
+            this.resolver.setPage(record);
             if (this.resolver.hasComponent(this.data.component)) {
                 this.display.form = false;
                 this.display.editor = true;
             } else {
-                this.$emit('success', data);
+                this.$emit('success', record);
             }
+        },
+        onSuccess: function() {
+            this.$emit('success', this.page);
+            this.initialize();
         },
         onReset: function() {
             this.initialize();
@@ -124,6 +132,7 @@ export default {
                 type: '',
                 component: ''
             };
+            this.page = null;
         },
         modifierClass: function(str) {
             let classes = [];

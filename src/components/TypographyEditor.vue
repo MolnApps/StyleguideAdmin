@@ -43,8 +43,8 @@
         </div>
         <typeface-family-form 
             v-if="display.typefaceFamilyForm" 
-            :data-typeface-family="this.typefaceFamily"
-            :data-endpoint="'/typography/' + this.typefaceFamily.id"
+            :data-typeface-family="typefaceFamily"
+            :data-endpoint="dataEndpoint + '/' + typefaceFamily.id"
             @success="onSaveTypefaceFamilyForm"
             @cancel="toggleTypefaceFamilyForm"
         ></typeface-family-form>
@@ -58,11 +58,14 @@ import TypefaceFamilyForm from './TypefaceFamilyForm.vue'
 import Btn from './Btn.vue'
 export default {
     components: {Btn, TypefaceWeight, TypefaceFamilyForm},
-    props: ['dataPageTypefaceFamilies', 'dataAllTypefaceFamilies', 'dataEndpoint'],
+    props: [
+        'dataPageTypefaceFamilies', 
+        'dataPageEndpoint',
+        'dataEndpoint'
+    ],
     data() {
         return {
             pageTypefaceFamilies: this.dataPageTypefaceFamilies,
-            allTypefaceFamilies: this.dataAllTypefaceFamilies,
             typefaceFamily: null,
             display: {
                 typefaceFamilyForm: false
@@ -72,13 +75,12 @@ export default {
     },
     methods: {
         pivotWeightExists(family) {
-            return this.allTypefaceFamilies.filter((t) => {
-                return t.id == family.id;
-            }).filter((t) => {
-                return t.weights.filter((w) => {
-                    return w.weight == family.pivot.preferences.weight;
+            return this.$store.getters['typefaces/allById'](family.id)
+                .filter((t) => {
+                    return t.weights.filter((w) => {
+                        return w.weight == family.pivot.preferences.weight;
+                    }).length > 0;
                 }).length > 0;
-            }).length > 0;
         },
         hasWeightsNotInPage: function(family) {
             return family.weights.filter((w) => {
@@ -93,10 +95,8 @@ export default {
         onSaveTypefaceFamilyForm: function(data) {
             let typeface = data.data.record;
             
-            this.allTypefaceFamilies = this.allTypefaceFamilies.map((t) => {
-                return t.id == typeface.id ? typeface : t;
-            });
-            
+            this.$store.dispatch('typefaces/overrideById', {id: typeface.id, record: typeface});
+
             this.toggleTypefaceFamilyForm();
         },
         toggleTypefaceFamilyForm: function() {
@@ -117,9 +117,7 @@ export default {
             this.toggleTypefaceFamilyForm();
         },
         addWeight(data) {
-            let typeface = this.allTypefaceFamilies.filter((t) => {
-                return t.id == data.id;
-            })[0];
+            let typeface = this.$store.getters['typefaces/byId'](data.id);
 
             typeface = JSON.parse(JSON.stringify(typeface));
 
@@ -140,7 +138,7 @@ export default {
                 typeface: data
             });
             this.form.on('success', this.onSuccess.bind(this));
-            this.form.submit(this.dataEndpoint);
+            this.form.submit(this.dataPageEndpoint);
         },
         onSuccess() {
             this.$emit('success');
@@ -148,6 +146,11 @@ export default {
         },
         cancelChanges() {
             this.$emit('cancel');
+        }
+    },
+    computed: {
+        allTypefaceFamilies() {
+            return this.$store.getters['typefaces/all'];
         }
     }
 }
