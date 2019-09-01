@@ -69,21 +69,21 @@ describe('Btn.vue', () => {
 	it ('will not freeze the ui if the button is not asynch', () => {
 		bootstrapComponent({asynch: false});
 
-		expect(store.state.status).toBe('enabled');
+		expect(store.getters['ui/status']).toBe('enabled');
 
 		ui.click('button');
 
-		expect(store.state.status).toBe('enabled');
+		expect(store.getters['ui/status']).toBe('enabled');
 	})
 
 	it ('freezes all buttons when clicked', () => {
 		bootstrapComponent({asynch: true});
 
-		expect(store.state.status).toBe('enabled');
+		expect(store.getters['ui/status']).toBe('enabled');
 
 		ui.click('button');
 
-		expect(store.state.status).toBe('disabled');
+		expect(store.getters['ui/status']).toBe('disabled');
 	})
 
 	it ('emits an event when clicked', () => {

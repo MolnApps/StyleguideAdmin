@@ -12,8 +12,9 @@ class StateHelper {
 
 	freshStore()
 	{
-		myStore.state.status = 'enabled';
-	    return new Vuex.Store(myStore);
+		let newStore = new Vuex.Store(myStore);
+		newStore.dispatch('ui/enable');
+	    return newStore;
 	}
 
 	emit(eventName)

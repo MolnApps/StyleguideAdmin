@@ -28,25 +28,28 @@ export default {
         modifier: function() {
             return this.isLoading
                 ? 'loading' 
-                : this.$store.state.status;
+                : this.$store.getters['ui/status'];
+        },
+        isLocked: function() {
+            return this.$store.getters['ui/isLocked'];
         }
     },
     methods: {
         handleClick: function() {
-            if (this.$store.state.status != 'enabled') {
+            if (this.isLocked) {
                 return;
             }
 
             if (this.asynch) {
                 this.isLoading = true;
-                this.$store.commit('DISABLE_BUTTONS');
+                this.$store.dispatch('ui/disable');
             }
             
             this.$emit('click');
         },
         resetStatus: function() {
             this.isLoading = false;
-            this.$store.commit('ENABLE_BUTTONS');
+            this.$store.dispatch('ui/enable');
         }
     }
 }

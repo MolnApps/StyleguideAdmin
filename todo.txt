@@ -1,14 +1,13 @@
 Implementation
 — Allow to choose a page type and component when creating a page
-—— When adding a page to the index, we should display the PageSteps component, not the page component.
-—— If the page has no components, ask the user where to put the page in the index. Then reload the styleguide.
 —— Inject props to component after the page was saved
+——— We should probably use the Store to store the whole styleguide. 
+    This component is too entertwined with the whole system.
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
 - We should ask for confirmation before deleting an item from the library.
 — Differentiate between feedback types (success, error, notice, etc.)
 
 — Bugs
-—— IndexEditor: If I add a page and then click on SaveChanges button, an error will be thrown.
 —— If I click Editor Save Changes without any resource, an error will be thrown.
 ——— LogoEditor
 ——— ColourPaletteEditor
