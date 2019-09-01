@@ -66,12 +66,11 @@ import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
 export default {
     components: {Btn, Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable},
-    props: ['dataPageLogos', 'dataAllLogos', 'dataEndpoint'],
+    props: ['dataPageLogos', 'dataEndpoint'],
     data() {
     	return {
     		pageLogos: this.dataPageLogos,
-    		allLogos: this.dataAllLogos,
-            logo: {},
+    		logo: {},
             displayForm: false,
             displayBgForm: false,
             displaySpecForm: false,
@@ -161,6 +160,11 @@ export default {
             });
 
             form.submit(this.dataEndpoint);
+        }
+    },
+    computed: {
+        allLogos() {
+            return this.$store.getters['logos/all'];
         }
     }
 }

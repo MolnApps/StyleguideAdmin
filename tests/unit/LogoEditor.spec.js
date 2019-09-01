@@ -302,16 +302,12 @@ describe('LogoEditor.vue', () => {
 
 	// Utility methods
 
-	let bootstrapWrapper = (pageLogos, allLogos) => {
-		pageLogos = pageLogos ? pageLogos : [
+	let bootstrapWrapper = () => {
+		bootstrapStore();
+
+		let pageLogos = [
 			logoHelper.make('Primary logo', logoHelper.merge({id:1}, logoHelper.pivot('#ffffff'))),
 			logoHelper.make('Primary logo', logoHelper.merge({id:1}, logoHelper.pivot('#000000')))
-		];
-
-		allLogos = allLogos ? allLogos : [
-			logoHelper.make('Primary logo', {id: 1}),
-			logoHelper.make('Secondary logo positive', {id: 2}),
-			logoHelper.make('Secondary logo negative', {id: 3})
 		];
 
 		wrapper = mount(LogoEditor, {
@@ -319,7 +315,6 @@ describe('LogoEditor.vue', () => {
 			store,
 			propsData: { 
 				dataPageLogos: pageLogos, 
-				dataAllLogos: allLogos, 
 				dataEndpoint: '/pages/1/logos'
 			}
 		});
@@ -327,6 +322,14 @@ describe('LogoEditor.vue', () => {
 	    ui = new TestHelper(wrapper);
 
 	    logoHelper.setWrapper(wrapper).setTestHelper(ui);
+	}
+
+	let bootstrapStore = () => {
+		store.dispatch('logos/initialize', {'_library': [
+			logoHelper.make('Primary logo', {id: 1}),
+			logoHelper.make('Secondary logo positive', {id: 2}),
+			logoHelper.make('Secondary logo negative', {id: 3})
+		]});
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

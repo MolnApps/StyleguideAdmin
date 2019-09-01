@@ -83,9 +83,9 @@
 		></typeface-family-form>
 		
 		<logo-editor 
-			:data-page-logos="logos" 
-			:key="'logos.' + logos.length"
-			:data-all-logos="logosLibrary"
+			:data-page-logos="$store.getters['logos/byPageSlug']('logo-primary')" 
+			:key="'logos.' + $store.getters['logos/countByPageSlug']('logo-primary')"
+			:data-all-logos="$store.getters['logos/all']"
 			:data-endpoint="endpoint('/pages/10/logos')"
 			@feedback="displayFeedback"
 		></logo-editor>
@@ -197,7 +197,6 @@ export default {
 			typefaces: [],
 			typeface: {},
 			
-			logosLibrary: [],
 			logos: [],
 			logoWithBg: {},
 			logoWithSpecs: {},
@@ -230,11 +229,10 @@ export default {
 					this.typefaces = r.data.typefaces['typography'];
 					this.typeface = this.typefacesLibrary[0];
 
-					this.logosLibrary = r.data.logos['_library'];
-					this.logos = r.data.logos['logo-primary'];
-					this.logoWithBg = r.data.logos['logo-primary'][1];
-					this.logoWithSpecs = r.data.logos['_library'][0];
-					this.logo = r.data.logos['_library'][0];
+					this.$store.dispatch('logos/initialize', r.data.logos);
+					this.logoWithBg = this.$store.getters['logos/byPageSlug']('logo-primary')[1];
+					this.logoWithSpecs = this.$store.getters['logos/all'][0];
+					this.logo = this.$store.getters['logos/all'][0];
 
 					this.coloursLibrary = r.data['colour-palette']['_library'];
 					this.colours = r.data['colour-palette']['colour-palette'];

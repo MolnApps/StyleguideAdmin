@@ -1,8 +1,10 @@
 Implementation
 — Allow to choose a page type and component when creating a page
 —— Inject props to component after the page was saved
-——— We should probably use the Store to store the whole styleguide. 
-    This component is too entertwined with the whole system.
+—— Use store for all libraries
+——— Logos
+——— Colours
+——— Typefaces
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
 - We should ask for confirmation before deleting an item from the library.
 — Differentiate between feedback types (success, error, notice, etc.)
