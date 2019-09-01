@@ -4,6 +4,8 @@ import LogosModule from '@/store/Logos.js';
 export default {
 	modules: {
 		ui: UserInterfaceModule,
-		logos: LogosModule
+		logos: LogosModule,
+		typefaces: LogosModule,
+		colours: LogosModule
 	}
 }

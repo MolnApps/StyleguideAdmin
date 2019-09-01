@@ -3,6 +3,7 @@ HTMLCanvasElement.prototype.getContext = jest.fn()
 
 import { mount, shallowMount } from '@vue/test-utils'
 import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
+import ColourForm from '@/components/ColourForm.vue'
 import {TestHelper, AjaxHelper, ColourHelper, StateHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
 import Draggable from 'vuedraggable';
@@ -47,14 +48,14 @@ describe('ColourPaletteEditor.vue', () => {
     })
 
 	it ('displays all colours associated with this page', () => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		ui.see('Red', 'div.page');
 		ui.see('Blue', 'div.page');
 	})
 
 	it ('displays all colours still not associated with the page', () => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		ui.see('Green', 'div.all');
 	})
@@ -195,7 +196,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('adds a colour from the main colour palette', () => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		ui.notSee('Green', 'div.page');
 		ui.see('Green', 'div.all');
@@ -206,17 +207,33 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.notSee('Green', 'div.all');
 	})
 
+	it ('adds a colour to the library', () => {
+		bootstrapWrapper();
+		
+		// Assuming I add a colour to the library
+		ui.click('$add')
+		wrapper.find(ColourForm).vm.$emit('success', colourHelper.make('Yellow', '#123456', 12));
+		// Then I should see it in the .page div
+		ui.see('Yellow', '.page');
+		ui.notSee('Yellow', '.all');
+		// When I click the remove button
+		ui.click('div.page div[data-id="12"] .del');
+		// I should see it in the .all div
+		ui.notSee('Yellow', '.page');
+		ui.see('Yellow', '.all');
+	})
+
 	it ('removes a colour from the list', () => {
 		wrapper.setData({
 			pageColours: [
 				{id: 1, title: 'Red', hex: '#ff0000'},
 				{id: 3, title: 'Blue', hex: '#0000ff'}
-			],
-			allColours: [
-				{id: 1, title: 'Red', hex: '#ff0000'},
-				{id: 3, title: 'Blue', hex: '#0000ff'}
 			]
 		});
+		store.dispatch('colours/initialize', {'_library': [
+				{id: 1, title: 'Red', hex: '#ff0000'},
+				{id: 3, title: 'Blue', hex: '#0000ff'}
+		]});
 
 		ui.see('Red', 'div.page');
 		ui.see('Blue', 'div.page');
@@ -234,7 +251,7 @@ describe('ColourPaletteEditor.vue', () => {
 		
 		mockSuccessfullRequest(newColour, {id: 25});
 
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		ui.click('div.page div[data-id="3"] .edit');
 
@@ -263,7 +280,7 @@ describe('ColourPaletteEditor.vue', () => {
 		let newColour = colourHelper.make('Cyan', '#00ffff');
 
 		colourHelper.bootstrapPageEndpoint({id: 12});
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		colourHelper.add(newColour);
 
@@ -294,7 +311,7 @@ describe('ColourPaletteEditor.vue', () => {
 		mockSuccessfullRequest();
 
 		colourHelper.bootstrapPageEndpoint({id: 12});
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 		
 		ui.click('$saveChanges');
 		
@@ -307,8 +324,6 @@ describe('ColourPaletteEditor.vue', () => {
 		mockSuccessfullRequest();
 
 		colourHelper.bootstrapPageEndpoint({id: 12});
-		colourHelper.bootstrapColours();
-		
 		ui.click('$saveChanges');
 		
 		ajaxHelper.expectAfterRequest(() => {
@@ -317,7 +332,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('does not persist the changes if the cancel button is clicked', (done) => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		let newColour = colourHelper.make('Cyan', '#00ffff');
 		
@@ -340,7 +355,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('fires an event if the cancel button is clicked', () => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 		
 		ui.click('$cancelChanges');
 		
@@ -348,19 +363,19 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('displays an edit button for a colour in the library', () => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		ui.seeElement('div.all div[data-id="2"] .edit');
 	})
 
 	it ('displays a remove button for a colour in the library', () => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		ui.seeElement('div.all div[data-id="2"] .del');
 	})
 
 	it ('displays a filled form if the edit button of a colour in the library is clicked', () => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		ui.click('div.all div[data-id="2"] .edit');
 
@@ -369,7 +384,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('updates an existing colour in the library', (done) => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		let returnedColour = colourHelper.make('Lime', '#00ffff');
 
@@ -391,7 +406,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('emits an event after updating a colour in the library', (done) => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		let returnedColour = colourHelper.make('Lime', '#00ffff', 2);
 
@@ -411,7 +426,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('will edit a page colour after editing a library colour', (done) => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		mockSuccessfullRequest(colourHelper.make('Lime', '#00ffff'), {id: 2});
 
@@ -444,7 +459,7 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('performs an api call when a library colour remove button is clicked', (done) => {
-		colourHelper.bootstrapColours();
+		bootstrapWrapper();
 
 		let returnedColour = colourHelper.make('Green', '#00ff00', 2);
 		mockDeleteRequest(returnedColour);
@@ -459,6 +474,17 @@ describe('ColourPaletteEditor.vue', () => {
 			ui.seeFeedback();
 		}, done);
 	})
+
+	let bootstrapWrapper = () => {
+		colourHelper.bootstrapColours();
+		store.dispatch('colours/initialize', {
+			'_library': [
+				colourHelper.make('Red', '#ff0000', 1),
+				colourHelper.make('Green', '#00ff00', 2),
+				colourHelper.make('Blue', '#0000ff', 3)
+			]
+		});
+	}
 
 	let mockSuccessfullRequest = (record, override) => {
 		ajaxHelper.stubRequest(/colours/, ajaxHelper.getSuccessfulResponse(record, override));

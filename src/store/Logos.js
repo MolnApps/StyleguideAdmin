@@ -1,13 +1,30 @@
 export default {
 	namespaced: true,
-	state: {
-		all: [],
-		dictionary: {},
+	state () {
+		return {
+			all: [],
+			dictionary: {},
+		}
 	},
 	mutations: {
 		initialize (state, payload) {
 			state.all = payload._library;
 			state.dictionary = payload;
+		},
+		removeById (state, id) {
+			state.all = state.all.filter((el) => {
+                return el.id !== id;
+            });
+		},
+		overrideById (state, payload) {
+			state.all = state.all.map((el) => {
+                return el.id == payload.id 
+                	? payload.record 
+                	: el;
+            });
+		},
+		add (state, record) {
+			state.all.push(record);
 		}
 	},
 	getters: {
@@ -26,6 +43,15 @@ export default {
 	actions: {
 		initialize (context, payload) {
 			context.commit('initialize', payload);
+		},
+		removeById(context, id) {
+			context.commit('removeById', id);
+		},
+		overrideById(context, payload) {
+			context.commit('overrideById', payload);
+		},
+		add(context, record) {
+			context.commit('add', record);
 		}
 	}
 }

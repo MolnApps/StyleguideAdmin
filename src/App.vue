@@ -110,7 +110,6 @@
 		
 		<colour-palette-editor 
 			:dataPageColours="colours"
-			:dataAllColours="coloursLibrary"
 			:key="'colours.' + colours.length"
 			:data-endpoint="endpoint('/colours')"
 			:data-page-endpoint="endpoint('/pages/14/colours')"
@@ -234,7 +233,8 @@ export default {
 					this.logoWithSpecs = this.$store.getters['logos/all'][0];
 					this.logo = this.$store.getters['logos/all'][0];
 
-					this.coloursLibrary = r.data['colour-palette']['_library'];
+					this.$store.dispatch('colours/initialize', r.data['colour-palette']);
+					//this.coloursLibrary = r.data['colour-palette']['_library'];
 					this.colours = r.data['colour-palette']['colour-palette'];
 					this.colour = r.data['colour-palette']['_library'][0];
 				})

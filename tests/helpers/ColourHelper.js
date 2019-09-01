@@ -28,11 +28,6 @@ class ColourHelper {
 			pageColours: [
 				this.make('Red', '#ff0000', 1),
 				this.make('Blue', '#0000ff', 3)
-			],
-			allColours: [
-				this.make('Red', '#ff0000', 1),
-				this.make('Green', '#00ff00', 2),
-				this.make('Blue', '#0000ff', 3)
 			]
 		});
 	}

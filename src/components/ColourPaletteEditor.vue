@@ -59,7 +59,7 @@ export default {
     components: {Btn, ColourForm, Colour, Draggable},
     props: {
         dataPageColours: {type: Array}, 
-        dataAllColours: {type: Array}, 
+        //dataAllColours: {type: Array}, 
         dataEndpoint: {type: String}, 
         dataPageEndpoint: {type: String},
         dataLiveUpdate: {type:Boolean, default: true}
@@ -67,7 +67,7 @@ export default {
     data() {
         return {
             pageColours: this.dataPageColours,
-            allColours: this.dataAllColours,
+            //allColours: this.dataAllColours,
             pageEndpoint: this.dataPageEndpoint,
             displayForm: false,
             colour: {},
@@ -99,7 +99,7 @@ export default {
             this.toggleForm();
         },
         addLibraryColour: function(colour) {
-            this.allColours.push(colour);
+            this.$store.dispatch('colours/add', colour);
         },
         editLibraryColour: function(colour) {
             this.editingLibraryColour = true;
@@ -109,17 +109,13 @@ export default {
         removeLibraryColour: function(colour) {
             let form  = new StyleguideForm({_method: 'delete'});
             form.on('success', (response) => {
+                this.$store.dispatch('colours/removeById', colour.id);
                 this.$emit('feedback', form.feedback);
-                this.allColours = this.allColours.filter((el) => {
-                    return el.id !== colour.id;
-                });
             });
             form.submit(this.dataEndpoint + '/' + colour.id);
         },
         overrideLibraryColour: function(record) {
-            this.allColours = this.allColours.map((colour) => {
-                return colour.id == this.colour.id ? record : colour;
-            });
+            this.$store.dispatch('colours/overrideById', {id: this.colour.id, record: record});
         },
         onSaveColour: function(record) {
             if (this.editingLibraryColour) {
@@ -169,6 +165,11 @@ export default {
         },
         toggleForm: function() {
             this.displayForm = ! this.displayForm;
+        }
+    },
+    computed: {
+        allColours() {
+            return this.$store.getters['colours/all'];
         }
     }
 }
