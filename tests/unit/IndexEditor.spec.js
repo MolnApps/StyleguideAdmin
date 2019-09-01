@@ -216,16 +216,45 @@ describe('IndexEditor.vue', () => {
 		ui.click('$add');
 
 		wrapper.find(PageSteps).vm.$emit('success', {
-			record: {
-				id: 12, 
-				title: 'Lorem ipsum', 
-				body: '', 
-				type: '', 
-				component: ''
-			}
+			id: 12, 
+			title: 'Lorem ipsum', 
+			body: '', 
+			type: '', 
+			component: ''
 		});
 
 		ui.see('Lorem ipsum');
+	})
+
+	it ('will not throw an error if save changes button is clicked after adding a page', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+
+		ui.click('$add');
+
+		wrapper.find(PageSteps).vm.$emit('success', {
+			id: 12, 
+			title: 'Lorem ipsum', 
+			body: '', 
+			type: '', 
+			component: ''
+		});
+
+		ui.click('$saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ajaxHelper.expectRequest('/index', {
+				index: [
+					{id: 1, page_id: 1, parent_id: null, position: 0},
+					{id: 2, page_id: 2, parent_id: 1, position: 1},
+					{id: 3, page_id: 3, parent_id: 1, position: 2},
+					{id: 4, page_id: 4, parent_id: null, position: 3},
+					{id: 5, page_id: 5, parent_id: 4, position: 4},
+					{id: null, page_id: 12, parent_id: null, position: 0},
+				]
+			});
+		}, done);
 	})
 
 	it ('does not add a new item to the list after a successful api call if editing', () => {
@@ -237,13 +266,11 @@ describe('IndexEditor.vue', () => {
 		ui.click('li.index_2 .edit');
 
 		wrapper.find(PageForm).vm.$emit('success', {
-			record: {
-				id: 12, 
-				title: 'Lorem ipsum', 
-				body: '', 
-				type: '', 
-				component: ''
-			}
+			id: 12, 
+			title: 'Lorem ipsum', 
+			body: '', 
+			type: '', 
+			component: ''
 		});
 
 		ui.notSee('About us');

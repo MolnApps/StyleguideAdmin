@@ -109,6 +109,25 @@ describe('PageSteps.vue', () => {
 		}, done);
 	})
 
+	it ('emits an event after successful page creation if page type has no qualified component', (done) => {
+		let returnedRecord = {id:1, title: 'Foo', body: 'Bar', type: 'text', component: ''};
+		
+		mockSuccessfulRequest(returnedRecord);
+
+		ui.notExpectEvent('success');
+
+		ui.click('#type-text');
+		
+		ui.type('input[name="title"]', 'Foo');
+		ui.type('textarea[name="body"]', 'Bar');
+		ui.click('#save');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.expectEvent('success');
+			ui.expectEventData('success', [returnedRecord]);
+		}, done);
+	})
+
 	it ('displays logo editor for after successful page creation', (done) => {
 		mockSuccessfulRequest();
 
@@ -181,10 +200,14 @@ describe('PageSteps.vue', () => {
 		ui = new TestHelper(wrapper);
 	}
 
-	let mockSuccessfulRequest = () => {
+	let mockSuccessfulRequest = (record, override) => {
+		record = record 
+			? record 
+			: {id:1, title: 'Foo', body: 'Bar', type: 'text', component: ''};
+
 		ajaxHelper.stubRequest(
 			/pages/, 
-			ajaxHelper.getSuccessfulResponse({id:1, title: 'Foo', body: 'Bar', type: 'text', component: ''})
+			ajaxHelper.getSuccessfulResponse(record, override)
 		);
 	}
 

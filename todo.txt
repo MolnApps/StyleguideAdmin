@@ -8,6 +8,7 @@ Implementation
 — Differentiate between feedback types (success, error, notice, etc.)
 
 — Bugs
+—— IndexEditor: If I add a page and then click on SaveChanges button, an error will be thrown.
 —— If I click Editor Save Changes without any resource, an error will be thrown.
 ——— LogoEditor
 ——— ColourPaletteEditor

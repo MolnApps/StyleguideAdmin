@@ -102,10 +102,12 @@ export default {
             this.display.components = false;
             this.display.form = true;
         },
-        displayComponent: function() {
+        displayComponent: function(data) {
             if (this.resolver.hasComponent(this.data.component)) {
                 this.display.form = false;
                 this.display.editor = true;
+            } else {
+                this.$emit('success', data);
             }
         },
         onReset: function() {

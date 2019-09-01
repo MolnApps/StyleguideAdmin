@@ -94,27 +94,28 @@ export default {
         onEditCancel: function() {
             this.togglePageForm();
         },
-        onAddSuccess: function(data) {
-            if ( ! data) {
+        onAddSuccess: function(record) {
+            if ( ! record) {
                 return this.togglePageStepsForm();
             }
 
             this.index.push({
                 id: null,
                 parent_id: null,
-                page_id: data.record.id,
-                page: data.record,
-                position: 0
+                page_id: record.id,
+                page: record,
+                position: 0,
+                children: []
             });
 
-            this.togglePageStepsForm()
+            this.togglePageStepsForm();
         },
-        onEditSuccess: function(data) {
-            if ( ! data) {
+        onEditSuccess: function(record) {
+            if ( ! record) {
                 return this.togglePageForm();
             }
-            this.currentIndex.page_id = data.record.id;
-            this.currentIndex.page = data.record;
+            this.currentIndex.page_id = record.id;
+            this.currentIndex.page = record;
             this.togglePageForm()
         },
         onEnd: function() {
