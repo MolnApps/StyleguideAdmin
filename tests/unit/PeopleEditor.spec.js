@@ -104,6 +104,18 @@ describe('PeopleEditor.vue', () => {
 		}, done);
 	})
 
+	it ('displays a feedback after a successful api call', (done) => {
+		mockSuccessfullRequest();
+
+		ui.notSeeFeedback();
+
+		ui.click('$saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeFeedback();
+		}, done);
+	})
+
 	it ('does not perform an api call when the cancel button is clicked', () => {
 		ui.click('$cancelChanges');
 

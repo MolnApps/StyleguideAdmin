@@ -34,6 +34,7 @@
 			:key="'people' + people.length"
 			:data-endpoint="endpoint('/pages/4/people')"
 			:data-form-endpoint="endpoint('/people')"
+			@feedback="displayFeedback"
 		></people-editor>
 
 		<person-form 
@@ -48,6 +49,7 @@
 			:key="'videos.' + videos.length"
 			:data-endpoint="endpoint('/pages/19/videos')"
 			:data-create-endpoint="endpoint('/videos')"
+			@feedback="displayFeedback"
 		></video-editor>
 
 		<video-form 

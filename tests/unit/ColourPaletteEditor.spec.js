@@ -303,6 +303,19 @@ describe('ColourPaletteEditor.vue', () => {
 		}, done);
 	})
 
+	it ('displays feedback if the api call is successful', (done) => {
+		mockSuccessfullRequest();
+
+		colourHelper.bootstrapPageEndpoint({id: 12});
+		colourHelper.bootstrapColours();
+		
+		ui.click('$saveChanges');
+		
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeFeedback();
+		}, done);
+	})
+
 	it ('does not persist the changes if the cancel button is clicked', (done) => {
 		colourHelper.bootstrapColours();
 

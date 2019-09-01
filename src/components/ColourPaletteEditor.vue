@@ -141,8 +141,9 @@ export default {
                 })
             });
 
-            form.on('success', () => {
+            form.on('success', (data) => {
                 this.$emit('success');
+                this.$emit('feedback', data.feedback);
             });
 
             form.submit(this.pageEndpoint);

@@ -7,7 +7,6 @@
         <video-url 
             :data-endpoint="dataEndpoint + '/url'" 
             @success="onEmbed"
-            @feedback="onFeedback"
         ></video-url>
         <input type="hidden" name="provider" v-model="form.provider" />
         <input type="hidden" name="provider_id" v-model="form.provider_id" />
@@ -52,9 +51,7 @@ export default {
             Object.assign(this.form, data.record);
 
             this.$emit('embedded');
-        },
-        onFeedback: function(feedback) {
-            this.$emit('feedback', feedback);
+            this.$emit('feedback', data.feedback);
         }
     }
 }

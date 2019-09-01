@@ -155,8 +155,9 @@ export default {
 
             let form = new StyleguideForm({logo: params});
 
-            form.on('success', () => {
+            form.on('success', (data) => {
                 this.$emit('success');
+                this.$emit('feedback', data.feedback);
             });
 
             form.submit(this.dataEndpoint);

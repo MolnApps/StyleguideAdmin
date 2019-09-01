@@ -62,6 +62,20 @@ describe('VideoForm.vue', () => {
 		}, done);
 	})
 
+	it ('displays a feedback after a url is parsed successfully', (done) => {
+		mockSuccessfullUrlRequest({
+			title: 'Video', 
+			provider: 'youtube', 
+			provider_id: '1eMg23jjR_c'
+		});
+
+		ui.type('input[name="url"]', 'https://www.youtube.com/watch?v=1eMg23jjR_c');
+		
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeFeedback();
+		}, done);
+	})
+
 	it ('embeds a video immediately after the api call response', (done) => {
 		mockSuccessfullUrlRequest({
 			title: 'Video', 
@@ -141,17 +155,6 @@ describe('VideoForm.vue', () => {
 		
 		ajaxHelper.expectAfterRequest(() => {
 			ui.seeFeedback();
-		}, done);
-	})
-
-	it.only ('displays error message if the url is not supported', (done) => {
-		mockUrlRequestWithError('The url is not supported');
-
-		ui.type('input[name="url"]', 'foobar');
-
-		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback('The url is not supported');
-			ui.notExpectEvent('success');
 		}, done);
 	})
 

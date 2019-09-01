@@ -92,6 +92,7 @@ export default {
         },
         onSuccess: function(data) {
             this.$emit('success');
+            this.$emit('feedback', data.feedback);
         },
         onCancelChanges: function() {
             this.$emit('cancel');

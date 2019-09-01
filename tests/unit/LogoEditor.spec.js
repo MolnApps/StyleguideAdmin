@@ -122,6 +122,18 @@ describe('LogoEditor.vue', () => {
 		}, done);
 	})
 
+	it ('displays feedback if changes are saved successfully', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+
+		ui.click('$saveChanges');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.seeFeedback();
+		}, done);
+	})
+
 	it ('does not call the api when the cancel changes button is clicked', () => {
 		bootstrapWrapper();
 
