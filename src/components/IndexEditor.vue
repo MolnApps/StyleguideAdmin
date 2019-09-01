@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="! displayPageForm" class="Container" id="editor">
+        <div v-if="displayIndex" class="Container" id="editor">
             <h3 class="Title">Index</h3>
             <div class="List">
                 <index-item 
@@ -20,12 +20,18 @@
             </div>
         </div>
         <page-form 
-            v-if="displayPageForm" 
+            v-if="display.pageForm" 
             :data-page="currentIndex.page" 
             :data-endpoint="dataPageEndpoint"
-            @cancel="onCancel" 
-            @success="onSuccess"
+            @cancel="onEditCancel" 
+            @success="onEditSuccess"
         ></page-form>
+        <page-steps 
+            v-if="display.pageSteps" 
+            :data-endpoint="dataPageEndpoint"
+            @cancel="onAddCancel" 
+            @success="onAddSuccess"
+        ></page-steps>
     </div>
 </template>
 
@@ -33,87 +39,104 @@
 import StyleguideForm from './../StyleguideForm.js';
 import IndexItem from './IndexItem.vue';
 import PageForm from './PageForm.vue';
+import PageSteps from './PageSteps.vue';
 import Btn from './Btn.vue';
 export default {
-    components: {Btn, IndexItem, PageForm},
-    props: ['dataIndex', 'dataEndpoint', 'dataPageEndpoint', 'dataToggleEndpoint'],
+    components: {Btn, IndexItem, PageForm, PageSteps},
+    props: [
+        'dataIndex', 
+        'dataEndpoint', 
+        'dataPageEndpoint', 
+        'dataToggleEndpoint'
+    ],
     data() {
         return {
             index: this.dataIndex,
-            indexForm: null,
-            toggleForm: null,
-            displayPageForm: false,
-            currentIndex: {page: {}},
-            adding: false,
+            currentIndex: null,
+            forms: {
+                index: null,
+                toggleVisibility: null
+            },
+            display: {
+                pageForm: false,
+                pageSteps: false
+            }
+        }
+    },
+    computed: {
+        displayIndex() {
+            return ! this.display.pageForm && ! this.display.pageSteps;
         }
     },
     created() {
-        this.indexForm = new StyleguideForm({});
-        this.toggleForm = new StyleguideForm({});
+        this.forms.index = new StyleguideForm({});
+        this.forms.toggleVisibility = new StyleguideForm({});
     },
     methods: {
         onAdd: function(index) {
-            this.adding = true;
-            this.currentIndex = {page: {}};
-            this.togglePageForm();
+            this.togglePageStepsForm();
         },
         onEdit: function(index) {
             this.currentIndex = index;
             this.togglePageForm();
         },
         onToggle: function(index) {
-            this.toggleForm = new StyleguideForm({id: index.page.id});
-            this.toggleForm.on('success', (response) => {
+            this.forms.toggleVisibility = new StyleguideForm({id: index.page.id});
+            this.forms.toggleVisibility.on('success', (response) => {
                 this.$emit('toggleSuccess');
                 this.$emit('feedback', response.feedback);
             })
-            this.toggleForm.submit(this.dataToggleEndpoint);
+            this.forms.toggleVisibility.submit(this.dataToggleEndpoint);
         },
-        onCancel: function() {
+        onAddCancel: function() {
+            this.togglePageStepsForm();
+        },
+        onEditCancel: function() {
             this.togglePageForm();
         },
-        onSuccess: function(data) {
+        onAddSuccess: function(data) {
+            if ( ! data) {
+                return this.togglePageStepsForm();
+            }
+
+            this.index.push({
+                id: null,
+                parent_id: null,
+                page_id: data.record.id,
+                page: data.record,
+                position: 0
+            });
+
+            this.togglePageStepsForm()
+        },
+        onEditSuccess: function(data) {
             if ( ! data) {
                 return this.togglePageForm();
             }
-
-            if (this.adding) {
-                this.index.push({
-                    id: null,
-                    parent_id: null,
-                    page_id: data.record.id,
-                    page: data.record,
-                    position: 0
-                });
-
-                this.adding = false;
-            } else {
-                this.currentIndex.page_id = data.record.id;
-                this.currentIndex.page = data.record;
-            }
-            
-            this.togglePageForm();
+            this.currentIndex.page_id = data.record.id;
+            this.currentIndex.page = data.record;
+            this.togglePageForm()
+        },
+        onEnd: function() {
+            this.onSaveChanges();
         },
         onCancelChanges: function() {
             this.$emit('cancel');
         },
         onSaveChanges: function() {
-            this.onEnd();
-        },
-        onEnd: function() {
-            this.indexForm = new StyleguideForm({
+            this.forms.index = new StyleguideForm({
                 index: this.serializeIndex(this.index, [])
             });
 
-            this.indexForm.on('success', (response) => {
+            this.forms.index.on('success', (response) => {
                 this.$emit('success');
                 this.$emit('feedback', response.feedback)
             });
-            this.indexForm.on('fail', (response) => {
+            this.forms.index.on('fail', (response) => {
                 this.$emit('feedback', response.feedback)
             });
 
-            this.indexForm.submit(this.dataEndpoint);
+            this.forms.index.submit(this.dataEndpoint);
         },
         serializeIndex: function(index, data) {
             index.forEach((i) => {
@@ -126,7 +149,10 @@ export default {
             return data;
         },
         togglePageForm: function() {
-            this.displayPageForm = ! this.displayPageForm;
+            this.display.pageForm = ! this.display.pageForm;
+        },
+        togglePageStepsForm: function() {
+            this.display.pageSteps = ! this.display.pageSteps;
         }
     }
 }

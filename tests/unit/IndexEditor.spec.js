@@ -1,6 +1,7 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import IndexEditor from '@/components/IndexEditor.vue'
 import PageForm from '@/components/PageForm.vue'
+import PageSteps from '@/components/PageSteps.vue'
 import {TestHelper, AjaxHelper, IndexHelper, StateHelper} from './../helpers/Helpers.js'
 import Draggable from 'vuedraggable'
 
@@ -117,38 +118,38 @@ describe('IndexEditor.vue', () => {
 		ui.seeButton('$add');
 	})
 
-	it ('displays the form when the add button is clicked', () => {
+	it ('displays the page steps when the add button is clicked', () => {
 		bootstrapWrapper();
 
-		ui.notSeeForm('#pageForm');
+		ui.notSeeElement('#pageSteps');
 
 		ui.click('$add');
 
-		ui.seeForm('#pageForm');
+		ui.seeElement('#pageSteps');
 	})
 
-	it ('hides the form when the cancel button is clicked', () => {
+	it ('hides the page steps when the cancel button is clicked', () => {
 		bootstrapWrapper();
 
 		ui.click('$add');
 
-		ui.seeForm('#pageForm')
+		ui.seeElement('#pageSteps');
 
-		wrapper.find(PageForm).vm.$emit('cancel');
+		wrapper.find(PageSteps).vm.$emit('cancel');
 
-		ui.notSeeForm('#pageForm')
+		ui.notSeeElement('#pageSteps')
 	})
 
-	it ('hides the form after a successful api call', () => {
+	it ('hides the page steps after a successful api call', () => {
 		bootstrapWrapper();
 
 		ui.click('$add');
 
-		ui.seeForm('#pageForm')
+		ui.seeElement('#pageSteps');
 
-		wrapper.find(PageForm).vm.$emit('success');
+		wrapper.find(PageSteps).vm.$emit('success');
 
-		ui.notSeeForm('#pageForm')
+		ui.notSeeElement('#pageSteps')
 	})
 
 	it ('removes the page when the remove button is clicked', () => {
@@ -214,7 +215,7 @@ describe('IndexEditor.vue', () => {
 
 		ui.click('$add');
 
-		wrapper.find(PageForm).vm.$emit('success', {
+		wrapper.find(PageSteps).vm.$emit('success', {
 			record: {
 				id: 12, 
 				title: 'Lorem ipsum', 

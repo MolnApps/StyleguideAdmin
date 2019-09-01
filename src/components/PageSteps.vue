@@ -1,5 +1,5 @@
 <template>
-    <div class="Container">
+    <div class="Container" id="pageSteps">
         <ul class="Steps__container Steps__container--margin">
             <li class="Steps__progress" :class="modifierClass('types')">1. Choose page type</li>
             <li class="Steps__progress" :class="modifierClass('components')">2. Choose page component</li>
