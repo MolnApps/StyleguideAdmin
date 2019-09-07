@@ -23,7 +23,7 @@
         </div>
         <person-form 
             v-if="displayForm" 
-            :data-endpoint="dataFormEndpoint" 
+            :data-endpoint="dataEndpoint" 
             :data-person="person" 
             @cancel="onFormClosed" 
             @success="onFormSaved"
@@ -39,8 +39,8 @@ export default {
     components: {Btn, PersonForm},
     props: [
         'dataPagePeople', 
-        'dataEndpoint',
-        'dataFormEndpoint'
+        'dataPageEndpoint',
+        'dataEndpoint'
     ],
     data() {
         return {
@@ -88,7 +88,7 @@ export default {
 
             form.on('success', this.onSuccess.bind(this));
 
-            form.submit(this.dataEndpoint);
+            form.submit(this.dataPageEndpoint);
         },
         onSuccess: function(data) {
             this.$emit('success');

@@ -210,7 +210,8 @@ describe('PeopleEditor.vue', () => {
 					{id: 1, first_name: 'John', middle_name: '', last_name: 'Doe', full_name: 'John Doe', job_title: 'Founder'},
 					{id: 2, first_name: 'Jane', middle_name: '', last_name: 'Doe', full_name: 'Jane Doe', job_title: 'SVP Marketing'}
 				], 
-				dataEndpoint: '/pages/1/people',
+				dataPageEndpoint: '/pages/1/people',
+				dataEndpoint: '/people'
 			}
 		});
 

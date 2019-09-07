@@ -32,8 +32,8 @@
 		<people-editor 
 			:data-page-people="people" 
 			:key="'people' + people.length"
-			:data-endpoint="endpoint('/pages/4/people')"
-			:data-form-endpoint="endpoint('/people')"
+			:data-page-endpoint="endpoint('/pages/4/people')"
+			:data-endpoint="endpoint('/people')"
 			@feedback="displayFeedback"
 		></people-editor>
 

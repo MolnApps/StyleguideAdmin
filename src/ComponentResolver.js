@@ -25,7 +25,8 @@ class ComponentResolver
                 'colour-palette': 'ColourPaletteEditor',
                 'typography': 'TypographyEditor',
                 'moodboard': 'MoodboardEditor',
-                'video': 'VideoEditor'
+                'video': 'VideoEditor',
+                'contacts': 'PeopleEditor'
             },
             idToProps: {
                 'logo': {
@@ -52,6 +53,11 @@ class ComponentResolver
                     dataPageVideo: [],
                     dataPageEndpoint: '/pages/{id}/videos',
                     dataEndpoint: '/videos'
+                },
+                'contacts': {
+                    dataPagePeople: [],
+                    dataPageEndpoint: '/pages/{id}/people',
+                    dataEndpoint: '/people'
                 }
             }
         }

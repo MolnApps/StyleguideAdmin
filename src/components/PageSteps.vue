@@ -52,6 +52,7 @@ import ColourPaletteEditor from './ColourPaletteEditor';
 import TypographyEditor from './TypographyEditor';
 import MoodboardEditor from './MoodboardEditor';
 import VideoEditor from './VideoEditor';
+import PeopleEditor from './PeopleEditor';
 
 import ComponentResolver from './../ComponentResolver.js';
 
@@ -62,7 +63,8 @@ export default {
         ColourPaletteEditor, 
         TypographyEditor, 
         MoodboardEditor, 
-        VideoEditor
+        VideoEditor,
+        PeopleEditor
     },
     props: ['dataEndpoint'],
     data() {

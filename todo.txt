@@ -3,7 +3,6 @@ Implementation
 —— Inject props to component after the page was saved
 ——— Text Side/Logo Safety Areas
 ——— Text Side/Logo Size
-——— Chapter/Contacts
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
 - We should ask for confirmation before deleting an item from the library.
 — Differentiate between feedback types (success, error, notice, etc.)
