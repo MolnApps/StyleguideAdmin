@@ -44,8 +44,9 @@ class ComponentResolver
                     dataPageEndpoint: '/pages/{id}/typefaces'
                 },
                 'moodboard': {
+                    dataPageImages: [], 
                     dataPageEndpoint: '/pages/{id}/images',
-                    dataUploadEndpoint: '/images' 
+                    dataEndpoint: '/images' 
                 },
                 'video': {
                     dataPageVideo: [],

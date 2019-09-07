@@ -63,7 +63,7 @@
 			:data-page-images="images" 
 			:key="'images.' + images.length"
 			:data-page-endpoint="endpoint('/pages/17/images')"
-			:data-upload-endpoint="endpoint('/images')"
+			:data-endpoint="endpoint('/images')"
 			@feedback="displayFeedback"
 		></moodboard-editor>
 		

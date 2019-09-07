@@ -1,8 +1,6 @@
 Implementation
 — Allow to choose a page type and component when creating a page
 —— Inject props to component after the page was saved
-——— Text Side/Video
-——— Text Side/Moodboard
 ——— Text Side/Logo Safety Areas
 ——— Text Side/Logo Size
 ——— Chapter/Contacts

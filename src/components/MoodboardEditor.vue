@@ -26,7 +26,7 @@
             </div>
         </draggable>
         <moodboard-dropzone 
-            :data-endpoint="dataUploadEndpoint"
+            :data-endpoint="dataEndpoint"
             @success="onUploadSuccess"
         ></moodboard-dropzone>
         <div class="Actions">
@@ -46,7 +46,7 @@ export default {
     props: [
         'dataPageImages', 
         'dataPageEndpoint',
-        'dataUploadEndpoint'
+        'dataEndpoint'
     ],
     data() {
         return {

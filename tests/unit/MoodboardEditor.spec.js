@@ -136,7 +136,7 @@ describe('MoodboardEditor.vue', () => {
 			propsData: { 
 				dataPageImages: moodboardHelper.getImages(), 
 				dataPageEndpoint: '/pages/1/images',
-				dataUploadEndpoint: '/images'
+				dataEndpoint: '/images'
 			}
 		});
 
