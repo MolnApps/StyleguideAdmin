@@ -23,7 +23,7 @@
         </div>
         <video-form 
             v-if="displayForm"
-            :data-endpoint="this.dataCreateEndpoint" 
+            :data-endpoint="dataEndpoint" 
             :data-video="video" 
             :key="video.id"
             @success="onSuccess"
@@ -39,7 +39,7 @@ import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
 export default {
     components: {Btn, VideoForm, Draggable},
-    props: ['dataPageVideo', 'dataEndpoint', 'dataCreateEndpoint'],
+    props: ['dataPageVideo', 'dataPageEndpoint', 'dataEndpoint'],
     data() {
         return {
             pageVideo: this.dataPageVideo,
@@ -71,7 +71,7 @@ export default {
             let ids = this.pageVideo.map((v) => { return v.id; });
             this.form = new StyleguideForm({video_id: ids});
             this.form.on('success', this.onSuccessChanges.bind(this));
-            this.form.submit(this.dataEndpoint);
+            this.form.submit(this.dataPageEndpoint);
         },
         onSuccessChanges: function() {
             this.$emit('success');

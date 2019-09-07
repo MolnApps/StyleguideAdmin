@@ -47,6 +47,11 @@ class ComponentResolver
                     dataPageEndpoint: '/pages/{id}/images',
                     dataUploadEndpoint: '/images' 
                 },
+                'video': {
+                    dataPageVideo: [],
+                    dataPageEndpoint: '/pages/{id}/videos',
+                    dataEndpoint: '/videos'
+                }
             }
         }
 	}

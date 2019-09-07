@@ -19,3 +19,4 @@ Implementation
 —— MoodboardEditor: 
 ——— Only one image will be added to the list. 
 ——— Only two out of three images will be saved to the DB.
+— Slug creator (video-1, video-2, video-3 will not go upper than 10)

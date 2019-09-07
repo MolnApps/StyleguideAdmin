@@ -176,8 +176,8 @@ describe('VideoEditor.vue', () => {
 					{id: 1, provider: 'vimeo', provider_id: 'abc123'},
 					{id: 2, provider: 'youtube', provider_id: 'def456'}
 				], 
-				dataEndpoint: '/pages/1/video',
-				dataCreateEndpoint: '/videos'
+				dataPageEndpoint: '/pages/1/video',
+				dataEndpoint: '/videos'
 			}
 		});
 
