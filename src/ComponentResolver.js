@@ -1,3 +1,4 @@
+import Url from './Url.js';
 class ComponentResolver
 {
 	constructor()
@@ -22,6 +23,8 @@ class ComponentResolver
             },
             idToComponent: {
                 'logo': 'LogoEditor',
+                'logo-safety': 'LogoEditor',
+                'logo-size': 'LogoEditor',
                 'colour-palette': 'ColourPaletteEditor',
                 'typography': 'TypographyEditor',
                 'moodboard': 'MoodboardEditor',
@@ -30,6 +33,16 @@ class ComponentResolver
             },
             idToProps: {
                 'logo': {
+                    dataPageLogos: [], 
+                    dataEndpoint: '/logos',
+                    dataPageEndpoint: '/pages/{id}/logos'
+                },
+                'logo-size': {
+                    dataPageLogos: [], 
+                    dataEndpoint: '/logos',
+                    dataPageEndpoint: '/pages/{id}/logos'
+                },
+                'logo-safety': {
                     dataPageLogos: [], 
                     dataEndpoint: '/logos',
                     dataPageEndpoint: '/pages/{id}/logos'
@@ -85,7 +98,7 @@ class ComponentResolver
 	resolveProps(id)
 	{
         return this.hasProps(id)
-        	? this.overridePageId(this.maps.idToProps[id])
+        	? this.normalizeProps(this.maps.idToProps[id])
         	: null;
 	}
 
@@ -101,11 +114,13 @@ class ComponentResolver
 		return this.maps.idToProps[id] !== undefined;
 	}
 
-    overridePageId(props) {
+    normalizeProps(props) {
         props = JSON.parse(JSON.stringify(props));
-        let baseUrl = 'http://styleguide-api.test/api/v1/1';
-        props['dataEndpoint'] = baseUrl + props['dataEndpoint']
-        props['dataPageEndpoint'] = baseUrl + props['dataPageEndpoint'].replace('{id}', this.page.id);
+        let url = new Url();
+        props['dataEndpoint'] = url.append(props['dataEndpoint']);
+        props['dataPageEndpoint'] = url.append(
+            props['dataPageEndpoint'].replace('{id}', this.page.id)
+        );
         return props;
     }
 }

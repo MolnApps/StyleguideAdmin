@@ -153,6 +153,8 @@ import Btn from './components/Btn.vue'
 
 import axios from 'axios';
 
+import Url from './Url.js';
+
 export default {
 	name: 'app',
 	components: {
@@ -243,7 +245,8 @@ export default {
 				});
 		},
 		endpoint: function(path) {
-			return 'http://styleguide-api.test/api/v1/1' + path;
+			return new Url().append(path);
+			//return 'http://styleguide-api.test/api/v1/1' + path;
 		},
 		displayFeedback: function(feedback) {
 			feedback.forEach((message) => {
