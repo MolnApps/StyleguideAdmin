@@ -9,7 +9,7 @@
             :style="'background-color: ' + background" 
             class="PageItem__fill PageItem__fill--noHeight PageItem__fill--withPadding"
         >
-            <img :src="logo.url" class="PageItem__image" />
+            <img :src="logo.url" :width="logo.width" :height="logo.height" class="PageItem__image" />
         </div>
         <span v-if="displayTitle" v-text="logo.title" class="PageItem__title"></span>
         <div class="Actions Actions--small" v-if="editableBg">
