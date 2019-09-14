@@ -21,6 +21,8 @@ let colors = {
   'blue-light': '#6cb2eb',
   'blue-lighter': '#bcdefa',
   'blue-lightest': '#eff8ff',
+
+  'danger': '#ff0000'
 }
 
 module.exports = {

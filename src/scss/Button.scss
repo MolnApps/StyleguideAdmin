@@ -34,6 +34,9 @@
 .Button--primary:hover {
     @apply bg-blue-dark;
 }
+.Button--danger {
+    @apply bg-danger text-white;
+}
 .Button--secondary {
     @apply bg-grey-light text-grey-darkest;
 }

@@ -7,6 +7,7 @@ import ColourForm from '@/components/ColourForm.vue'
 import {TestHelper, AjaxHelper, ColourHelper, StateHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
 import Draggable from 'vuedraggable';
+import ConfirmModal from '@/modals/ConfirmModal.vue'
 
 let stateHelper = new StateHelper();
 let localVue = stateHelper.localVue;
@@ -458,15 +459,32 @@ describe('ColourPaletteEditor.vue', () => {
 		});
 	})
 
-	it ('performs an api call when a library colour remove button is clicked', (done) => {
+	it ('asks for confirmation when a library colour remove button is clicked', () => {
+		bootstrapWrapper();
+
+		ui.seeChildComponent(ConfirmModal);
+	})
+
+	it ('does not perform an api call when a library colour remove button is clicked if cancelled', () => {
+		bootstrapWrapper();
+
+		ui.emit(ConfirmModal, 'cancel');
+
+		ajaxHelper.expectNoRequests();
+	})
+
+	it ('performs an api call when a library colour remove button is clicked if confirmed', (done) => {
 		bootstrapWrapper();
 
 		let returnedColour = colourHelper.make('Green', '#00ff00', 2);
 		mockDeleteRequest(returnedColour);
 
+		ajaxHelper.expectNoRequests();
+
 		ui.see('Green', 'div.all');
 
 		ui.click('div.all div[data-id="2"] .del');
+		ui.emit(ConfirmModal, 'confirm');
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.notSee('Green', 'div.all');

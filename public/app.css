@@ -846,6 +846,11 @@ table {
   background-color: #2779bd;
 }
 
+.Button--danger {
+  background-color: #f00;
+  color: #fff;
+}
+
 .Button--secondary {
   background-color: #dae1e7;
   color: #3d4852;
@@ -1640,6 +1645,10 @@ table {
   background-color: #eff8ff;
 }
 
+.bg-danger {
+  background-color: #f00;
+}
+
 .hover\:bg-transparent:hover {
   background-color: transparent;
 }
@@ -1708,6 +1717,10 @@ table {
   background-color: #eff8ff;
 }
 
+.hover\:bg-danger:hover {
+  background-color: #f00;
+}
+
 .focus\:bg-transparent:focus {
   background-color: transparent;
 }
@@ -1774,6 +1787,10 @@ table {
 
 .focus\:bg-blue-lightest:focus {
   background-color: #eff8ff;
+}
+
+.focus\:bg-danger:focus {
+  background-color: #f00;
 }
 
 .bg-bottom {
@@ -1916,6 +1933,10 @@ table {
   border-color: #eff8ff;
 }
 
+.border-danger {
+  border-color: #f00;
+}
+
 .hover\:border-transparent:hover {
   border-color: transparent;
 }
@@ -1984,6 +2005,10 @@ table {
   border-color: #eff8ff;
 }
 
+.hover\:border-danger:hover {
+  border-color: #f00;
+}
+
 .focus\:border-transparent:focus {
   border-color: transparent;
 }
@@ -2050,6 +2075,10 @@ table {
 
 .focus\:border-blue-lightest:focus {
   border-color: #eff8ff;
+}
+
+.focus\:border-danger:focus {
+  border-color: #f00;
 }
 
 .rounded-none {
@@ -4663,6 +4692,10 @@ table {
   color: #eff8ff;
 }
 
+.text-danger {
+  color: #f00;
+}
+
 .hover\:text-transparent:hover {
   color: transparent;
 }
@@ -4731,6 +4764,10 @@ table {
   color: #eff8ff;
 }
 
+.hover\:text-danger:hover {
+  color: #f00;
+}
+
 .focus\:text-transparent:focus {
   color: transparent;
 }
@@ -4797,6 +4834,10 @@ table {
 
 .focus\:text-blue-lightest:focus {
   color: #eff8ff;
+}
+
+.focus\:text-danger:focus {
+  color: #f00;
 }
 
 .text-xs {
@@ -5301,6 +5342,10 @@ table {
     background-color: #eff8ff;
   }
 
+  .sm\:bg-danger {
+    background-color: #f00;
+  }
+
   .sm\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -5369,6 +5414,10 @@ table {
     background-color: #eff8ff;
   }
 
+  .sm\:hover\:bg-danger:hover {
+    background-color: #f00;
+  }
+
   .sm\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -5435,6 +5484,10 @@ table {
 
   .sm\:focus\:bg-blue-lightest:focus {
     background-color: #eff8ff;
+  }
+
+  .sm\:focus\:bg-danger:focus {
+    background-color: #f00;
   }
 
   .sm\:bg-bottom {
@@ -5569,6 +5622,10 @@ table {
     border-color: #eff8ff;
   }
 
+  .sm\:border-danger {
+    border-color: #f00;
+  }
+
   .sm\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -5637,6 +5694,10 @@ table {
     border-color: #eff8ff;
   }
 
+  .sm\:hover\:border-danger:hover {
+    border-color: #f00;
+  }
+
   .sm\:focus\:border-transparent:focus {
     border-color: transparent;
   }
@@ -5703,6 +5764,10 @@ table {
 
   .sm\:focus\:border-blue-lightest:focus {
     border-color: #eff8ff;
+  }
+
+  .sm\:focus\:border-danger:focus {
+    border-color: #f00;
   }
 
   .sm\:rounded-none {
@@ -8300,6 +8365,10 @@ table {
     color: #eff8ff;
   }
 
+  .sm\:text-danger {
+    color: #f00;
+  }
+
   .sm\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -8368,6 +8437,10 @@ table {
     color: #eff8ff;
   }
 
+  .sm\:hover\:text-danger:hover {
+    color: #f00;
+  }
+
   .sm\:focus\:text-transparent:focus {
     color: transparent;
   }
@@ -8434,6 +8507,10 @@ table {
 
   .sm\:focus\:text-blue-lightest:focus {
     color: #eff8ff;
+  }
+
+  .sm\:focus\:text-danger:focus {
+    color: #f00;
   }
 
   .sm\:text-xs {
@@ -8939,6 +9016,10 @@ table {
     background-color: #eff8ff;
   }
 
+  .md\:bg-danger {
+    background-color: #f00;
+  }
+
   .md\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -9007,6 +9088,10 @@ table {
     background-color: #eff8ff;
   }
 
+  .md\:hover\:bg-danger:hover {
+    background-color: #f00;
+  }
+
   .md\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -9073,6 +9158,10 @@ table {
 
   .md\:focus\:bg-blue-lightest:focus {
     background-color: #eff8ff;
+  }
+
+  .md\:focus\:bg-danger:focus {
+    background-color: #f00;
   }
 
   .md\:bg-bottom {
@@ -9207,6 +9296,10 @@ table {
     border-color: #eff8ff;
   }
 
+  .md\:border-danger {
+    border-color: #f00;
+  }
+
   .md\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -9275,6 +9368,10 @@ table {
     border-color: #eff8ff;
   }
 
+  .md\:hover\:border-danger:hover {
+    border-color: #f00;
+  }
+
   .md\:focus\:border-transparent:focus {
     border-color: transparent;
   }
@@ -9341,6 +9438,10 @@ table {
 
   .md\:focus\:border-blue-lightest:focus {
     border-color: #eff8ff;
+  }
+
+  .md\:focus\:border-danger:focus {
+    border-color: #f00;
   }
 
   .md\:rounded-none {
@@ -11938,6 +12039,10 @@ table {
     color: #eff8ff;
   }
 
+  .md\:text-danger {
+    color: #f00;
+  }
+
   .md\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -12006,6 +12111,10 @@ table {
     color: #eff8ff;
   }
 
+  .md\:hover\:text-danger:hover {
+    color: #f00;
+  }
+
   .md\:focus\:text-transparent:focus {
     color: transparent;
   }
@@ -12072,6 +12181,10 @@ table {
 
   .md\:focus\:text-blue-lightest:focus {
     color: #eff8ff;
+  }
+
+  .md\:focus\:text-danger:focus {
+    color: #f00;
   }
 
   .md\:text-xs {
@@ -12577,6 +12690,10 @@ table {
     background-color: #eff8ff;
   }
 
+  .lg\:bg-danger {
+    background-color: #f00;
+  }
+
   .lg\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -12645,6 +12762,10 @@ table {
     background-color: #eff8ff;
   }
 
+  .lg\:hover\:bg-danger:hover {
+    background-color: #f00;
+  }
+
   .lg\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -12711,6 +12832,10 @@ table {
 
   .lg\:focus\:bg-blue-lightest:focus {
     background-color: #eff8ff;
+  }
+
+  .lg\:focus\:bg-danger:focus {
+    background-color: #f00;
   }
 
   .lg\:bg-bottom {
@@ -12845,6 +12970,10 @@ table {
     border-color: #eff8ff;
   }
 
+  .lg\:border-danger {
+    border-color: #f00;
+  }
+
   .lg\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -12913,6 +13042,10 @@ table {
     border-color: #eff8ff;
   }
 
+  .lg\:hover\:border-danger:hover {
+    border-color: #f00;
+  }
+
   .lg\:focus\:border-transparent:focus {
     border-color: transparent;
   }
@@ -12979,6 +13112,10 @@ table {
 
   .lg\:focus\:border-blue-lightest:focus {
     border-color: #eff8ff;
+  }
+
+  .lg\:focus\:border-danger:focus {
+    border-color: #f00;
   }
 
   .lg\:rounded-none {
@@ -15576,6 +15713,10 @@ table {
     color: #eff8ff;
   }
 
+  .lg\:text-danger {
+    color: #f00;
+  }
+
   .lg\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -15644,6 +15785,10 @@ table {
     color: #eff8ff;
   }
 
+  .lg\:hover\:text-danger:hover {
+    color: #f00;
+  }
+
   .lg\:focus\:text-transparent:focus {
     color: transparent;
   }
@@ -15710,6 +15855,10 @@ table {
 
   .lg\:focus\:text-blue-lightest:focus {
     color: #eff8ff;
+  }
+
+  .lg\:focus\:text-danger:focus {
+    color: #f00;
   }
 
   .lg\:text-xs {
@@ -16215,6 +16364,10 @@ table {
     background-color: #eff8ff;
   }
 
+  .xl\:bg-danger {
+    background-color: #f00;
+  }
+
   .xl\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -16283,6 +16436,10 @@ table {
     background-color: #eff8ff;
   }
 
+  .xl\:hover\:bg-danger:hover {
+    background-color: #f00;
+  }
+
   .xl\:focus\:bg-transparent:focus {
     background-color: transparent;
   }
@@ -16349,6 +16506,10 @@ table {
 
   .xl\:focus\:bg-blue-lightest:focus {
     background-color: #eff8ff;
+  }
+
+  .xl\:focus\:bg-danger:focus {
+    background-color: #f00;
   }
 
   .xl\:bg-bottom {
@@ -16483,6 +16644,10 @@ table {
     border-color: #eff8ff;
   }
 
+  .xl\:border-danger {
+    border-color: #f00;
+  }
+
   .xl\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -16551,6 +16716,10 @@ table {
     border-color: #eff8ff;
   }
 
+  .xl\:hover\:border-danger:hover {
+    border-color: #f00;
+  }
+
   .xl\:focus\:border-transparent:focus {
     border-color: transparent;
   }
@@ -16617,6 +16786,10 @@ table {
 
   .xl\:focus\:border-blue-lightest:focus {
     border-color: #eff8ff;
+  }
+
+  .xl\:focus\:border-danger:focus {
+    border-color: #f00;
   }
 
   .xl\:rounded-none {
@@ -19214,6 +19387,10 @@ table {
     color: #eff8ff;
   }
 
+  .xl\:text-danger {
+    color: #f00;
+  }
+
   .xl\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -19282,6 +19459,10 @@ table {
     color: #eff8ff;
   }
 
+  .xl\:hover\:text-danger:hover {
+    color: #f00;
+  }
+
   .xl\:focus\:text-transparent:focus {
     color: transparent;
   }
@@ -19348,6 +19529,10 @@ table {
 
   .xl\:focus\:text-blue-lightest:focus {
     color: #eff8ff;
+  }
+
+  .xl\:focus\:text-danger:focus {
+    color: #f00;
   }
 
   .xl\:text-xs {

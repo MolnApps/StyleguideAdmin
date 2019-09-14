@@ -1,7 +1,10 @@
 <template>
 	<div id="app" class="">
 		<notifications position="bottom center" classes="Feedback" width="50%" />
-		<btn @click="displayFeedback(['Hello world'])">Display feedback</btn>
+		<div>
+			<btn @click="displayFeedback(['Hello world'])">Display feedback</btn>
+			<btn @click="displayDialog()">Display dialog</btn>
+		</div>
 		<page-steps 
 			:data-endpoint="endpoint('/pages')"
 		></page-steps>
@@ -124,10 +127,14 @@
 			:data-endpoint="endpoint('/colours')"
 			@feedback="displayFeedback"
 		></colour-form>
+
+		<confirm-modal title="colour" @confirm="onConfirm" />
 	</div>
 </template>
 
 <script>
+import ConfirmModal from './modals/ConfirmModal.vue'
+
 import PageSteps from './components/PageSteps.vue'
 
 import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
@@ -178,7 +185,9 @@ export default {
 		TypefaceFamilyForm,
 		VideoForm,
 		// Components
-		Btn
+		Btn,
+		// Modals
+		ConfirmModal
 	},
 	data() {
 		return {
@@ -249,12 +258,17 @@ export default {
 		},
 		endpoint: function(path) {
 			return new Url().append(path);
-			//return 'http://styleguide-api.test/api/v1/1' + path;
 		},
 		displayFeedback: function(feedback) {
 			feedback.forEach((message) => {
                 this.$notify({type:'success', text: message});
             });
+		},
+		displayDialog: function() {
+			this.$modal.show('confirm-modal');
+		},
+		onConfirm: function() {
+			console.log('perform ajax request');
 		}
 	}
 }

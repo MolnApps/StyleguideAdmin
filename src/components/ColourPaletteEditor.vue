@@ -46,17 +46,23 @@
             @success="onSaveColour"
             @cancel="resetAndClose"
         ></colour-form>
+        <confirm-modal 
+            name="remove-colour-modal" 
+            title="colour" 
+            @confirm="confirmRemoveLibraryColour"
+        ></confirm-modal>
     </div>
 </template>
 
 <script>
 import StyleguideForm from './../StyleguideForm.js'
+import ConfirmModal from './../modals/ConfirmModal.vue'
 import ColourForm from './ColourForm.vue'
 import Colour from './Colour.vue'
 import Btn from './Btn.vue'
 import Draggable from 'vuedraggable'
 export default {
-    components: {Btn, ColourForm, Colour, Draggable},
+    components: {Btn, ColourForm, Colour, Draggable, ConfirmModal},
     props: {
         dataPageColours: {type: Array}, 
         //dataAllColours: {type: Array}, 
@@ -70,9 +76,11 @@ export default {
             //allColours: this.dataAllColours,
             pageEndpoint: this.dataPageEndpoint,
             displayForm: false,
+            displayModal: false,
             colour: {},
             colourId: null,
-            editingLibraryColour: false
+            editingLibraryColour: false,
+            colourToRemove: null
         }
     },
     created() {
@@ -107,12 +115,17 @@ export default {
             this.toggleForm();
         },
         removeLibraryColour: function(colour) {
+            this.colourToRemove = colour;
+            this.$modal.show('remove-colour-modal');
+        },
+        confirmRemoveLibraryColour: function() {
             let form  = new StyleguideForm({_method: 'delete'});
             form.on('success', (response) => {
-                this.$store.dispatch('colours/removeById', colour.id);
+                this.$store.dispatch('colours/removeById', this.colourToRemove.id);
                 this.$emit('feedback', form.feedback);
+                this.colourToRemove = null;
             });
-            form.submit(this.dataEndpoint + '/' + colour.id);
+            form.submit(this.dataEndpoint + '/' + this.colourToRemove.id);
         },
         overrideLibraryColour: function(record) {
             this.$store.dispatch('colours/overrideById', {id: this.colour.id, record: record});

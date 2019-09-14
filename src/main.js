@@ -10,6 +10,9 @@ Vue.use(busPlugin)
 import Notifications from 'vue-notification'
 Vue.use(Notifications)
 
+import VModal from 'vue-js-modal'
+Vue.use(VModal)
+
 Vue.config.productionTip = true
 Vue.config.devtools = true
 
