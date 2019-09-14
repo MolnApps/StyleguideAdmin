@@ -52,7 +52,9 @@ class FormDataCollector
 			return;
 		}
 		
-		formData.append(attribute, data[attribute]);
+		if (data[attribute] !== null) {
+			formData.append(attribute, data[attribute]);
+		}
 	}
 
 	handleArrayOrObject(formData, attribute, el, i)

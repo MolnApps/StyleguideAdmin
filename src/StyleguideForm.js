@@ -35,7 +35,6 @@ class StyleguideForm extends EventEmitter
 		}
 
 		data = this.constrainData(data);
-		
 		this.cacheOriginalData(data);
 		this.transferDataToProperties(data);
 	}
