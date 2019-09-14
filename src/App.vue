@@ -1,8 +1,13 @@
 <template>
 	<div id="app" class="">
 		<notifications position="bottom center" classes="Feedback" width="50%" />
-		<div>
-			<btn @click="displayFeedback(['Hello world'])">Display feedback</btn>
+		<div class="Actions px-4">
+			<btn @click="displayFeedback([
+				{type: 'success', text: 'Hello world'},
+			])">Display success feedback</btn>
+			<btn @click="displayFeedback([
+				{type: 'error', text: 'Hello world'},
+			])" type="danger">Display error feedback</btn>
 			<btn @click="displayDialog()">Display dialog</btn>
 		</div>
 		<page-steps 
@@ -261,7 +266,7 @@ export default {
 		},
 		displayFeedback: function(feedback) {
 			feedback.forEach((message) => {
-                this.$notify({type:'success', text: message});
+                this.$notify(message);
             });
 		},
 		displayDialog: function() {

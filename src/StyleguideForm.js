@@ -132,7 +132,7 @@ class StyleguideForm extends EventEmitter
             		this.feedback = error.response.data.feedback;
             		this.errors = error.response.data.errors;
             	} else {
-            		this.feedback = ['Unknown error'];
+            		this.feedback = [{type: 'error', text: 'Unknown error'}];
             		this.errors = {};
             	}
             	
