@@ -1,9 +1,5 @@
 Implementation
-— Differentiate between feedback types (success, error, notice, etc.)
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
 
 — Bugs
 —— If I update a colour without any title or hex, it will not be saved properly (null values in RGB, CMYK, Pantone). This will probably be fixed by the introduction of 'required' validation on the api end.
-—— MoodboardEditor: 
-——— Only one image will be added to the list. 
-——— Only two out of three images will be saved to the DB.

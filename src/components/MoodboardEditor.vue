@@ -9,7 +9,7 @@
             <div 
                 v-for="(image, index) in pageImages" 
                 :data-id="image.id" 
-                :key="image.id" 
+                :key="'image' + image.id" 
                 class="image PageItem"
             >
                 <div class="PageItem__fill PageItem__fill--noWidth">
@@ -28,6 +28,7 @@
         <moodboard-dropzone 
             :data-endpoint="dataEndpoint"
             @success="onUploadSuccess"
+            @feedback="onUploadFeedback"
         ></moodboard-dropzone>
         <div class="Actions">
             <btn ref="cancelChanges" @click="onCancel" type="secondary">Cancel changes</btn>
@@ -77,6 +78,9 @@ export default {
         },
         onUploadSuccess: function(image) {
             this.pageImages.push(image);
+        },
+        onUploadFeedback: function(feedback) {
+            this.$emit('feedback', feedback);
         }
     }
 }

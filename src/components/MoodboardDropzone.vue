@@ -4,6 +4,7 @@
         id="dropzone" 
         :options="dropzoneOptions"
         @vdropzone-success="onSuccess"
+        @vdropzone-queue-complete="onQueueComplete"
     ></dropzone>
 </template>
 
@@ -21,13 +22,23 @@ export default {
                 maxFilesize: 0.5,
                 acceptedFiles: 'image/*',
                 headers: this.getHeaders()
-            }, this.dataOptions)
+            }, this.dataOptions),
+            images: []
         }
     },
     methods: {
         onSuccess: function(file, response) {
-            this.$emit('success', response.record);
-            this.$refs.dropzone.removeFile(file);
+            this.images.push(response.record);
+            //this.$refs.dropzone.removeFile(file);
+        },
+        onQueueComplete: function() {
+            this.images.forEach((image) => {
+                this.$emit('success', image);
+            });
+            this.$emit('feedback', [{
+                type: 'success', 
+                text: 'The images were uploaded successfully'
+            }]);
         },
         getHeaders: function() {
             let endpoint = new Endpoint();
