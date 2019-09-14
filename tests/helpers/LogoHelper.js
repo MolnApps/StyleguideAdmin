@@ -79,7 +79,7 @@ class LogoHelper {
 
 	addLogoFromLibrary()
 	{
-		this.ui.click('div.all div[data-id="2"]');
+		this.ui.click('div.all div[data-id="2"] .add');
 
 		this.ui.seeForm('#logoBgForm');
 		this.ui.type('input[name="hex"]', '#0099ff');

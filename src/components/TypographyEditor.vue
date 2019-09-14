@@ -18,6 +18,7 @@
                     v-for="family in allTypefaceFamilies" 
                     :key="family.id"
                     v-if="hasWeightsNotInPage(family)"
+                    :data-id="family.id"
                     class="PageItem"
                 >
                     <typeface-weight 
@@ -32,6 +33,12 @@
                             type="secondary"
                             size="xs"
                         >Edit</btn>
+                        <btn 
+                            class="del" 
+                            @click="removeTypefaceFamily(family)"
+                            type="secondary"
+                            size="xs"
+                        >Remove</btn>
                     </div>
                 </div>
                 <btn ref="add" @click="addTypefaceFamily" size="m">Add</btn>
@@ -48,16 +55,22 @@
             @success="onSaveTypefaceFamilyForm"
             @cancel="toggleTypefaceFamilyForm"
         ></typeface-family-form>
+        <confirm-modal 
+            name="remove-typeface-family-modal" 
+            title="typeface family" 
+            @confirm="confirmRemoveTypefaceFamily" />
     </div>
 </template>
 
 <script>
-import StyleguideForm from './../StyleguideForm.js'
+import StyleguideForm from '@/StyleguideForm.js'
+import RemoveFromLibraryForm from '@/RemoveFromLibraryForm.js'
 import TypefaceWeight from './TypefaceWeight.vue'
 import TypefaceFamilyForm from './TypefaceFamilyForm.vue'
 import Btn from './Btn.vue'
+import ConfirmModal from '@/modals/ConfirmModal.vue'
 export default {
-    components: {Btn, TypefaceWeight, TypefaceFamilyForm},
+    components: {Btn, TypefaceWeight, TypefaceFamilyForm, ConfirmModal},
     props: [
         'dataPageTypefaceFamilies', 
         'dataPageEndpoint',
@@ -70,7 +83,8 @@ export default {
             display: {
                 typefaceFamilyForm: false
             },
-            form: new StyleguideForm({})
+            form: new StyleguideForm({}),
+            removeForm: null
         }
     },
     methods: {
@@ -144,6 +158,17 @@ export default {
         },
         cancelChanges() {
             this.$emit('cancel');
+        },
+        removeTypefaceFamily(typefaceFamily) {
+            this.removeForm = new RemoveFromLibraryForm(
+                'typefaces', 
+                'remove-typeface-family-modal', 
+                typefaceFamily, 
+                this
+            );
+        },
+        confirmRemoveTypefaceFamily() {
+            this.removeForm.submit(this.dataEndpoint);
         }
     },
     computed: {

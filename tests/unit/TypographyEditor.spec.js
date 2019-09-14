@@ -2,6 +2,7 @@ import { mount, shallowMount } from '@vue/test-utils'
 import TypographyEditor from '@/components/TypographyEditor.vue'
 import {TestHelper, AjaxHelper, TypographyHelper, StateHelper} from './../helpers/Helpers.js'
 import TypefaceFamilyForm from '@/components/TypefaceFamilyForm.vue';
+import ConfirmModal from '@/modals/ConfirmModal.vue';
 
 let stateHelper = new StateHelper();
 let localVue = stateHelper.localVue;
@@ -62,12 +63,6 @@ describe('TypographyEditor.vue', () => {
 		bootstrapWrapper();
 
 		ui.seeElement('div.page div .del');
-	})
-
-	it ('does not provide a way to remove weights from the library', () => {
-		bootstrapWrapper();
-
-		ui.notSeeElement('div.all div .del');
 	})
 
 	it ('displays a button to add a new typeface family', () => {
@@ -288,6 +283,47 @@ describe('TypographyEditor.vue', () => {
 		]);
 
 		expect(wrapper.find('div.page div').exists()).toBe(false);
+	})
+
+	it ('displays a button to remove a typeface family from the library', () => {
+		bootstrapWrapper();
+
+		ui.seeElement('div.all .del');
+	})
+
+	it ('displays a modal before removing a typeface family from the library', () => {
+		bootstrapWrapper();
+
+		ui.seeChildComponent(ConfirmModal);
+	})
+
+	it ('will not remove a typeface family from the library if the user cancels', () => {
+		bootstrapWrapper();
+
+		ui.see('Roboto', '.all');
+
+		ui.click('.all div[data-id="2"] .del');
+		ui.emit(ConfirmModal, 'cancel');
+
+		ajaxHelper.expectNoRequests();
+		ui.see('Roboto', '.all');
+	})
+
+	it ('performs an ajax request if a typeface family is removed from the library with confirmation', (done) => {
+		bootstrapWrapper();
+
+		mockSaveSuccessfullRequest();
+
+		ui.see('Roboto', '.all');
+
+		ui.click('.all div[data-id="2"] .del');
+		ui.emit(ConfirmModal, 'confirm');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.notSee('Roboto', '.all');
+			ajaxHelper.expectRequest('/typography/2', {'_method': 'delete'});
+			ui.seeFeedback();
+		}, done);
 	})
 
 	let bootstrapWrapper = (pageTypefaceFamilies, allTypefaceFamilies) => {

@@ -26,6 +26,7 @@
                     class="PageItem--small"
                     @click="addLogo"
                     @edit-spec="editLogoSpecs"
+                    @remove="removeLogoFromLibrary"
                 ></logo>
             </div>
             <div class="Actions">
@@ -53,19 +54,22 @@
             @success="toggleSpecForm"
             @cancel="toggleSpecForm"
         ></logo-spec-form>
+        <confirm-modal name="remove-logo-modal" title="logo" @confirm="removeLogoFromLibraryConfirm" />
     </div>
 </template>
 
 <script>
-import StyleguideForm from './../StyleguideForm.js'
+import StyleguideForm from '@/StyleguideForm.js'
+import RemoveFromLibraryForm from '@/RemoveFromLibraryForm.js'
 import Logo from './Logo.vue'
 import LogoForm from './LogoForm.vue'
 import LogoBgForm from './LogoBgForm.vue'
 import LogoSpecForm from './LogoSpecForm.vue'
 import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
+import ConfirmModal from '@/modals/ConfirmModal'
 export default {
-    components: {Btn, Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable},
+    components: {Btn, Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable, ConfirmModal},
     props: ['dataPageLogos', 'dataPageEndpoint', 'dataEndpoint'],
     data() {
     	return {
@@ -74,7 +78,8 @@ export default {
             displayForm: false,
             displayBgForm: false,
             displaySpecForm: false,
-            addingLogo: false
+            addingLogo: false,
+            removeLogoForm: null
     	}
     },
     created() {
@@ -160,6 +165,17 @@ export default {
             });
 
             form.submit(this.dataPageEndpoint);
+        },
+        removeLogoFromLibrary(logo) {
+            this.removeLogoForm = new RemoveFromLibraryForm(
+                'logos', 
+                'remove-logo-modal', 
+                logo, 
+                this
+            );
+        },
+        removeLogoFromLibraryConfirm() {
+            this.removeLogoForm.submit(this.dataEndpoint);
         }
     },
     computed: {

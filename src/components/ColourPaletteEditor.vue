@@ -22,7 +22,7 @@
                 <colour
                     v-for="(colour, index) in allColours"
                     v-if="! isInPalette(colour)"
-                    :key="index"
+                    :key="colour.id"
                     :data-colour="colour"
                     :data-editable="true"
                     data-mod="small"
@@ -55,8 +55,9 @@
 </template>
 
 <script>
-import StyleguideForm from './../StyleguideForm.js'
-import ConfirmModal from './../modals/ConfirmModal.vue'
+import StyleguideForm from '@/StyleguideForm.js'
+import RemoveFromLibraryForm from '@/RemoveFromLibraryForm.js';
+import ConfirmModal from '@/modals/ConfirmModal.vue'
 import ColourForm from './ColourForm.vue'
 import Colour from './Colour.vue'
 import Btn from './Btn.vue'
@@ -76,11 +77,11 @@ export default {
             //allColours: this.dataAllColours,
             pageEndpoint: this.dataPageEndpoint,
             displayForm: false,
+            removeForm: false,
             displayModal: false,
             colour: {},
             colourId: null,
-            editingLibraryColour: false,
-            colourToRemove: null
+            editingLibraryColour: false
         }
     },
     created() {
@@ -115,17 +116,15 @@ export default {
             this.toggleForm();
         },
         removeLibraryColour: function(colour) {
-            this.colourToRemove = colour;
-            this.$modal.show('remove-colour-modal');
+            this.removeForm = new RemoveFromLibraryForm(
+                'colours', 
+                'remove-colour-modal', 
+                colour, 
+                this
+            );
         },
         confirmRemoveLibraryColour: function() {
-            let form  = new StyleguideForm({_method: 'delete'});
-            form.on('success', (response) => {
-                this.$store.dispatch('colours/removeById', this.colourToRemove.id);
-                this.$emit('feedback', form.feedback);
-                this.colourToRemove = null;
-            });
-            form.submit(this.dataEndpoint + '/' + this.colourToRemove.id);
+            this.removeForm.submit(this.dataEndpoint);
         },
         overrideLibraryColour: function(record) {
             this.$store.dispatch('colours/overrideById', {id: this.colour.id, record: record});

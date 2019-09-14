@@ -2,12 +2,12 @@
     <div 
         :data-id="logo.id" 
         :data-background="background" 
-        @click="$emit('click', logo)"
         class="PageItem" 
     >
         <div 
+            @click="$emit('click', logo)"
             :style="'background-color: ' + background" 
-            class="PageItem__fill PageItem__fill--noHeight PageItem__fill--withPadding"
+            class="add PageItem__fill PageItem__fill--noHeight PageItem__fill--withPadding"
         >
             <img :src="logo.url" :width="logo.width" :height="logo.height" class="PageItem__image" />
         </div>
@@ -17,7 +17,8 @@
             <btn class="edit" size="xs" type="secondary" @click="$emit('edit', logo)">Edit</btn>
         </div>
         <div class="Actions Actions--small" v-if="editableSpec">
-            <btn class="edit" size="xs" type="secondary" @click="$emit('edit-spec', logo)">Edit</btn>
+            <btn class="edit" size="xs" type="secondary" @click="$emit('edit-spec', logo)">Edit specs</btn>
+            <btn class="del" size="xs" type="secondary" @click="$emit('remove', logo)">Remove</btn>
         </div>
     </div>
 </template>

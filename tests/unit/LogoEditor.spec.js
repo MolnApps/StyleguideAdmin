@@ -6,6 +6,7 @@ import LogoEditor from '@/components/LogoEditor.vue'
 import {TestHelper, AjaxHelper, LogoHelper, StateHelper} from './../helpers/Helpers.js'
 import moxios from 'moxios';
 import Draggable from 'vuedraggable';
+import ConfirmModal from '@/modals/ConfirmModal';
 
 let stateHelper = new StateHelper();
 let localVue = stateHelper.localVue;
@@ -78,7 +79,7 @@ describe('LogoEditor.vue', () => {
 	it ('allows to cancel adding a logo', () => {
 		bootstrapWrapper();
 
-		ui.click('div.all div[data-id="2"]');
+		ui.click('div.all div[data-id="2"] .add');
 
 		ui.seeForm('#logoBgForm');
 		ui.type('input[name="hex"]', '#0099ff');
@@ -298,6 +299,47 @@ describe('LogoEditor.vue', () => {
 
 		ajaxHelper.expectNoRequests();
 		ui.notSeeForm('#logoSpecForm');
+	})
+
+	it ('displays a button to remove a logo from the library', () => {
+		bootstrapWrapper();
+
+		ui.seeElement('.del', '.all');
+	})
+
+	it ('displays a confirmation modal before removing a logo from the library', () => {
+		bootstrapWrapper();
+
+		ui.seeChildComponent(ConfirmModal);
+	})
+
+	it ('will not remove a logo from library if the user cancels', () => {
+		bootstrapWrapper();
+
+		ui.see('Secondary logo positive', '.all');
+
+		ui.click('.all div[data-id="2"] .del');
+		ui.emit(ConfirmModal, 'cancel');
+
+		ajaxHelper.expectNoRequests();
+		ui.see('Secondary logo positive', '.all');
+	})
+
+	it ('will remove a logo from library if the user confirms', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest();
+
+		ui.see('Secondary logo positive', '.all');
+
+		ui.click('.all div[data-id="2"] .del');
+		ui.emit(ConfirmModal, 'confirm');
+
+		ajaxHelper.expectAfterRequest(() => {
+			ui.notSee('Secondary logo positive', '.all');
+			ajaxHelper.expectRequest('/logos/2', {'_method': 'delete'});
+			ui.seeFeedback();
+		}, done);
 	})
 
 	// Utility methods

@@ -1,9 +1,4 @@
 Implementation
-- We should ask for confirmation before deleting an item from the library.
-—— Add remove button from TypographyEditor library items
-—— Add remove button from LogoEditor library items
-—— Add tests for TypographyEditor library items
-—— Add tests for LogoEditor library items
 — Differentiate between feedback types (success, error, notice, etc.)
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
 
