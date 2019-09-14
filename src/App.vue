@@ -86,7 +86,7 @@
 			:data-page-logos="$store.getters['logos/byPageSlug']('logo-primary')" 
 			:key="'logos.' + $store.getters['logos/countByPageSlug']('logo-primary')"
 			:data-all-logos="$store.getters['logos/all']"
-			:data-endpont="endpoint('/logos')"
+			:data-endpoint="endpoint('/logos')"
 			:data-page-endpoint="endpoint('/pages/10/logos')"
 			@feedback="displayFeedback"
 		></logo-editor>
@@ -221,10 +221,13 @@ export default {
 					this.index = r.data.index;
 					this.chapter = r.data.pages[0];
 					this.page = r.data.pages[4];
+
 					this.people = r.data.contacts['contacts'];
 					this.person = this.people[0];
+					
 					this.videos = r.data.videos['reel'];
 					this.video = this.videos[0];
+
 					this.images = r.data.images['moodboard'];
 					
 					this.$store.dispatch('typefaces/initialize', r.data['typefaces']);

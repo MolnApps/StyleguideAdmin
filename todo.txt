@@ -1,16 +1,11 @@
 Implementation
 — I cannot upload a logo from LogoEditor > Add New Logo.
+— Differentiate between feedback types (success, error, notice, etc.)
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
 - We should ask for confirmation before deleting an item from the library.
-— Differentiate between feedback types (success, error, notice, etc.)
-— TypefaceFamilyForm: onSuccess should return just the record, not the whole data structure.
 
 — Bugs
-—— If I click Editor Save Changes without any resource, an error will be thrown.
-——— LogoEditor
-——— ColourPaletteEditor
-——— TypographyEditor
+—— If I update a colour without any title or hex, it will not be saved properly (null values in RGB, CMYK, Pantone). This will probably be fixed by the introduction of 'required' validation on the api end.
 —— MoodboardEditor: 
 ——— Only one image will be added to the list. 
 ——— Only two out of three images will be saved to the DB.
-— Slug creator (video-1, video-2, video-3 will not go upper than 10)

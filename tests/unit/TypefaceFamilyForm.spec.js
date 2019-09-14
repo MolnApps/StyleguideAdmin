@@ -82,12 +82,7 @@ describe('TypefaceFamilyForm.vue', () => {
 
     	ajaxHelper.expectAfterRequest(() => {
     		ui.expectEvent('success');
-    		ui.expectEventData('success', [{
-    			data: {
-	    			feedback: ['The page was updated.'],
-	    			record: typefaceFamily
-    			}
-    		}])
+    		ui.expectEventData('success', [typefaceFamily])
     	}, done);
     })
 

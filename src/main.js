@@ -11,6 +11,7 @@ import Notifications from 'vue-notification'
 Vue.use(Notifications)
 
 Vue.config.productionTip = true
+Vue.config.devtools = true
 
 new Vue({
   render: h => h(App),

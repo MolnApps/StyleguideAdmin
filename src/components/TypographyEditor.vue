@@ -92,10 +92,8 @@ export default {
                 return f.id == id && f.pivot.preferences.weight == weight.weight;
             }).length == 0;
         },
-        onSaveTypefaceFamilyForm: function(data) {
-            let typeface = data.data.record;
-            
-            this.$store.dispatch('typefaces/overrideById', {id: typeface.id, record: typeface});
+        onSaveTypefaceFamilyForm: function(record) {
+            this.$store.dispatch('typefaces/overrideById', {id: record.id, record: record});
 
             this.toggleTypefaceFamilyForm();
         },
