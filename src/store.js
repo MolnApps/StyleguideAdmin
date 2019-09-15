@@ -1,11 +1,17 @@
 import UserInterfaceModule from '@/store/UserInterface.js';
-import LogosModule from '@/store/Logos.js';
+import PageablesModule from '@/store/Pageables.js';
 
 export default {
 	modules: {
 		ui: UserInterfaceModule,
-		logos: LogosModule,
-		typefaces: LogosModule,
-		colours: LogosModule
+		// Pages
+		pages: PageablesModule,
+		// Pageables
+		colours: PageablesModule,
+		images: PageablesModule,
+		logos: PageablesModule,
+		people: PageablesModule,
+		typefaces: PageablesModule,
+		video: PageablesModule,
 	}
 }

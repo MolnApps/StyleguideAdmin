@@ -8,7 +8,11 @@ export default {
 	},
 	mutations: {
 		initialize (state, payload) {
-			state.all = payload._library;
+			if (payload['_library'] !== undefined) {
+				state.all = payload._library;
+			} else {
+				state.all = payload;
+			}
 			state.dictionary = payload;
 		},
 		removeById (state, id) {

@@ -66,7 +66,6 @@ export default {
     components: {Btn, ColourForm, Colour, Draggable, ConfirmModal},
     props: {
         dataPageColours: {type: Array}, 
-        //dataAllColours: {type: Array}, 
         dataEndpoint: {type: String}, 
         dataPageEndpoint: {type: String},
         dataLiveUpdate: {type:Boolean, default: true}
@@ -74,7 +73,6 @@ export default {
     data() {
         return {
             pageColours: this.dataPageColours,
-            //allColours: this.dataAllColours,
             pageEndpoint: this.dataPageEndpoint,
             displayForm: false,
             removeForm: false,
