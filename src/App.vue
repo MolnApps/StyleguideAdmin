@@ -28,12 +28,10 @@
 	            :key="pageId"
 	            @feedback="displayFeedback"
 	        ></component>
-	        <!-- New page -->
-			<page-steps :data-endpoint="endpoint('/pages')"></page-steps>
-			<!-- Index editor -->
+	        <!-- Index editor -->
 			<index-editor 
-				:data-index="index" 
-				:key="'index.' + index.length"
+				:data-index="$store.getters['index/index']" 
+				:key="'index.' + $store.getters['index/index'].length"
 				:data-endpoint="endpoint('/index')"
 				:data-page-endpoint="endpoint('/pages')"
 				:data-toggle-endpoint="endpoint('/pages/toggle')"
@@ -47,30 +45,17 @@
 </template>
 
 <script>
-import ConfirmModal from './modals/ConfirmModal.vue'
+import ConfirmModal from '@/modals/ConfirmModal.vue'
 
-import PageSteps from './components/PageSteps.vue'
-
-import ColourPaletteEditor from './components/ColourPaletteEditor.vue'
-import IndexEditor from './components/IndexEditor.vue'
-import LogoEditor from './components/LogoEditor.vue'
-import MoodboardEditor from './components/MoodboardEditor.vue'
-import PeopleEditor from './components/PeopleEditor.vue'
-import TypographyEditor from './components/TypographyEditor.vue'
-import VideoEditor from './components/VideoEditor.vue'
-import {IndexHelper, MoodboardHelper} from './../tests/helpers/Helpers.js'
-// Forms
-import ChapterForm from './components/ChapterForm.vue'
-import ColourForm from './components/ColourForm.vue'
-import LogoBgForm from './components/LogoBgForm.vue'
-import LogoForm from './components/LogoForm.vue'
-import LogoSpecForm from './components/LogoSpecForm.vue'
-import PageForm from './components/PageForm.vue'
-import PersonForm from './components/PersonForm.vue'
-import TypefaceFamilyForm from './components/TypefaceFamilyForm.vue'
-import VideoForm from './components/VideoForm.vue'
+import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
+import IndexEditor from '@/components/IndexEditor.vue'
+import LogoEditor from '@/components/LogoEditor.vue'
+import MoodboardEditor from '@/components/MoodboardEditor.vue'
+import PeopleEditor from '@/components/PeopleEditor.vue'
+import TypographyEditor from '@/components/TypographyEditor.vue'
+import VideoEditor from '@/components/VideoEditor.vue'
 // Components
-import Btn from './components/Btn.vue'
+import Btn from '@/components/Btn.vue'
 
 import axios from 'axios';
 
@@ -80,7 +65,6 @@ import ComponentResolver from './ComponentResolver.js'
 export default {
 	name: 'app',
 	components: {
-		PageSteps,
 		// Editors
 		ColourPaletteEditor, 
 		IndexEditor,
@@ -89,16 +73,6 @@ export default {
 		PeopleEditor, 
 		TypographyEditor,
 		VideoEditor,
-		// Forms
-		//ChapterForm,
-		//ColourForm,
-		//LogoBgForm,
-		//LogoForm,
-		//LogoSpecForm,
-		//PageForm,
-		//PersonForm,
-		//TypefaceFamilyForm,
-		//VideoForm,
 		// Components
 		Btn,
 		// Modals
@@ -106,8 +80,6 @@ export default {
 	},
 	data() {
 		return {
-			index: [],
-			
 			pageId: null,
 			resolver: new ComponentResolver(this.$store),
 			url: new Url(),
@@ -131,8 +103,8 @@ export default {
 					this.$store.dispatch('video/initialize', r.data['videos']);
 					this.$store.dispatch('people/initialize', r.data['contacts']);
 					
-					this.index = r.data['index'];
-
+					this.$store.dispatch('index/initialize', r.data['index']);
+					
 					this.isLoaded = true;
 				})
 				.catch((error) => {
