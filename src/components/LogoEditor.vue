@@ -73,7 +73,6 @@ export default {
     props: ['dataPage', 'dataPageEndpoint', 'dataEndpoint'],
     data() {
     	return {
-    		pageLogos: this.$store.getters['logos/byPageSlug'](this.dataPage.slug),
     		logo: {},
             displayForm: false,
             displayBgForm: false,
@@ -92,14 +91,20 @@ export default {
             let logoAll = JSON.parse(JSON.stringify(data.data.record));
             this.assignDefaultBackground(logoPage);
             this.removeLogo({id: data.id});
-            this.pageLogos.push(logoPage);
-            this.allLogos.push(logoAll);
+            this.$store.dispatch('logos/addToPage', {
+                page: this.dataPage, 
+                record: logoPage
+            });
+            this.$store.dispatch('logos/add', logoAll);
             this.resetLogoAndClose();
         },
         addLogo: function(logo) {
             let logoCopy = JSON.parse(JSON.stringify(logo));
             this.assignDefaultBackground(logoCopy);
-            this.pageLogos.push(logoCopy);
+            this.$store.dispatch('logos/addToPage', {
+                page: this.dataPage, 
+                record: logoCopy
+            });
             this.addingLogo = true;
             this.editLogoBackground(logoCopy);
         },
@@ -108,8 +113,10 @@ export default {
             Object.assign(logo, {pivot: {preferences: {'background-color': ''}}});
         },
         removeLogo: function(logo) {
-            this.pageLogos = this.pageLogos.filter((l) => {
-                return l.id != logo.id || l.pivot.preferences['background-color'] != logo.pivot.preferences['background-color'];
+            this.$store.dispatch('logos/removeFromPageByIdOrPivot', {
+                page: this.dataPage, 
+                record: logo, 
+                pivotProperty: 'background-color'
             });
         },
         resetLogoAndClose()
@@ -181,6 +188,9 @@ export default {
     computed: {
         allLogos() {
             return this.$store.getters['logos/all'];
+        },
+        pageLogos() {
+            return this.$store.getters['logos/byPageSlug'](this.dataPage.slug);
         }
     }
 }

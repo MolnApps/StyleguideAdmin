@@ -42,6 +42,22 @@ export default {
 		removeFromPageByIndex (state, payload) {
 			state.dictionary[payload.page.slug].splice(payload.index, 1);
 		},
+		removeFromPageByIdOrPivot (state, payload) {
+			state.dictionary[payload.page.slug] = 
+				state.dictionary[payload.page.slug].filter((currentRecord) => {
+                	return currentRecord.id != payload.record.id || 
+                		currentRecord.pivot.preferences[payload.pivotProperty] != 
+                			payload.record.pivot.preferences[payload.pivotProperty];
+            	});
+		},
+		removeFromPageByIdAndPivot (state, payload) {
+			state.dictionary[payload.page.slug] = 
+				state.dictionary[payload.page.slug].filter((currentRecord) => {
+                	return ! (currentRecord.id == payload.record.id && 
+                		currentRecord.pivot.preferences[payload.pivotProperty] == 
+                			payload.record.pivot.preferences[payload.pivotProperty]);
+            	});
+		}
 	},
 	getters: {
 		all (state) {
@@ -72,9 +88,24 @@ export default {
                 return currentRecord.id == payload.record.id;
             }).length > 0;
 		},
+		pageHasWithPivot: (state) => (payload) => {
+			return state.dictionary[payload.page.slug].filter((currentRecord) => {
+			    return currentRecord.id == payload.record.id && 
+			    	currentRecord.pivot.preferences[payload.pivotProperty] == 
+			    		payload.record.pivot.preferences[payload.pivotProperty];
+			}).length == 0;
+		},
 		idsForPage: (state) => (page) => {
 			return state.dictionary[page.slug].map((record) => {
                 return record.id;
+            });
+		},
+		idsAndPivotForPage: (state) => (payload) => {
+			return state.dictionary[payload.page.slug].map((record) => {
+				let tmp = {};
+				tmp['id'] = record.id;
+				tmp[payload.pivotProperty] = record.pivot.preferences[payload.pivotProperty];
+                return tmp;
             });
 		}
 	},
@@ -99,6 +130,12 @@ export default {
 		},
 		removeFromPageByIndex(context, payload) {
 			context.commit('removeFromPageByIndex', payload);
+		},
+		removeFromPageByIdOrPivot(context, payload) {
+			context.commit('removeFromPageByIdOrPivot', payload);
+		},
+		removeFromPageByIdAndPivot(context, payload) {
+			context.commit('removeFromPageByIdAndPivot', payload);
 		}
 	}
 }

@@ -78,7 +78,6 @@ export default {
     ],
     data() {
         return {
-            pageTypefaceFamilies: this.$store.getters['typefaces/byPageSlug'](this.dataPage.slug),
             typefaceFamily: null,
             display: {
                 typefaceFamilyForm: false
@@ -102,9 +101,11 @@ export default {
             }).length > 0;
         },
         weightNotInPage: function(id, weight) {
-            return this.pageTypefaceFamilies.filter((f) => {
-                return f.id == id && f.pivot.preferences.weight == weight.weight;
-            }).length == 0;
+            return this.$store.getters['typefaces/pageHasWithPivot']({
+                page: this.dataPage, 
+                record: {'id': id, pivot: {preferences: weight}},
+                pivotProperty: 'weight',
+            });
         },
         onSaveTypefaceFamilyForm: function(record) {
             this.$store.dispatch('typefaces/overrideById', {id: record.id, record: record});
@@ -135,19 +136,24 @@ export default {
 
             Object.assign(typeface, {pivot: {preferences: {weight: data.weight}}})
 
-            this.pageTypefaceFamilies.push(typeface);
+            this.$store.dispatch('typefaces/addToPage', {
+                page: this.dataPage, 
+                record: typeface
+            });
         },
         removeWeight(data) {
-            this.pageTypefaceFamilies = this.pageTypefaceFamilies.filter((t) => {
-                return ! (t.id == data.id && t.pivot.preferences.weight == data.weight);
+            this.$store.dispatch('typefaces/removeFromPageByIdAndPivot', {
+                page: this.dataPage, 
+                record: {id: data.id, pivot: {preferences: data}}, 
+                pivotProperty: 'weight'
             });
         },
         saveChanges() {
-            let data = this.pageTypefaceFamilies.map((t) => {
-                return {id: t.id, weight: t.pivot.preferences.weight};
-            });
             this.form = new StyleguideForm({
-                typeface: data
+                typeface: this.$store.getters['typefaces/idsAndPivotForPage']({
+                    page: this.dataPage,
+                    pivotProperty: 'weight'
+                })
             });
             this.form.on('success', this.onSuccess.bind(this));
             this.form.submit(this.dataPageEndpoint);
@@ -174,6 +180,9 @@ export default {
     computed: {
         allTypefaceFamilies() {
             return this.$store.getters['typefaces/all'];
+        },
+        pageTypefaceFamilies() {
+            return this.$store.getters['typefaces/byPageSlug'](this.dataPage.slug);
         }
     }
 }
