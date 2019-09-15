@@ -24,21 +24,6 @@ describe('ColourPaletteEditor.vue', () => {
 
 		store = stateHelper.freshStore();
 
-	    wrapper = mount(ColourPaletteEditor, {
-	    	localVue,
-	    	store,
-			propsData: { 
-				dataPageColours: [], 
-				dataAllColours: [], 
-				dataEndpoint: '/colours',
-				dataLiveUpdate: false
-			}
-		});
-
-	    ui = new TestHelper(wrapper);
-
-	    colourHelper.setTestHelper(ui).setWrapper(wrapper);
-	    
 	    ajaxHelper = new AjaxHelper();
 
 	    ajaxHelper.install();
@@ -62,6 +47,8 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('can arrange colours in a different orders', () => {
+		bootstrapWrapper();
+
 		expect(wrapper.find(Draggable).exists()).toBe(true);
 	})
 
@@ -78,6 +65,8 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('hides all other elements when the add form is shown', () => {
+		bootstrapWrapper();
+
 		ui.seeElement('div.page');
 		ui.seeElement('div.all');
 		ui.seeButton('$add');
@@ -94,6 +83,8 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('persists the colour if the save button is clicked', (done) => {
+		bootstrapWrapper();
+
 		let colour = colourHelper.make('Cyan', '#00ffff');
 
 		mockSuccessfullRequest(colour, {id: 25});
@@ -115,6 +106,8 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('does not persist the colour if the cancel button is clicked', () => {
+		bootstrapWrapper();
+
 		let colour = colourHelper.make('Cyan', '#00ffff');
 
 		ui.notSee(colour.title, 'div.page');
@@ -134,6 +127,8 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('displays validation errors', (done) => {
+		bootstrapWrapper();
+
 		mockRequestWithValidationErrors();
 
 		ui.click('$add');
@@ -152,6 +147,8 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('reset the form when the save button is clicked', (done) => {
+		bootstrapWrapper();
+
 		let colour = colourHelper.make('Cyan', '#00ffff');
 
 		mockSuccessfullRequest(colour);
@@ -171,6 +168,8 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('will not affect a previously added colour when adding another colour', (done) => {
+		bootstrapWrapper();
+
 		let colour1 = colourHelper.make('Cyan', '#00ffff');
 		let colour2 = colourHelper.make('Red', '#ff0000');
 
@@ -225,16 +224,18 @@ describe('ColourPaletteEditor.vue', () => {
 	})
 
 	it ('removes a colour from the list', () => {
-		wrapper.setData({
-			pageColours: [
+		bootstrapWrapper();
+		
+		store.dispatch('colours/initialize', {
+			'_library': [
 				{id: 1, title: 'Red', hex: '#ff0000'},
 				{id: 3, title: 'Blue', hex: '#0000ff'}
-			]
+			],
+			'my-colours-page': [
+				{id: 1, title: 'Red', hex: '#ff0000'},
+				{id: 3, title: 'Blue', hex: '#0000ff'}
+			],
 		});
-		store.dispatch('colours/initialize', {'_library': [
-				{id: 1, title: 'Red', hex: '#ff0000'},
-				{id: 3, title: 'Blue', hex: '#0000ff'}
-		]});
 
 		ui.see('Red', 'div.page');
 		ui.see('Blue', 'div.page');
@@ -280,8 +281,7 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('persists the changes if the save button is clicked', (done) => {
 		let newColour = colourHelper.make('Cyan', '#00ffff');
 
-		colourHelper.bootstrapPageEndpoint({id: 12});
-		bootstrapWrapper();
+		bootstrapWrapper({id: 12});
 
 		colourHelper.add(newColour);
 
@@ -311,8 +311,7 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('fires an event if the api call is successful', (done) => {
 		mockSuccessfullRequest();
 
-		colourHelper.bootstrapPageEndpoint({id: 12});
-		bootstrapWrapper();
+		bootstrapWrapper({id: 12});
 		
 		ui.click('$saveChanges');
 		
@@ -324,7 +323,8 @@ describe('ColourPaletteEditor.vue', () => {
 	it ('displays feedback if the api call is successful', (done) => {
 		mockSuccessfullRequest();
 
-		colourHelper.bootstrapPageEndpoint({id: 12});
+		bootstrapWrapper({id: 12});
+
 		ui.click('$saveChanges');
 		
 		ajaxHelper.expectAfterRequest(() => {
@@ -428,7 +428,7 @@ describe('ColourPaletteEditor.vue', () => {
 
 	it ('will edit a page colour after editing a library colour', (done) => {
 		bootstrapWrapper();
-
+		
 		mockSuccessfullRequest(colourHelper.make('Lime', '#00ffff'), {id: 2});
 
 		ui.see('Green', 'div.all');
@@ -493,12 +493,39 @@ describe('ColourPaletteEditor.vue', () => {
 		}, done);
 	})
 
-	let bootstrapWrapper = () => {
-		colourHelper.bootstrapColours();
+	let bootstrapWrapper = (overridePageId) => {
+		bootstrapStore();
+
+		let page = {id: 1, slug: 'my-colours-page', component: 'colour-palette'};
+		if (overridePageId) {
+			Object.assign(page, overridePageId);
+		}
+
+		wrapper = mount(ColourPaletteEditor, {
+	    	localVue,
+	    	store,
+			propsData: { 
+				dataPage: page,
+				dataEndpoint: '/colours',
+				dataPageEndpoint: '/page/' + page.id + '/colours',
+				dataLiveUpdate: false
+			}
+		});
+
+	    ui = new TestHelper(wrapper);
+
+	    colourHelper.setTestHelper(ui).setWrapper(wrapper);
+	}
+
+	let bootstrapStore = () => {
 		store.dispatch('colours/initialize', {
 			'_library': [
 				colourHelper.make('Red', '#ff0000', 1),
 				colourHelper.make('Green', '#00ff00', 2),
+				colourHelper.make('Blue', '#0000ff', 3)
+			],
+			'my-colours-page': [
+				colourHelper.make('Red', '#ff0000', 1),
 				colourHelper.make('Blue', '#0000ff', 3)
 			]
 		});

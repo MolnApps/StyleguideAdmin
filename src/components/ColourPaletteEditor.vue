@@ -65,15 +65,13 @@ import Draggable from 'vuedraggable'
 export default {
     components: {Btn, ColourForm, Colour, Draggable, ConfirmModal},
     props: {
-        dataPageColours: {type: Array}, 
+        dataPage: {type:Object},
         dataEndpoint: {type: String}, 
         dataPageEndpoint: {type: String},
         dataLiveUpdate: {type:Boolean, default: true}
     },
     data() {
         return {
-            pageColours: this.dataPageColours,
-            pageEndpoint: this.dataPageEndpoint,
             displayForm: false,
             removeForm: false,
             displayModal: false,
@@ -87,17 +85,13 @@ export default {
     },
     methods: {
         isInPalette: function(colour) {
-            return this.pageColours.filter((c) => {
-                return c.id == colour.id;
-            }).length > 0;
+            return this.$store.getters['colours/pageHas']({page: this.dataPage, record: colour});
         },
         addPageColour: function(colour) {
-            this.pageColours.push(colour);
+            this.$store.dispatch('colours/addToPage', {page: this.dataPage, record: colour});
         },
         removePageColour: function(colour) {
-            this.pageColours = this.pageColours.filter((c) => {
-                return c.id != colour.id;
-            });
+            this.$store.dispatch('colours/removeFromPage', {page: this.dataPage, record: colour});
         },
         editPageColour: function(colour) {
             this.colourId = colour.id;
@@ -142,9 +136,7 @@ export default {
         },
         saveChanges: function() {
             let form = new StyleguideForm({
-                colour_id: this.pageColours.map((c) => {
-                    return c.id;
-                })
+                colour_id: this.$store.getters['colours/idsForPage'](this.dataPage)
             });
 
             form.on('success', (data) => {
@@ -152,7 +144,7 @@ export default {
                 this.$emit('feedback', data.feedback);
             });
 
-            form.submit(this.pageEndpoint);
+            form.submit(this.dataPageEndpoint);
         },
         cancelChanges: function() {
             this.$emit('cancel');
@@ -180,6 +172,9 @@ export default {
     computed: {
         allColours() {
             return this.$store.getters['colours/all'];
+        },
+        pageColours() {
+            return this.$store.getters['colours/byPageSlug'](this.dataPage.slug);
         }
     }
 }

@@ -327,18 +327,13 @@ describe('TypographyEditor.vue', () => {
 	})
 
 	let bootstrapWrapper = (pageTypefaceFamilies, allTypefaceFamilies) => {
-		bootstrapStore(allTypefaceFamilies);
-
-		pageTypefaceFamilies = pageTypefaceFamilies ? pageTypefaceFamilies : [
-			typographyHelper.makeWithPivot(1, 'Rubik', [700, 400, 300], 700),
-			typographyHelper.makeWithPivot(2, 'Roboto', [400, 300], 300)
-		];
+		bootstrapStore(pageTypefaceFamilies, allTypefaceFamilies);
 
 		wrapper = mount(TypographyEditor, {
 			localVue,
 			store,
 			propsData: {
-				dataPageTypefaceFamilies: pageTypefaceFamilies,
+				dataPage: {id: 1, slug: 'my-typography-page', component: 'typography'},
 				dataEndpoint: '/typography',
 				dataPageEndpoint: '/pages/1/typefaces'
 			}
@@ -349,7 +344,7 @@ describe('TypographyEditor.vue', () => {
 	    typographyHelper.setWrapper(wrapper).setTestHelper(ui);
 	}
 
-	let bootstrapStore = (allTypefaceFamilies) => {
+	let bootstrapStore = (pageTypefaceFamilies, allTypefaceFamilies) => {
 		allTypefaceFamilies = allTypefaceFamilies
 			? allTypefaceFamilies
 			: [
@@ -357,7 +352,17 @@ describe('TypographyEditor.vue', () => {
 				typographyHelper.make(2, 'Roboto', [400, 300])
 			];
 
-		store.dispatch('typefaces/initialize', {'_library': allTypefaceFamilies});
+		pageTypefaceFamilies = pageTypefaceFamilies 
+			? pageTypefaceFamilies 
+			: [
+				typographyHelper.makeWithPivot(1, 'Rubik', [700, 400, 300], 700),
+				typographyHelper.makeWithPivot(2, 'Roboto', [400, 300], 300)
+			];
+
+		store.dispatch('typefaces/initialize', {
+			'_library': allTypefaceFamilies,
+			'my-typography-page': pageTypefaceFamilies
+		});
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

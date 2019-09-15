@@ -45,25 +45,30 @@ import Btn from './Btn.vue'
 export default {
     components: {Btn, Draggable, MoodboardDropzone},
     props: [
-        'dataPageImages', 
+        'dataPage', 
         'dataPageEndpoint',
         'dataEndpoint'
     ],
     data() {
         return {
-            pageImages: this.dataPageImages,
             form: null
+        }
+    },
+    computed: {
+        pageImages() {
+            return this.$store.getters['images/byPageSlug'](this.dataPage.slug);
         }
     },
     methods: {
         onRemove: function(index) {
-            this.pageImages.splice(index, 1);
+            this.$store.dispatch('images/removeFromPageByIndex', {
+                page: this.dataPage, 
+                index: index
+            });
         },
         onSave: function() {
             let data = {
-                image_id: this.pageImages.map((i) => {
-                    return i.id;
-                })
+                image_id: this.$store.getters['images/idsForPage'](this.dataPage)
             };
             this.form = new StyleguideForm(data);
             this.form.on('success', this.onSuccess);
@@ -77,7 +82,10 @@ export default {
             this.$emit('feedback', this.form.feedback);
         },
         onUploadSuccess: function(image) {
-            this.pageImages.push(image);
+            this.$store.dispatch('images/addToPage', {
+                page: this.dataPage, 
+                record: image
+            });
         },
         onUploadFeedback: function(feedback) {
             this.$emit('feedback', feedback);

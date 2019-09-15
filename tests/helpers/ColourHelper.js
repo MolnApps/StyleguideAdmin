@@ -17,21 +17,6 @@ class ColourHelper {
 		return this;
 	}
 
-	bootstrapPageEndpoint (page) {
-		this.wrapper.setData({
-			pageEndpoint: '/page/' + page.id + '/colours'
-		});
-	}
-
-	bootstrapColours () {
-		this.wrapper.setData({
-			pageColours: [
-				this.make('Red', '#ff0000', 1),
-				this.make('Blue', '#0000ff', 3)
-			]
-		});
-	}
-
 	make (title, hex, id) {
 		return Object.assign({
 			title: title, 

@@ -39,18 +39,25 @@ import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
 export default {
     components: {Btn, VideoForm, Draggable},
-    props: ['dataPageVideo', 'dataPageEndpoint', 'dataEndpoint'],
+    props: ['dataPage', 'dataPageEndpoint', 'dataEndpoint'],
     data() {
         return {
-            pageVideo: this.dataPageVideo,
             video: {},
             displayForm: false,
             form: new StyleguideForm({video_id: []})
         };
     },
+    computed: {
+        pageVideo() {
+            return this.$store.getters['video/byPageSlug'](this.dataPage.slug);
+        }
+    },
     methods: {
         onRemove: function(index) {
-            this.pageVideo.splice(index, 1);
+            this.$store.dispatch('video/removeFromPageByIndex', {
+                page: this.dataPage, 
+                index: index
+            });
         },
         onEdit: function(video) {
             this.video = video;
@@ -61,15 +68,19 @@ export default {
             this.toggleForm();
         },
         onSuccess: function(video) {
-            this.pageVideo.push(video);
+            this.$store.dispatch('video/addToPage', {
+                page: this.dataPage, 
+                record: video
+            });
             this.toggleForm();
         },
         onCancel: function() {
             this.toggleForm();
         },
         onSaveChanges: function() {
-            let ids = this.pageVideo.map((v) => { return v.id; });
-            this.form = new StyleguideForm({video_id: ids});
+            this.form = new StyleguideForm({
+                video_id: this.$store.getters['video/idsForPage'](this.dataPage)
+            });
             this.form.on('success', this.onSuccessChanges.bind(this));
             this.form.submit(this.dataPageEndpoint);
         },

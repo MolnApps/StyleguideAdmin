@@ -38,15 +38,19 @@ import Btn from './Btn.vue'
 export default {
     components: {Btn, PersonForm},
     props: [
-        'dataPagePeople', 
+        'dataPage',
         'dataPageEndpoint',
         'dataEndpoint'
     ],
     data() {
         return {
-            pagePeople: this.dataPagePeople,
             displayForm: false,
             person: {contacts: []}
+        }
+    },
+    computed: {
+        pagePeople() {
+            return this.$store.getters['people/byPageSlug'](this.dataPage.slug);
         }
     },
     methods: {

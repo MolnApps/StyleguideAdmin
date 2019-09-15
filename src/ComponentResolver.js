@@ -34,71 +34,45 @@ class ComponentResolver
             },
             idToProps: {
                 'logo': {
-                    dataPageLogos: [], 
+                    dataPage: null,
                     dataEndpoint: '/logos',
                     dataPageEndpoint: '/pages/{id}/logos'
                 },
                 'logo-size': {
-                    dataPageLogos: [], 
+                    dataPage: null,
                     dataEndpoint: '/logos',
                     dataPageEndpoint: '/pages/{id}/logos'
                 },
                 'logo-safety': {
-                    dataPageLogos: [], 
+                    dataPage: null,
                     dataEndpoint: '/logos',
                     dataPageEndpoint: '/pages/{id}/logos'
                 },
                 'colour-palette': {
-                    dataPageColours: [],
+                    dataPage: null,
                     dataEndpoint: '/colours',
                     dataPageEndpoint: '/pages/{id}/colours'
                 },
                 'typography': {
-                    dataPageTypefaceFamilies: [],
+                    dataPage: null,
                     dataEndpoint: '/colours',
                     dataPageEndpoint: '/pages/{id}/typefaces'
                 },
                 'moodboard': {
-                    dataPageImages: [], 
+                    dataPage: null,
                     dataPageEndpoint: '/pages/{id}/images',
                     dataEndpoint: '/images' 
                 },
                 'video': {
-                    dataPageVideo: [],
+                    dataPage: null,
                     dataPageEndpoint: '/pages/{id}/videos',
                     dataEndpoint: '/videos'
                 },
                 'contacts': {
-                    dataPagePeople: [],
+                    dataPage: null,
                     dataPageEndpoint: '/pages/{id}/people',
                     dataEndpoint: '/people'
                 }
-            },
-            idToStore: {
-                'colour-palette': {
-                    prop: 'dataPageColours', 
-                    module: 'colours'
-                },
-                'contacts': {
-                    prop: 'dataPagePeople', 
-                    module: 'people'
-                },
-                'logo': {
-                    prop: 'dataPageLogos', 
-                    module: 'logos'
-                },
-                'moodboard': {
-                    prop: 'dataPageImages', 
-                    module: 'images'
-                },
-                'typography': {
-                    prop: 'dataPageTypefaceFamilies', 
-                    module: 'typefaces'
-                },
-                'video': {
-                    prop: 'dataPageVideo', 
-                    module: 'video'
-                },
             }
         }
 	}
@@ -141,15 +115,11 @@ class ComponentResolver
 		return this.maps.idToProps[id] !== undefined;
 	}
 
-    hasStore(id) {
-        return this.maps.idToStore[id] !== undefined;
-    }
-
     normalizeProps(props) {
         props = JSON.parse(JSON.stringify(props));
         
         props = this.normalizeEndpoints(props);
-        props = this.normalizeStore(props);
+        props = this.normalizePage(props);
 
         return props;
     }
@@ -163,15 +133,8 @@ class ComponentResolver
         return props;
     }
 
-    normalizeStore(props) {
-        if ( ! this.hasStore(this.page.component)) {
-            return props;
-        }
-
-        let propName = this.maps.idToStore[this.page.component].prop;
-        let storeModule = this.maps.idToStore[this.page.component].module;
-        props[propName] = this.store.getters[storeModule + '/byPageSlug'](this.page.slug);
-
+    normalizePage(props) {
+        props['dataPage'] = this.page;
         return props;
     }
 }

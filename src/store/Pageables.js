@@ -29,7 +29,19 @@ export default {
 		},
 		add (state, record) {
 			state.all.push(record);
-		}
+		},
+		addToPage (state, payload) {
+			state.dictionary[payload.page.slug].push(payload.record);
+		},
+		removeFromPage (state, payload) {
+			state.dictionary[payload.page.slug] = 
+				state.dictionary[payload.page.slug].filter((currentRecord) => {
+                	return currentRecord.id != payload.record.id;
+            	});
+		},
+		removeFromPageByIndex (state, payload) {
+			state.dictionary[payload.page.slug].splice(payload.index, 1);
+		},
 	},
 	getters: {
 		all (state) {
@@ -55,6 +67,16 @@ export default {
 				? state.dictionary[slug].length
 				: 0;
 		},
+		pageHas: (state) => (payload) => {
+			return state.dictionary[payload.page.slug].filter((currentRecord) => {
+                return currentRecord.id == payload.record.id;
+            }).length > 0;
+		},
+		idsForPage: (state) => (page) => {
+			return state.dictionary[page.slug].map((record) => {
+                return record.id;
+            });
+		}
 	},
 	actions: {
 		initialize (context, payload) {
@@ -68,6 +90,15 @@ export default {
 		},
 		add(context, record) {
 			context.commit('add', record);
+		},
+		addToPage(context, payload) {
+			context.commit('addToPage', payload);
+		},
+		removeFromPage(context, payload) {
+			context.commit('removeFromPage', payload);
+		},
+		removeFromPageByIndex(context, payload) {
+			context.commit('removeFromPageByIndex', payload);
 		}
 	}
 }

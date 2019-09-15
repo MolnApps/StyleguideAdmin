@@ -72,13 +72,13 @@ import ConfirmModal from '@/modals/ConfirmModal.vue'
 export default {
     components: {Btn, TypefaceWeight, TypefaceFamilyForm, ConfirmModal},
     props: [
-        'dataPageTypefaceFamilies', 
+        'dataPage',
         'dataPageEndpoint',
         'dataEndpoint'
     ],
     data() {
         return {
-            pageTypefaceFamilies: this.dataPageTypefaceFamilies,
+            pageTypefaceFamilies: this.$store.getters['typefaces/byPageSlug'](this.dataPage.slug),
             typefaceFamily: null,
             display: {
                 typefaceFamilyForm: false

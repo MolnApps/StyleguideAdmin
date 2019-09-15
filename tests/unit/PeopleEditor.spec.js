@@ -193,6 +193,8 @@ describe('PeopleEditor.vue', () => {
 	})
 
 	let bootstrapComponent = () => {
+		bootstrapStore();
+
 		returnedRecord = {
 			id: 15, 
 			first_name: 'Robert', 
@@ -206,16 +208,23 @@ describe('PeopleEditor.vue', () => {
 			localVue,
 			store,
 			propsData: { 
-				dataPagePeople: [
-					{id: 1, first_name: 'John', middle_name: '', last_name: 'Doe', full_name: 'John Doe', job_title: 'Founder'},
-					{id: 2, first_name: 'Jane', middle_name: '', last_name: 'Doe', full_name: 'Jane Doe', job_title: 'SVP Marketing'}
-				], 
+				dataPage: {id: 1, slug: 'my-contacts-page', component: 'contacts'},
 				dataPageEndpoint: '/pages/1/people',
 				dataEndpoint: '/people'
 			}
 		});
 
 		ui = new TestHelper(wrapper);
+	}
+
+	let bootstrapStore = () => {
+		store.dispatch('people/initialize', {
+			'_library': [],
+			'my-contacts-page': [
+				{id: 1, first_name: 'John', middle_name: '', last_name: 'Doe', full_name: 'John Doe', job_title: 'Founder'},
+				{id: 2, first_name: 'Jane', middle_name: '', last_name: 'Doe', full_name: 'Jane Doe', job_title: 'SVP Marketing'}
+			],
+		})
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

@@ -168,20 +168,29 @@ describe('VideoEditor.vue', () => {
 	})
 
 	let bootstrapComponent = () => {
+		bootstrapStore();
+
 		wrapper = mount(VideoEditor, {
 			localVue,
 			store,
 			propsData: { 
-				dataPageVideo: [
-					{id: 1, provider: 'vimeo', provider_id: 'abc123'},
-					{id: 2, provider: 'youtube', provider_id: 'def456'}
-				], 
+				dataPage: {id: 1, slug: 'my-video-page', component: 'video'}, 
 				dataPageEndpoint: '/pages/1/video',
 				dataEndpoint: '/videos'
 			}
 		});
 
 		ui = new TestHelper(wrapper);
+	}
+
+	let bootstrapStore = () => {
+		store.dispatch('video/initialize', {
+			'_library': [],
+			'my-video-page': [
+				{id: 1, provider: 'vimeo', provider_id: 'abc123'},
+				{id: 2, provider: 'youtube', provider_id: 'def456'}
+			],
+		})
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

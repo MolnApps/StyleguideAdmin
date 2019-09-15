@@ -130,11 +130,13 @@ describe('MoodboardEditor.vue', () => {
 	})
 
 	let bootstrapComponent = () => {
+		bootstrapStore();
+
 		wrapper = mount(MoodboardEditor, {
 			localVue,
 			store,
 			propsData: { 
-				dataPageImages: moodboardHelper.getImages(), 
+				dataPage: {id: 1, slug: 'my-moodboard-page', component: 'moodboard'}, 
 				dataPageEndpoint: '/pages/1/images',
 				dataEndpoint: '/images'
 			}
@@ -143,6 +145,13 @@ describe('MoodboardEditor.vue', () => {
 		ui = new TestHelper(wrapper);
 
 		moodboardHelper.setWrapper(wrapper).setTestHelper(ui);
+	}
+
+	let bootstrapStore = () => {
+		store.dispatch('images/initialize', {
+			'_library': [],
+			'my-moodboard-page': moodboardHelper.getImages(),
+		})
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

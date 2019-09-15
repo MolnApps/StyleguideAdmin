@@ -70,10 +70,10 @@ import Btn from './Btn.vue'
 import ConfirmModal from '@/modals/ConfirmModal'
 export default {
     components: {Btn, Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable, ConfirmModal},
-    props: ['dataPageLogos', 'dataPageEndpoint', 'dataEndpoint'],
+    props: ['dataPage', 'dataPageEndpoint', 'dataEndpoint'],
     data() {
     	return {
-    		pageLogos: this.dataPageLogos,
+    		pageLogos: this.$store.getters['logos/byPageSlug'](this.dataPage.slug),
     		logo: {},
             displayForm: false,
             displayBgForm: false,

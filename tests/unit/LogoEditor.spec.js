@@ -347,16 +347,11 @@ describe('LogoEditor.vue', () => {
 	let bootstrapWrapper = () => {
 		bootstrapStore();
 
-		let pageLogos = [
-			logoHelper.make('Primary logo', logoHelper.merge({id:1}, logoHelper.pivot('#ffffff'))),
-			logoHelper.make('Primary logo', logoHelper.merge({id:1}, logoHelper.pivot('#000000')))
-		];
-
 		wrapper = mount(LogoEditor, {
 			localVue,
 			store,
 			propsData: { 
-				dataPageLogos: pageLogos, 
+				dataPage: {id: 1, slug: 'my-logo-page', component: 'logo'},
 				dataPageEndpoint: '/pages/1/logos',
 				dataEndpoint: '/logos'
 			}
@@ -368,11 +363,17 @@ describe('LogoEditor.vue', () => {
 	}
 
 	let bootstrapStore = () => {
-		store.dispatch('logos/initialize', {'_library': [
-			logoHelper.make('Primary logo', {id: 1}),
-			logoHelper.make('Secondary logo positive', {id: 2}),
-			logoHelper.make('Secondary logo negative', {id: 3})
-		]});
+		store.dispatch('logos/initialize', {
+			'_library': [
+				logoHelper.make('Primary logo', {id: 1}),
+				logoHelper.make('Secondary logo positive', {id: 2}),
+				logoHelper.make('Secondary logo negative', {id: 3})
+			],
+			'my-logo-page': [
+				logoHelper.make('Primary logo', logoHelper.merge({id:1}, logoHelper.pivot('#ffffff'))),
+				logoHelper.make('Primary logo', logoHelper.merge({id:1}, logoHelper.pivot('#000000')))
+			]
+		});
 	}
 
 	let mockSuccessfullRequest = (record, override) => {
