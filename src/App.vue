@@ -2,13 +2,19 @@
 	<div id="app" class="">
 		<!-- Feedback tests -->
 		<div class="Actions px-4">
-			<btn size="s" @click="displayFeedback([
-				{type: 'success', text: 'Hello world'},
-			])">Display success feedback</btn>
-			<btn size="s" @click="displayFeedback([
-				{type: 'error', text: 'Hello world'},
-			])" type="danger">Display error feedback</btn>
-			<btn size="s" @click="displayDialog()">Display dialog</btn>
+			<btn 
+				size="s" 
+				@click="displayFeedback([{type: 'success', text: 'Hello world'}])"
+			>Display success feedback</btn>
+			<btn 
+				size="s" 
+				@click="displayFeedback([{type: 'error', text: 'Hello world'}])" 
+				type="danger"
+			>Display error feedback</btn>
+			<btn 
+				size="s" 
+				@click="$modal.show('confirm-modal')"
+			>Display dialog</btn>
 		</div>
 		<!-- View editors -->
 		<div v-if="isLoaded">
@@ -21,122 +27,73 @@
 				<btn size="xs" @click="pageId = 19">Video editor</btn>
 			</div>
 			<!-- Dynamic component -->
-			<component 
-	            v-if="pageId" 
-	            :is="resolveComponent" 
-	            v-bind="resolveProps"
-	            :key="pageId"
-	            @feedback="displayFeedback"
-	        ></component>
-	        <!-- Index editor -->
+			<styleguide-editor 
+				:page="$store.getters['pages/byId'](pageId)" 
+				@cancelChanges="pageId = null" 
+				@feedback="displayFeedback"
+			></styleguide-editor>
+			<!-- Index editor -->
 			<index-editor 
 				:data-index="$store.getters['index/index']" 
 				:key="'index.' + $store.getters['index/index'].length"
-				:data-endpoint="endpoint('/index')"
-				:data-page-endpoint="endpoint('/pages')"
-				:data-toggle-endpoint="endpoint('/pages/toggle')"
+				:data-endpoint="url.append('/index')"
+				:data-page-endpoint="url.append('/pages')"
+				:data-toggle-endpoint="url.append('/pages/toggle')"
 				@feedback="displayFeedback"
 			></index-editor>
 		</div>
         <!-- Notifications and Modals -->
         <notifications position="bottom center" classes="Feedback" width="50%" />
-        <confirm-modal title="colour" @confirm="onConfirm" />
+        <confirm-modal title="colour" />
 	</div>
 </template>
 
 <script>
+// Modals
 import ConfirmModal from '@/modals/ConfirmModal.vue'
-
-import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
-import IndexEditor from '@/components/IndexEditor.vue'
-import LogoEditor from '@/components/LogoEditor.vue'
-import MoodboardEditor from '@/components/MoodboardEditor.vue'
-import PeopleEditor from '@/components/PeopleEditor.vue'
-import TypographyEditor from '@/components/TypographyEditor.vue'
-import VideoEditor from '@/components/VideoEditor.vue'
 // Components
+import StyleguideEditor from '@/components/StyleguideEditor.vue'
+import IndexEditor from '@/components/IndexEditor.vue'
 import Btn from '@/components/Btn.vue'
 
 import axios from 'axios';
 
-import Url from './Url.js';
-import ComponentResolver from './ComponentResolver.js'
+import Url from '@/Url.js';
+import StyleguideLoader from '@/StyleguideLoader.js'
+import bus from '@/bus.js';
 
 export default {
 	name: 'app',
 	components: {
-		// Editors
-		ColourPaletteEditor, 
+		StyleguideEditor, 
 		IndexEditor,
-		LogoEditor, 
-		MoodboardEditor, 
-		PeopleEditor, 
-		TypographyEditor,
-		VideoEditor,
-		// Components
 		Btn,
-		// Modals
 		ConfirmModal
 	},
 	data() {
 		return {
 			pageId: null,
-			resolver: new ComponentResolver(this.$store),
+			
 			url: new Url(),
 			isLoaded: false
 		}
 	},
 	created() {
+		bus.$on('styleguide_loaded', this.onLoadStyleguide.bind(this));
+		bus.$on('feedback', this.displayFeedback.bind(this));
 		this.loadStyleguide();
 	},
 	methods: {
 		loadStyleguide: function() {
-			axios.get(this.endpoint('/all'))
-				.then((r) => {
-					// Initialize store
-					this.$store.dispatch('pages/initialize', r.data['pages']);
-					// Initialize pageables
-					this.$store.dispatch('logos/initialize', r.data['logos']);
-					this.$store.dispatch('colours/initialize', r.data['colour-palette']);
-					this.$store.dispatch('typefaces/initialize', r.data['typefaces']);
-					this.$store.dispatch('images/initialize', r.data['images']);
-					this.$store.dispatch('video/initialize', r.data['videos']);
-					this.$store.dispatch('people/initialize', r.data['contacts']);
-					
-					this.$store.dispatch('index/initialize', r.data['index']);
-					
-					this.isLoaded = true;
-				})
-				.catch((error) => {
-					
-				});
+			new StyleguideLoader(this.$store, this.url).load();
 		},
-		endpoint: function(path) {
-			return this.url.append(path);
+		onLoadStyleguide: function() {
+			this.isLoaded = true;
 		},
 		displayFeedback: function(feedback) {
 			feedback.forEach((message) => {
                 this.$notify(message);
             });
-		},
-		displayDialog: function() {
-			this.$modal.show('confirm-modal');
-		},
-		onConfirm: function() {
-			console.log('perform ajax request');
-		}
-	},
-	computed: {
-		resolveComponent() {
-			this.resolver.setPage(this.page);
-			return this.resolver.resolve(this.page.component);
-        },
-		resolveProps() {
-			this.resolver.setPage(this.page);
-			return this.resolver.resolveProps(this.page.component);
-		},
-		page() {
-			return this.$store.getters['pages/byId'](this.pageId);
 		}
 	}
 }

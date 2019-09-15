@@ -1,5 +1,6 @@
 Implementation
-— Create a StyleguideLoader object
+- Embed StyleguideEditor inside PageSteps (instead of duplicating component)
 — Move the responsibility of loading the Pageables for a Page from the ComponentResolver to individual *Editor.vue classes
+- Refactor feedback to use Bus.js
 — When I add a Text page (so no qualified component editor is shown), add the new page to the store and reset PageSteps component.
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
