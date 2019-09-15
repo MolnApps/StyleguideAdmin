@@ -29,7 +29,7 @@
 			<!-- Dynamic component -->
 			<styleguide-editor 
 				:page="$store.getters['pages/byId'](pageId)" 
-				@cancelChanges="pageId = null" 
+				@cancel="pageId = null" 
 				@feedback="displayFeedback"
 			></styleguide-editor>
 			<!-- Index editor -->

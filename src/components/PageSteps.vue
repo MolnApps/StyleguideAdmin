@@ -35,36 +35,24 @@
             v-if="display.form" 
             @success="displayComponent"
         ></page-form>
-        <component 
-            v-if="data.component && display.editor" 
-            :is="resolveComponent" 
-            v-bind="resolveProps"
+        <styleguide-editor
+            v-if="data.component && display.editor"
+            :page="page"
             @success="onSuccess"
-        ></component>
+        ></styleguide-editor>
     </div>
 </template>
 
 <script>
 import PageForm from './PageForm';
-
-import LogoEditor from './LogoEditor';
-import ColourPaletteEditor from './ColourPaletteEditor';
-import TypographyEditor from './TypographyEditor';
-import MoodboardEditor from './MoodboardEditor';
-import VideoEditor from './VideoEditor';
-import PeopleEditor from './PeopleEditor';
+import StyleguideEditor from '@/components/StyleguideEditor';
 
 import ComponentResolver from './../ComponentResolver.js';
 
 export default {
     components: {
         PageForm, 
-        LogoEditor, 
-        ColourPaletteEditor, 
-        TypographyEditor, 
-        MoodboardEditor, 
-        VideoEditor,
-        PeopleEditor
+        StyleguideEditor,
     },
     props: ['dataEndpoint'],
     data() {
@@ -81,12 +69,6 @@ export default {
     computed: {
         componentsForType() {
             return this.resolver.componentsForType(this.data.type);
-        },
-        resolveComponent: function() {
-            return this.resolver.resolve(this.data.component);
-        },
-        resolveProps: function() {
-            return this.resolver.resolveProps(this.data.component);
         }
     },
     methods: {

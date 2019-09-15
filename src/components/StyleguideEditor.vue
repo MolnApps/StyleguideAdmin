@@ -6,6 +6,7 @@
         :key="page.id"
         @feedback="onFeedback"
         @cancel="onCancelChanges"
+        @success="onSaveChanges"
     ></component>
 </template>
 
@@ -53,7 +54,10 @@ export default {
             this.$emit('feedback', payload);
         },
         onCancelChanges: function(payload) {
-            this.$emit('cancelChanges', payload);
+            this.$emit('cancel', payload);
+        },
+        onSaveChanges: function(payload) {
+            this.$emit('success', payload);
         }
     }
 }

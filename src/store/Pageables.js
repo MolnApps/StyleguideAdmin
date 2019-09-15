@@ -46,7 +46,9 @@ export default {
 			})[0];
 		},
 		byPageSlug: (state) => (slug) => {
-			return state.dictionary[slug];
+			return state.dictionary[slug] !== undefined 
+				? state.dictionary[slug] 
+				: [];
 		},
 		countByPageSlug: (state) => (slug) => {
 			return  state.dictionary[slug] !== undefined

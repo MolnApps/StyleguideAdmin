@@ -1,7 +1,11 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import PageSteps from '@/components/PageSteps.vue'
+
 import PageForm from '@/components/PageForm.vue'
 import ChapterForm from '@/components/ChapterForm.vue'
+
+import StyleguideEditor from '@/components/StyleguideEditor.vue'
+
 import LogoEditor from '@/components/LogoEditor.vue'
 import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
 import TypographyEditor from '@/components/TypographyEditor.vue'
@@ -129,7 +133,7 @@ describe('PageSteps.vue', () => {
 	})
 
 	it ('displays logo editor for after successful page creation', (done) => {
-		mockSuccessfulRequest();
+		mockSuccessfulRequest(null, {component: 'logo'});
 
 		createPageWithComponent('logo');
 
@@ -139,7 +143,7 @@ describe('PageSteps.vue', () => {
 	})
 
 	it ('displays colour palette editor after successful page creation', (done) => {
-		mockSuccessfulRequest();
+		mockSuccessfulRequest(null, {component: 'colour-palette'});
 
 		createPageWithComponent('colour-palette');
 
@@ -149,7 +153,7 @@ describe('PageSteps.vue', () => {
 	})
 
 	it ('displays typography editor after successful page creation', (done) => {
-		mockSuccessfulRequest();
+		mockSuccessfulRequest(null, {component: 'typography'});
 
 		createPageWithComponent('typography');
 
@@ -159,7 +163,7 @@ describe('PageSteps.vue', () => {
 	})
 
 	it ('displays moodboard editor after successful page creation', (done) => {
-		mockSuccessfulRequest();
+		mockSuccessfulRequest(null, {component: 'moodboard'});
 
 		createPageWithComponent('moodboard');
 
@@ -169,7 +173,7 @@ describe('PageSteps.vue', () => {
 	})
 
 	it ('displays video editor after successful page creation', (done) => {
-		mockSuccessfulRequest();
+		mockSuccessfulRequest(null, {component: 'video'});
 
 		createPageWithComponent('video');
 
