@@ -1,5 +1,11 @@
 import Vue from 'vue';
 
+let _initializePageSlug = (state, page) => {
+	if (state.dictionary[page.slug] === undefined) {
+		Vue.set(state.dictionary, page.slug, []);
+	}
+}
+
 export default {
 	namespaced: true,
 	state () {
@@ -33,12 +39,12 @@ export default {
 			state.all.push(record);
 		},
 		addToPage (state, payload) {
-			this._initializePageSlug(state, payload.page);
+			_initializePageSlug(state, payload.page);
 
 			state.dictionary[payload.page.slug].push(payload.record);
 		},
 		removeFromPage (state, payload) {
-			this._initializePageSlug(state, payload.page);
+			_initializePageSlug(state, payload.page);
 
 			state.dictionary[payload.page.slug] = 
 				state.dictionary[payload.page.slug].filter((currentRecord) => {
@@ -46,12 +52,12 @@ export default {
             	});
 		},
 		removeFromPageByIndex (state, payload) {
-			this._initializePageSlug(state, payload.page);
+			_initializePageSlug(state, payload.page);
 			
 			state.dictionary[payload.page.slug].splice(payload.index, 1);
 		},
 		removeFromPageByIdAndPivot (state, payload) {
-			this._initializePageSlug(state, payload.page);
+			_initializePageSlug(state, payload.page);
 
 			state.dictionary[payload.page.slug] = 
 				state.dictionary[payload.page.slug].filter((currentRecord) => {
@@ -59,11 +65,6 @@ export default {
                 		currentRecord.pivot.preferences[payload.pivotProperty] == 
                 			payload.record.pivot.preferences[payload.pivotProperty]);
             	});
-		},
-		_initializePageSlug (state, page) {
-			if (state.dictionary[page.slug] === undefined) {
-				Vue.set(state.dictionary, page.slug, []);
-			}
 		}
 	},
 	getters: {

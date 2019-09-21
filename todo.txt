@@ -1,3 +1,3 @@
 Implementation
-- I cannot upload a new logo when creating a new page.
+— 
 - When the user removes a page with children from the index, ask where to append the children of the deleted page
