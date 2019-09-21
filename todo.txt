@@ -1,3 +1,2 @@
 Implementation
-— When creating a new logo, I should be asked about its specifications.
 - When the user removes a page with children from the index, ask where to append the children of the deleted page

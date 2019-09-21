@@ -36,7 +36,7 @@
         </div>
         <logo-form 
             v-if="displayForm"
-            :data-endpoint="dataEndpoint + '/' + logo.id" 
+            :data-endpoint="dataEndpoint" 
             :data-logo="logo" 
             @success="onSaveLogo"
             @cancel="resetLogoAndClose"
@@ -49,9 +49,9 @@
         ></logo-bg-form>
         <logo-spec-form 
             v-if="displaySpecForm" 
+            :data-endpoint="dataEndpoint"
             :data-logo="logo" 
-            :data-endpoint="dataEndpoint + '/' + logo.id"
-            @success="toggleSpecForm"
+            @success="onSaveLogoSpecs"
             @cancel="toggleSpecForm"
         ></logo-spec-form>
         <confirm-modal name="remove-logo-modal" title="logo" @confirm="removeLogoFromLibraryConfirm" />
@@ -98,6 +98,12 @@ export default {
             });
             this.$store.dispatch('logos/add', logoAll);
             this.resetLogoAndClose();
+            this.editLogoSpecs(logoPage);
+        },
+        onSaveLogoSpecs(record)
+        {
+            this.$store.dispatch('logos/overrideById', {id: record.id, record: record});
+            this.toggleSpecForm();
         },
         addLogo: function(logo) {
             let logoCopy = JSON.parse(JSON.stringify(logo));

@@ -147,7 +147,7 @@ export default {
             this.form.submit(this.dataEndpoint);
         },
         onSuccess: function(data) {
-            this.$emit('success', {data: data});
+            this.$emit('success', data.record);
             bus.$emit('feedback', data.feedback);
         }
     }

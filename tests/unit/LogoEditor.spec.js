@@ -177,16 +177,21 @@ describe('LogoEditor.vue', () => {
 	it ('adds the logo to the page if the form save button is clicked', (done) => {
 		bootstrapWrapper();
 
-		let logo = logoHelper.make('My logo');
+		let returnedLogo = logoHelper.make('My logo');
 
-		mockSuccessfullRequest(logo, {id: 25});
+		mockSuccessfullRequest(returnedLogo, {id: 25});
 
 		ui.click('$add');
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			logoHelper.seePageLogo(25, '');
-		}, done);
+			ui.seeForm('#logoSpecForm');
+			ui.click('#save');
+		}, () => {
+			ajaxHelper.expectAfterRequest(() => {
+				logoHelper.seePageLogo(25, '');
+			}, done)
+		});
 	})
 
 	it ('does not hide logo form with validation errors', (done) => {
@@ -300,6 +305,24 @@ describe('LogoEditor.vue', () => {
 		ajaxHelper.expectNoRequests();
 		ui.notSeeForm('#logoSpecForm');
 	})
+
+	it ('updates the logo with the logo returned by the api call', (done) => {
+		bootstrapWrapper();
+
+		mockSuccessfullRequest(logoHelper.make('Foobar', {id: 2}), {display_width: '300px'});
+
+		logoHelper.clickEditLogo();
+
+		ui.seeInput('input[name="display_width"]', '200px');
+		ui.click('button[id="save"]');
+
+		ajaxHelper.expectAfterRequest(() => {
+			logoHelper.clickEditLogo();
+			ui.seeInput('input[name="display_width"]', '300px');
+		}, done);
+	})
+
+	// Remove logos
 
 	it ('displays a button to remove a logo from the library', () => {
 		bootstrapWrapper();

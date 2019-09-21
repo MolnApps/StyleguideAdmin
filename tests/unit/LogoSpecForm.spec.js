@@ -68,7 +68,9 @@ describe('LogoSpecForm.vue', () => {
 	it ('emits an event when the save logo button is clicked', (done) => {
 		bootstrapWrapper();
 
-		mockSuccessfullRequest(logoHelper.make('Foobar', {id: 2}), {});
+		let returnedLogo = logoHelper.make('Foobar', {id: 2});
+
+		mockSuccessfullRequest(returnedLogo, {});
 
 		logoHelper.fillSpecForm();
 
@@ -76,6 +78,7 @@ describe('LogoSpecForm.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('success');
+			ui.expectEventData('success', [returnedLogo]);
 		}, done);
 	})
 
