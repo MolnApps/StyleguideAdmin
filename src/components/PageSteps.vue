@@ -4,7 +4,7 @@
             <li class="Steps__progress" :class="modifierClass('types')">1. Choose page type</li>
             <li class="Steps__progress" :class="modifierClass('components')">2. Choose page component</li>
             <li class="Steps__progress" :class="modifierClass('form')">3. Page contents</li>
-            <li class="Steps__progress Steps__progress--back" id="back" @click="onReset">&lsaquo; Cancel</li>
+            <li class="Steps__progress Steps__progress--back" id="back" @click="onCancel">&lsaquo; Cancel</li>
         </ul>
         <div id="pageTypes" v-if="display.types">
             <h2 class="Title">Choose a page type</h2>
@@ -34,6 +34,7 @@
             :data-endpoint="dataEndpoint"
             v-if="display.form" 
             @success="displayComponent"
+            @cancel="onReset"
         ></page-form>
         <styleguide-editor
             v-if="data.component && display.editor"
@@ -46,13 +47,14 @@
 <script>
 import PageForm from './PageForm';
 import StyleguideEditor from '@/components/StyleguideEditor';
-
+import Btn from './Btn';
 import ComponentResolver from './../ComponentResolver.js';
 
 export default {
     components: {
         PageForm, 
         StyleguideEditor,
+        Btn
     },
     props: ['dataEndpoint'],
     data() {
@@ -96,11 +98,18 @@ export default {
                 this.display.editor = true;
             } else {
                 this.$emit('success', record);
+                this.initialize();
             }
         },
         onSuccess: function() {
             this.$emit('success', this.page);
             this.initialize();
+        },
+        onCancel: function() {
+            if (this.data.type == '') {
+                this.$emit('cancel');
+            }
+            this.onReset();
         },
         onReset: function() {
             this.initialize();

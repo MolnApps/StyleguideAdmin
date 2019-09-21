@@ -109,7 +109,8 @@ describe('PageSteps.vue', () => {
 		ui.click('#save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeChildComponent(PageForm);
+			ui.seeElement('#pageTypes');
+			//ui.seeChildComponent(PageForm);
 		}, done);
 	})
 
@@ -190,6 +191,23 @@ describe('PageSteps.vue', () => {
 		ui.click('#back');
 
 		ui.seeElement('#pageTypes');
+	})
+
+	it ('emits an event when the user clicks on cancel', () => {
+		ui.notExpectEvent('cancel');
+
+		ui.click('#back');
+
+		ui.expectEvent('cancel');
+	})
+
+	it ('does not emit an event when the user has begun the process', () => {
+		ui.notExpectEvent('cancel');
+
+		ui.click('#type-text-side');
+		ui.click('#back');
+
+		ui.notExpectEvent('cancel');
 	})
 
 	let bootstrapWrapper = (page) => {
