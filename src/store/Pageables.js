@@ -33,28 +33,37 @@ export default {
 			state.all.push(record);
 		},
 		addToPage (state, payload) {
-			if (state.dictionary[payload.page.slug] === undefined) {
-				Vue.set(state.dictionary, payload.page.slug, []);
-			}
+			this._initializePageSlug(state, payload.page);
 
 			state.dictionary[payload.page.slug].push(payload.record);
 		},
 		removeFromPage (state, payload) {
+			this._initializePageSlug(state, payload.page);
+
 			state.dictionary[payload.page.slug] = 
 				state.dictionary[payload.page.slug].filter((currentRecord) => {
                 	return currentRecord.id != payload.record.id;
             	});
 		},
 		removeFromPageByIndex (state, payload) {
+			this._initializePageSlug(state, payload.page);
+			
 			state.dictionary[payload.page.slug].splice(payload.index, 1);
 		},
 		removeFromPageByIdAndPivot (state, payload) {
+			this._initializePageSlug(state, payload.page);
+
 			state.dictionary[payload.page.slug] = 
 				state.dictionary[payload.page.slug].filter((currentRecord) => {
                 	return ! (currentRecord.id == payload.record.id && 
                 		currentRecord.pivot.preferences[payload.pivotProperty] == 
                 			payload.record.pivot.preferences[payload.pivotProperty]);
             	});
+		},
+		_initializePageSlug (state, page) {
+			if (state.dictionary[page.slug] === undefined) {
+				Vue.set(state.dictionary, page.slug, []);
+			}
 		}
 	},
 	getters: {

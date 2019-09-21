@@ -278,25 +278,6 @@ describe('Pageables.vue', () => {
 			expect(state.dictionary['page-1'].length).toBe(2);
 		})
 
-		it ('adds a pageable to a page by slug if it does not exists', () => {
-			const state = {
-				dictionary: {
-					'page-1': [{id: 1, title: 'Red'}],
-					'page-2': [{id: 2, title: 'Green'}, {id: 3, title: 'Blue'}],
-					'page-3': [],
-				}
-			}
-
-			expect(state.dictionary['page-4']).toBe(undefined);
-			
-			Pageables.mutations['addToPage'](state, {
-				page: {id: 1, slug: 'page-4'}, 
-				record: {id: 4, title: 'Orange'}
-			});
-
-			expect(state.dictionary['page-4'].length).toBe(1);
-		})
-
 		it ('removes a pageable from a page by slug', () => {
 			const state = {
 				dictionary: {
@@ -364,6 +345,62 @@ describe('Pageables.vue', () => {
 			expect(state.dictionary['page-2'][0].pivot.preferences.color).toEqual('lime');
 			expect(state.dictionary['page-2'][1].title).toEqual('Baz');
 			expect(state.dictionary['page-2'][1].pivot.preferences.color).toEqual('blue');
+		})
+
+		describe('Modify pages pageables if the page has none', () => {
+			let state;
+			
+			beforeEach (() => {
+				state = {
+					dictionary: {}
+				}
+			})
+
+			it ('adds a pageable to a page by slug', () => {
+				expect(Object.keys(state.dictionary).length).toBe(0);
+				
+				Pageables.mutations['addToPage'](state, {
+					page: {id: 1, slug: 'page-4'}, 
+					record: {id: 4, title: 'Orange'}
+				});
+
+				expect(Object.keys(state.dictionary).length).toBe(1);
+				expect(state.dictionary['page-4'].length).toBe(1);
+			})
+
+			it ('removes a pageable from a page by slug', () => {
+				expect(Object.keys(state.dictionary).length).toBe(0);
+				
+				Pageables.mutations['removeFromPage'](state, {
+					page: {slug: 'page-2'}, 
+					record: {id: 3}
+				});
+
+				expect(Object.keys(state.dictionary).length).toBe(1);
+			})
+
+			it ('removes a pageable from a page by index', () => {
+				expect(Object.keys(state.dictionary).length).toBe(0);
+				
+				Pageables.mutations['removeFromPageByIndex'](state, {
+					page: {slug: 'page-2'}, 
+					index: 0
+				});
+
+				expect(Object.keys(state.dictionary).length).toBe(1);
+			})
+
+			it ('removes a pageable from a page by id and by pivot', () => {
+				expect(Object.keys(state.dictionary).length).toBe(0);
+				
+				Pageables.mutations['removeFromPageByIdAndPivot'](state, {
+					page: {slug: 'page-4'}, 
+					record: {id: 2, pivot: {preferences: {color: 'green'}}},
+					pivotProperty: 'color'
+				});
+
+				expect(Object.keys(state.dictionary).length).toBe(1);
+			})
 		})
 	})
 })
