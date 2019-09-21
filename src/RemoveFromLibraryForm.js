@@ -1,5 +1,5 @@
 import StyleguideForm from './StyleguideForm'
-import bus from '@/bus.js'
+import bus from './bus.js'
 
 class RemoveFromLibraryForm
 {

@@ -50,17 +50,17 @@
 
 <script>
 // Modals
-import ConfirmModal from '@/modals/ConfirmModal.vue'
+import ConfirmModal from './modals/ConfirmModal.vue'
 // Components
-import StyleguideEditor from '@/components/StyleguideEditor.vue'
-import IndexEditor from '@/components/IndexEditor.vue'
-import Btn from '@/components/Btn.vue'
+import StyleguideEditor from './components/StyleguideEditor.vue'
+import IndexEditor from './components/IndexEditor.vue'
+import Btn from './components/Btn.vue'
 
 import axios from 'axios';
 
-import Url from '@/Url.js';
-import StyleguideLoader from '@/StyleguideLoader.js'
-import bus from '@/bus.js';
+import Url from './Url.js';
+import StyleguideLoader from './StyleguideLoader.js'
+import bus from './bus.js';
 
 export default {
 	name: 'app',

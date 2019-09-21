@@ -1,6 +1,6 @@
-import UserInterfaceModule from '@/store/UserInterface.js';
-import IndexModule from '@/store/Index.js';
-import PageablesModule from '@/store/Pageables.js';
+import UserInterfaceModule from './store/UserInterface.js';
+import IndexModule from './store/Index.js';
+import PageablesModule from './store/Pageables.js';
 
 export default {
 	modules: {
