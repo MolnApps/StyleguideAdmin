@@ -2,6 +2,7 @@
   "name": "styleguide-admin",
   "version": "0.1.5",
   "private": false,
+  "main": "index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

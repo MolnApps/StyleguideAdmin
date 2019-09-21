@@ -1,9 +1,20 @@
-import FooPage from './src/components/Page.vue';
-import PageForm from './src/components/PageForm.vue';
+// Modals
+import StyleguideConfirmModal from './src/modals/ConfirmModal.vue'
+// Components
+import StyleguideEditor from './src/components/StyleguideEditor.vue'
+import StyleguideIndexEditor from './src/components/IndexEditor.vue'
+// Javascript
+import StyleguideUrl from '@/Url.js';
+import StyleguideLoader from '@/StyleguideLoader.js'
+import StyleguideBus from '@/bus.js';
 
 export { 
-	FooPage,
-	PageForm
+	StyleguideConfirmModal,
+	StyleguideEditor,
+	StyleguideIndexEditor,
+	StyleguideUrl,
+	StyleguideLoader,
+	StyleguideBus
 }
 
 export default {}
