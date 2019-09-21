@@ -1,6 +1,6 @@
 <template>
     <div class="Container">
-        <form id="logoBgForm" class="Form" @submit.prevent="">
+        <form id="logoBgForm" class="Form">
             <h3 class="Title">Background</h3>
             <div class="Form__row">
                 <div class="flex items-stretch justify-center">

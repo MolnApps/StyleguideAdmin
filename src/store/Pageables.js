@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 export default {
 	namespaced: true,
 	state () {
@@ -32,7 +34,7 @@ export default {
 		},
 		addToPage (state, payload) {
 			if (state.dictionary[payload.page.slug] === undefined) {
-				state.dictionary[payload.page.slug] = []
+				Vue.set(state.dictionary, payload.page.slug, []);
 			}
 
 			state.dictionary[payload.page.slug].push(payload.record);
