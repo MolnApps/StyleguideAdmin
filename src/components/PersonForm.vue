@@ -55,7 +55,7 @@
 import StyleguideForm from './../StyleguideForm.js'
 import ContactForm from './ContactForm.vue'
 import Btn from './Btn.vue'
-import bus from '@/bus.js'
+import bus from './../bus.js'
 export default {
     components: {Btn, ContactForm},
     props: ['dataPerson', 'dataEndpoint'],

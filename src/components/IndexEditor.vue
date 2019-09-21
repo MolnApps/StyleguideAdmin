@@ -41,7 +41,7 @@ import IndexItem from './IndexItem.vue';
 import PageForm from './PageForm.vue';
 import PageSteps from './PageSteps.vue';
 import Btn from './Btn.vue';
-import bus from '@/bus.js';
+import bus from './../bus.js';
 export default {
     components: {Btn, IndexItem, PageForm, PageSteps},
     props: [

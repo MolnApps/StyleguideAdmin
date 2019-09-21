@@ -63,13 +63,13 @@
 </template>
 
 <script>
-import StyleguideForm from '@/StyleguideForm.js'
-import RemoveFromLibraryForm from '@/RemoveFromLibraryForm.js'
+import StyleguideForm from './../StyleguideForm.js'
+import RemoveFromLibraryForm from './../RemoveFromLibraryForm.js'
 import TypefaceWeight from './TypefaceWeight.vue'
 import TypefaceFamilyForm from './TypefaceFamilyForm.vue'
 import Btn from './Btn.vue'
-import ConfirmModal from '@/modals/ConfirmModal.vue'
-import bus from '@/bus.js'
+import ConfirmModal from './../modals/ConfirmModal.vue'
+import bus from './../bus.js'
 export default {
     components: {Btn, TypefaceWeight, TypefaceFamilyForm, ConfirmModal},
     props: [

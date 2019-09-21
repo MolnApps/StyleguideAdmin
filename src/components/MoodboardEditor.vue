@@ -42,7 +42,7 @@ import Draggable from 'vuedraggable'
 import MoodboardDropzone from './MoodboardDropzone.vue'
 import StyleguideForm from './../StyleguideForm'
 import Btn from './Btn.vue'
-import bus from '@/bus.js'
+import bus from './../bus.js'
 export default {
     components: {Btn, Draggable, MoodboardDropzone},
     props: [

@@ -11,15 +11,15 @@
 </template>
 
 <script>
-import bus from '@/bus.js';
-import ComponentResolver from '@/ComponentResolver.js'
+import bus from './../bus.js';
+import ComponentResolver from './../ComponentResolver.js'
 
-import ColourPaletteEditor from '@/components/ColourPaletteEditor.vue'
-import LogoEditor from '@/components/LogoEditor.vue'
-import MoodboardEditor from '@/components/MoodboardEditor.vue'
-import PeopleEditor from '@/components/PeopleEditor.vue'
-import TypographyEditor from '@/components/TypographyEditor.vue'
-import VideoEditor from '@/components/VideoEditor.vue'
+import ColourPaletteEditor from './ColourPaletteEditor.vue'
+import LogoEditor from './LogoEditor.vue'
+import MoodboardEditor from './MoodboardEditor.vue'
+import PeopleEditor from './PeopleEditor.vue'
+import TypographyEditor from './TypographyEditor.vue'
+import VideoEditor from './VideoEditor.vue'
 
 export default {
     props: ['page'],

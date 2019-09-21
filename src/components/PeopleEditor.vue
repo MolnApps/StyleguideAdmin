@@ -35,7 +35,7 @@
 import StyleguideForm from './../StyleguideForm'
 import PersonForm from './PersonForm.vue'
 import Btn from './Btn.vue'
-import bus from '@/bus.js'
+import bus from './../bus.js'
 export default {
     components: {Btn, PersonForm},
     props: [

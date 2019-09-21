@@ -65,7 +65,7 @@
 <script>
 import StyleguideForm from './../StyleguideForm.js'
 import Btn from './Btn.vue'
-import bus from '@/bus.js'
+import bus from './../bus.js'
 export default {
     components: {Btn},
 	props: ['dataTypefaceFamily', 'dataEndpoint'],

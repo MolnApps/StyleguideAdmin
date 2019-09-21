@@ -78,7 +78,7 @@ import chroma from 'chroma-js';
 import colorNamer from 'color-namer';
 import {Sketch} from 'vue-color';
 import Btn from './Btn';
-import bus from '@/bus.js';
+import bus from './../bus.js';
 export default {
     components: {
         'sketch-picker': Sketch,

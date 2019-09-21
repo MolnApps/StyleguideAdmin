@@ -37,7 +37,7 @@ import StyleguideForm from './../StyleguideForm.js'
 import VideoForm from './VideoForm.vue'
 import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
-import bus from '@/bus.js'
+import bus from './../bus.js'
 export default {
     components: {Btn, VideoForm, Draggable},
     props: ['dataPage', 'dataPageEndpoint', 'dataEndpoint'],

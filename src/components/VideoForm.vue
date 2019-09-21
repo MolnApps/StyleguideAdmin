@@ -23,7 +23,7 @@ import VideoUrl from './VideoUrl.vue'
 import Vimeo from './Vimeo.vue'
 import Youtube from './Youtube.vue'
 import Btn from './Btn.vue'
-import bus from '@/bus.js'
+import bus from './../bus.js'
 export default {
     components: {Btn, VideoUrl, Vimeo, Youtube},
     props: ['dataEndpoint', 'dataVideo'],

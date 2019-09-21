@@ -59,16 +59,16 @@
 </template>
 
 <script>
-import StyleguideForm from '@/StyleguideForm.js'
-import RemoveFromLibraryForm from '@/RemoveFromLibraryForm.js'
+import StyleguideForm from './../StyleguideForm.js'
+import RemoveFromLibraryForm from './../RemoveFromLibraryForm.js'
 import Logo from './Logo.vue'
 import LogoForm from './LogoForm.vue'
 import LogoBgForm from './LogoBgForm.vue'
 import LogoSpecForm from './LogoSpecForm.vue'
 import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
-import ConfirmModal from '@/modals/ConfirmModal'
-import bus from '@/bus.js'
+import ConfirmModal from './../modals/ConfirmModal'
+import bus from './../bus.js'
 export default {
     components: {Btn, Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable, ConfirmModal},
     props: ['dataPage', 'dataPageEndpoint', 'dataEndpoint'],

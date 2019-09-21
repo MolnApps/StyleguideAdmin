@@ -55,14 +55,14 @@
 </template>
 
 <script>
-import StyleguideForm from '@/StyleguideForm.js'
-import RemoveFromLibraryForm from '@/RemoveFromLibraryForm.js';
-import ConfirmModal from '@/modals/ConfirmModal.vue'
+import StyleguideForm from './../StyleguideForm.js'
+import RemoveFromLibraryForm from './../RemoveFromLibraryForm.js';
+import ConfirmModal from './../modals/ConfirmModal.vue'
 import ColourForm from './ColourForm.vue'
 import Colour from './Colour.vue'
 import Btn from './Btn.vue'
 import Draggable from 'vuedraggable'
-import bus from '@/bus.js'
+import bus from './../bus.js'
 export default {
     components: {Btn, ColourForm, Colour, Draggable, ConfirmModal},
     props: {
