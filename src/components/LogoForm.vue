@@ -32,6 +32,7 @@
 <script>
 import StyleguideForm from './../StyleguideForm.js'
 import Btn from './Btn.vue'
+import bus from '@/bus.js'
 export default {
     components: {Btn},
     props: ['dataLogo', 'dataEndpoint'],
@@ -61,7 +62,7 @@ export default {
                 data: data, 
                 id: data.record.id
             });
-            this.$emit('feedback', data.feedback);
+            bus.$emit('feedback', data.feedback);
         }
     }
 }

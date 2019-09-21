@@ -58,12 +58,12 @@ describe('ChapterForm.vue', () => {
 
 		mockSuccessfullRequest();
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 		
 		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -135,7 +135,9 @@ describe('ChapterForm.vue', () => {
 	})
 
 	let bootstrapWrapper = (page) => {
-		page = page ? page : {id: '1', title:'Foo', body: ''};
+		page = page 
+			? page 
+			: {id: '1', title:'Foo', body: ''};
 
 		wrapper = mount(ChapterForm, {
 			localVue,
@@ -147,6 +149,8 @@ describe('ChapterForm.vue', () => {
 		});
 
 		ui = new TestHelper(wrapper);
+
+		stateHelper.propagateFeedback(wrapper);
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

@@ -1,4 +1,5 @@
 import StyleguideForm from './StyleguideForm'
+import bus from '@/bus.js'
 
 class RemoveFromLibraryForm
 {
@@ -43,6 +44,7 @@ class RemoveFromLibraryForm
 
     emitFeedback() {
     	this.editorComponent.$emit('feedback', this.form.feedback);
+        bus.$emit('feedback', this.form.feedback);
     }
 
     reset() {

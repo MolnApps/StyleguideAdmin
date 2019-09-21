@@ -42,6 +42,7 @@ import Draggable from 'vuedraggable'
 import MoodboardDropzone from './MoodboardDropzone.vue'
 import StyleguideForm from './../StyleguideForm'
 import Btn from './Btn.vue'
+import bus from '@/bus.js'
 export default {
     components: {Btn, Draggable, MoodboardDropzone},
     props: [
@@ -79,7 +80,7 @@ export default {
         },
         onSuccess: function(response) {
             this.$emit('success');
-            this.$emit('feedback', this.form.feedback);
+            bus.$emit('feedback', this.form.feedback);
         },
         onUploadSuccess: function(image) {
             this.$store.dispatch('images/addToPage', {
@@ -88,7 +89,7 @@ export default {
             });
         },
         onUploadFeedback: function(feedback) {
-            this.$emit('feedback', feedback);
+            bus.$emit('feedback', feedback);
         }
     }
 }

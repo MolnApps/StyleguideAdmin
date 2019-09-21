@@ -68,6 +68,7 @@ import LogoSpecForm from './LogoSpecForm.vue'
 import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
 import ConfirmModal from '@/modals/ConfirmModal'
+import bus from '@/bus.js'
 export default {
     components: {Btn, Logo, LogoForm, LogoBgForm, LogoSpecForm, Draggable, ConfirmModal},
     props: ['dataPage', 'dataPageEndpoint', 'dataEndpoint'],
@@ -168,7 +169,7 @@ export default {
 
             form.on('success', (data) => {
                 this.$emit('success');
-                this.$emit('feedback', data.feedback);
+                bus.$emit('feedback', data.feedback);
             });
 
             form.submit(this.dataPageEndpoint);

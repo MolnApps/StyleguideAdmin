@@ -69,6 +69,7 @@ import TypefaceWeight from './TypefaceWeight.vue'
 import TypefaceFamilyForm from './TypefaceFamilyForm.vue'
 import Btn from './Btn.vue'
 import ConfirmModal from '@/modals/ConfirmModal.vue'
+import bus from '@/bus.js'
 export default {
     components: {Btn, TypefaceWeight, TypefaceFamilyForm, ConfirmModal},
     props: [
@@ -160,7 +161,7 @@ export default {
         },
         onSuccess() {
             this.$emit('success');
-            this.$emit('feedback', this.form.feedback);
+            bus.$emit('feedback', this.form.feedback);
         },
         cancelChanges() {
             this.$emit('cancel');

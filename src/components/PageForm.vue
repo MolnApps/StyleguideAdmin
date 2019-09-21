@@ -32,6 +32,7 @@
 <script>
 import StyleguideForm from './../StyleguideForm';
 import Btn from './Btn.vue';
+import bus from '@/bus.js';
 export default {
     components: {Btn},
     props: ['dataPage', 'dataEndpoint'],
@@ -55,7 +56,7 @@ export default {
         },
         onSuccess: function(response) {
             this.$emit('success', response.record);
-            this.$emit('feedback', response.feedback);
+            bus.$emit('feedback', response.feedback);
         },
         onCancel: function() {
             this.form.reset();

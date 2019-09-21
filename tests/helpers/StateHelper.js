@@ -19,6 +19,13 @@ class StateHelper {
 	    return newStore;
 	}
 
+	propagateFeedback(wrapper)
+	{
+		bus.$on('feedback', (data) => {
+			wrapper.vm.$emit('feedback-bus', data);
+		});
+	}
+
 	emit(eventName)
 	{
 		bus.$emit(eventName);

@@ -35,6 +35,7 @@
 import StyleguideForm from './../StyleguideForm'
 import PersonForm from './PersonForm.vue'
 import Btn from './Btn.vue'
+import bus from '@/bus.js'
 export default {
     components: {Btn, PersonForm},
     props: [
@@ -96,7 +97,7 @@ export default {
         },
         onSuccess: function(data) {
             this.$emit('success');
-            this.$emit('feedback', data.feedback);
+            bus.$emit('feedback', data.feedback);
         },
         onCancelChanges: function() {
             this.$emit('cancel');

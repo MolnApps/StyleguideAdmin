@@ -1,15 +1,19 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import ColourForm from '@/components/ColourForm.vue'
 import {Sketch} from 'vue-color';
-import {TestHelper, AjaxHelper, ColourHelper} from './../helpers/Helpers.js'
+import {TestHelper, AjaxHelper, ColourHelper, StateHelper} from './../helpers/Helpers.js'
 
 import hex2pantone from '@/HexToPantone.js';
+
+let stateHelper = new StateHelper();
+let localVue = stateHelper.localVue;
 
 describe('ColourForm.vue', () => {
 	let wrapper;
 	let ui;
 	let colourHelper;
 	let ajaxHelper;
+	let store;
 
 	beforeEach(() => {
 		colourHelper = new ColourHelper();
@@ -126,12 +130,12 @@ describe('ColourForm.vue', () => {
 
 		mockSuccessfullRequest(returnedColour);
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 
 		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -294,6 +298,8 @@ describe('ColourForm.vue', () => {
 
 		ui = new TestHelper(wrapper);
 		colourHelper.setTestHelper(ui).setWrapper(wrapper);
+
+		stateHelper.propagateFeedback(wrapper);
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

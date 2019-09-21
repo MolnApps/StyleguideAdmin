@@ -1,20 +1,36 @@
 import expect from 'expect'
+import bus from '@/bus.js'
 
 class TestHelper {
 	constructor(wrapper) {
 		this.wrapper = wrapper;
 	}
 
-	notSeeFeedback()
+	notSeeBusFeedback()
 	{
-		this.notExpectEvent('feedback');
+		this.notExpectBusEvent('feedback');
 	}
 
-	seeFeedback(message)
+	seeBusFeedback(message)
 	{
 		message = message ? message : 'The page was updated.';
-		this.expectEvent('feedback');
-		this.expectEventData('feedback', [[message]]);
+		this.expectBusEvent('feedback');
+		this.expectBusEventData('feedback', [[message]]);
+	}
+
+	notExpectBusEvent(name)
+	{
+		expect(this.wrapper.emitted()[name + '-bus']).toBeFalsy();
+	}
+
+	expectBusEvent(name)
+	{
+		expect(this.wrapper.emitted()[name + '-bus']).toBeTruthy();
+	}
+
+	expectBusEventData(name, data)
+	{
+		expect(this.wrapper.emitted()[name + '-bus'][0]).toEqual(data);
 	}
 
 	seeChildComponent(childComponent)

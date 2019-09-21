@@ -86,12 +86,12 @@ describe('LogoSpecForm.vue', () => {
 
 		logoHelper.fillSpecForm();
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 
 		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -208,6 +208,8 @@ describe('LogoSpecForm.vue', () => {
 	    ui = new TestHelper(wrapper);
 
 	    logoHelper.setWrapper(wrapper).setTestHelper(ui);
+
+	    stateHelper.propagateFeedback(wrapper);
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

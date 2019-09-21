@@ -88,7 +88,7 @@ describe('IndexEditor.vue', () => {
 		wrapper.find(Draggable).vm.$emit('end');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback('The index could not be updated.');
+			ui.seeBusFeedback('The index could not be updated.');
 		}, done);
 	})
 
@@ -204,7 +204,7 @@ describe('IndexEditor.vue', () => {
 
 		ajaxHelper.expectAfterRequest(() => {
 			ui.expectEvent('toggleSuccess');
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -345,6 +345,7 @@ describe('IndexEditor.vue', () => {
 		ui = new TestHelper(wrapper);
 
 		indexHelper.setTestHelper(ui).setWrapper(wrapper);
+		stateHelper.propagateFeedback(wrapper);
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

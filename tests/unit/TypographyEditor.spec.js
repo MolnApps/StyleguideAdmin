@@ -240,12 +240,12 @@ describe('TypographyEditor.vue', () => {
 
 		mockSuccessfullRequest();
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 
 		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -322,7 +322,7 @@ describe('TypographyEditor.vue', () => {
 		ajaxHelper.expectAfterRequest(() => {
 			ui.notSee('Roboto', '.all');
 			ajaxHelper.expectRequest('/typography/2', {'_method': 'delete'});
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -342,6 +342,8 @@ describe('TypographyEditor.vue', () => {
 		ui = new TestHelper(wrapper);
 	    
 	    typographyHelper.setWrapper(wrapper).setTestHelper(ui);
+
+	    stateHelper.propagateFeedback(wrapper);
 	}
 
 	let bootstrapStore = (pageTypefaceFamilies, allTypefaceFamilies) => {

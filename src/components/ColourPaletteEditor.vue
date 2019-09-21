@@ -62,6 +62,7 @@ import ColourForm from './ColourForm.vue'
 import Colour from './Colour.vue'
 import Btn from './Btn.vue'
 import Draggable from 'vuedraggable'
+import bus from '@/bus.js'
 export default {
     components: {Btn, ColourForm, Colour, Draggable, ConfirmModal},
     props: {
@@ -141,7 +142,7 @@ export default {
 
             form.on('success', (data) => {
                 this.$emit('success');
-                this.$emit('feedback', data.feedback);
+                bus.$emit('feedback', data.feedback);
             });
 
             form.submit(this.dataPageEndpoint);

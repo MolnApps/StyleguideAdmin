@@ -65,6 +65,7 @@
 <script>
 import StyleguideForm from './../StyleguideForm.js'
 import Btn from './Btn.vue'
+import bus from '@/bus.js'
 export default {
     components: {Btn},
 	props: ['dataTypefaceFamily', 'dataEndpoint'],
@@ -92,7 +93,7 @@ export default {
     	},
     	onSuccess: function(data) {
             this.$emit('success', data.record);
-            this.$emit('feedback', data.feedback);
+            bus.$emit('feedback', data.feedback);
     	},
     	removeWeight: function(index) {
     		this.form.weights.splice(index, 1);

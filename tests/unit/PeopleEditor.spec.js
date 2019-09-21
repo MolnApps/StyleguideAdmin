@@ -107,12 +107,12 @@ describe('PeopleEditor.vue', () => {
 	it ('displays a feedback after a successful api call', (done) => {
 		mockSuccessfullRequest();
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 
 		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -215,6 +215,8 @@ describe('PeopleEditor.vue', () => {
 		});
 
 		ui = new TestHelper(wrapper);
+
+		stateHelper.propagateFeedback(wrapper);
 	}
 
 	let bootstrapStore = () => {

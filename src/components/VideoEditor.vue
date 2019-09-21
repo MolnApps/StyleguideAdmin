@@ -37,6 +37,7 @@ import StyleguideForm from './../StyleguideForm.js'
 import VideoForm from './VideoForm.vue'
 import Draggable from 'vuedraggable'
 import Btn from './Btn.vue'
+import bus from '@/bus.js'
 export default {
     components: {Btn, VideoForm, Draggable},
     props: ['dataPage', 'dataPageEndpoint', 'dataEndpoint'],
@@ -86,7 +87,7 @@ export default {
         },
         onSuccessChanges: function() {
             this.$emit('success');
-            this.$emit('feedback', this.form.feedback);
+            bus.$emit('feedback', this.form.feedback);
         },
         onCancelChanges: function() {
             this.$emit('cancel');

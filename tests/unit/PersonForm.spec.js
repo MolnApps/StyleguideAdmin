@@ -94,12 +94,12 @@ describe('PersonForm.vue', () => {
 	it ('displays feedback if the api call is successful', (done) => {
 		mockSuccessfullRequest();
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 
 		ui.click('$save');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -263,6 +263,8 @@ describe('PersonForm.vue', () => {
 		});
 
 		ui = new TestHelper(wrapper);
+
+		stateHelper.propagateFeedback(wrapper);
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

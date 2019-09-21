@@ -91,13 +91,21 @@ describe('MoodboardEditor.vue', () => {
 	it ('displays feedback when the changes are saved', (done) => {
 		mockSuccessfullRequest();
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 
 		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
+	})
+
+	it ('displays feedback when upload is successful', () => {
+		ui.notSeeBusFeedback();
+
+		ui.emit(MoodboardDropzone, 'feedback', ['foobar']);
+
+		ui.seeBusFeedback('foobar');
 	})
 
 	it ('does not perform any api call when the cancell button is clicked', () => {
@@ -145,6 +153,7 @@ describe('MoodboardEditor.vue', () => {
 		ui = new TestHelper(wrapper);
 
 		moodboardHelper.setWrapper(wrapper).setTestHelper(ui);
+		stateHelper.propagateFeedback(wrapper);
 	}
 
 	let bootstrapStore = () => {

@@ -328,7 +328,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ui.click('$saveChanges');
 		
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -489,7 +489,7 @@ describe('ColourPaletteEditor.vue', () => {
 		ajaxHelper.expectAfterRequest(() => {
 			ui.notSee('Green', 'div.all');
 			ajaxHelper.expectRequest('/colours/2', {'_method': 'delete'});
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -515,6 +515,8 @@ describe('ColourPaletteEditor.vue', () => {
 	    ui = new TestHelper(wrapper);
 
 	    colourHelper.setTestHelper(ui).setWrapper(wrapper);
+
+	    stateHelper.propagateFeedback(wrapper);
 	}
 
 	let bootstrapStore = () => {

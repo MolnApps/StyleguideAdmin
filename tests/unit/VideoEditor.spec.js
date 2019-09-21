@@ -154,12 +154,12 @@ describe('VideoEditor.vue', () => {
 
 		ajaxHelper.expectNoRequests();
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 
 		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -181,6 +181,8 @@ describe('VideoEditor.vue', () => {
 		});
 
 		ui = new TestHelper(wrapper);
+
+		stateHelper.propagateFeedback(wrapper);
 	}
 
 	let bootstrapStore = () => {

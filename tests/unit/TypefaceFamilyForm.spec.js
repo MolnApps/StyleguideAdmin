@@ -91,12 +91,12 @@ describe('TypefaceFamilyForm.vue', () => {
 
         mockSuccessfullRequest();
 
-        ui.notSeeFeedback();
+        ui.notSeeBusFeedback();
 
         ui.click('$save');
 
         ajaxHelper.expectAfterRequest(() => {
-            ui.seeFeedback();
+            ui.seeBusFeedback();
         }, done);
     })
 
@@ -201,6 +201,8 @@ describe('TypefaceFamilyForm.vue', () => {
 	    ui = new TestHelper(wrapper);
 
 	    typographyHelper.setWrapper(wrapper).setTestHelper(ui);
+
+        stateHelper.propagateFeedback(wrapper);
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

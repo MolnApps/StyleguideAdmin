@@ -72,7 +72,7 @@ describe('VideoForm.vue', () => {
 		ui.type('input[name="url"]', 'https://www.youtube.com/watch?v=1eMg23jjR_c');
 		
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -149,12 +149,12 @@ describe('VideoForm.vue', () => {
 	it ('displays a feedback after successul api call', (done) => {
 		mockSuccessfullRequest({id: 1, provider: 'youtube', provider_id: '1eMg23jjR_c'});
 
-		ui.notSeeFeedback();
+		ui.notSeeBusFeedback();
 
 		ui.click('$save');
 		
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -194,6 +194,8 @@ describe('VideoForm.vue', () => {
 		});
 
 		ui = new TestHelper(wrapper);
+
+		stateHelper.propagateFeedback(wrapper);
 	}
 
 	let mockSuccessfullRequest = (record, override) => {

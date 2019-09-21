@@ -118,6 +118,7 @@ import StyleguideForm from './../StyleguideForm.js'
 import LogoSafety from './LogoSafety.vue'
 import LogoSize from './LogoSize.vue'
 import Btn from './Btn.vue'
+import bus from '@/bus.js'
 export default {
     components: {Btn, LogoSafety, LogoSize},
     props: ['dataLogo', 'dataEndpoint'],
@@ -147,7 +148,7 @@ export default {
         },
         onSuccess: function(data) {
             this.$emit('success', {data: data});
-            this.$emit('feedback', data.feedback);
+            bus.$emit('feedback', data.feedback);
         }
     }
 }

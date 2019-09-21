@@ -78,6 +78,7 @@ import chroma from 'chroma-js';
 import colorNamer from 'color-namer';
 import {Sketch} from 'vue-color';
 import Btn from './Btn';
+import bus from '@/bus.js';
 export default {
     components: {
         'sketch-picker': Sketch,
@@ -107,7 +108,7 @@ export default {
         },
         onSuccess: function(data) {
             this.$emit('success', data.record);
-            this.$emit('feedback', data.feedback);
+            bus.$emit('feedback', data.feedback);
         },
         onInput: function() {
             if ( ! this.liveUpdate || ! this.form.hex) {

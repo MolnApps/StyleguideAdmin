@@ -41,6 +41,7 @@ import IndexItem from './IndexItem.vue';
 import PageForm from './PageForm.vue';
 import PageSteps from './PageSteps.vue';
 import Btn from './Btn.vue';
+import bus from '@/bus.js';
 export default {
     components: {Btn, IndexItem, PageForm, PageSteps},
     props: [
@@ -84,7 +85,7 @@ export default {
             this.forms.toggleVisibility = new StyleguideForm({id: index.page.id});
             this.forms.toggleVisibility.on('success', (response) => {
                 this.$emit('toggleSuccess');
-                this.$emit('feedback', response.feedback);
+                bus.$emit('feedback', response.feedback);
             })
             this.forms.toggleVisibility.submit(this.dataToggleEndpoint);
         },
@@ -131,10 +132,10 @@ export default {
 
             this.forms.index.on('success', (response) => {
                 this.$emit('success');
-                this.$emit('feedback', response.feedback)
+                bus.$emit('feedback', response.feedback)
             });
             this.forms.index.on('fail', (response) => {
-                this.$emit('feedback', response.feedback)
+                bus.$emit('feedback', response.feedback)
             });
 
             this.forms.index.submit(this.dataEndpoint);

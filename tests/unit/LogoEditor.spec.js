@@ -131,7 +131,7 @@ describe('LogoEditor.vue', () => {
 		ui.click('$saveChanges');
 
 		ajaxHelper.expectAfterRequest(() => {
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -338,7 +338,7 @@ describe('LogoEditor.vue', () => {
 		ajaxHelper.expectAfterRequest(() => {
 			ui.notSee('Secondary logo positive', '.all');
 			ajaxHelper.expectRequest('/logos/2', {'_method': 'delete'});
-			ui.seeFeedback();
+			ui.seeBusFeedback();
 		}, done);
 	})
 
@@ -360,6 +360,8 @@ describe('LogoEditor.vue', () => {
 	    ui = new TestHelper(wrapper);
 
 	    logoHelper.setWrapper(wrapper).setTestHelper(ui);
+
+	    stateHelper.propagateFeedback(wrapper);
 	}
 
 	let bootstrapStore = () => {
