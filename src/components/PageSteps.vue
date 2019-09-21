@@ -46,7 +46,7 @@
 
 <script>
 import PageForm from './PageForm';
-import StyleguideEditor from '@/components/StyleguideEditor';
+import StyleguideEditor from './StyleguideEditor';
 import Btn from './Btn';
 import ComponentResolver from './../ComponentResolver.js';
 
