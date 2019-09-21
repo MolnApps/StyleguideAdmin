@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-let _initializePageSlug = (state, page) => {
+let initializePageSlug = (state, page) => {
 	if (state.dictionary[page.slug] === undefined) {
 		Vue.set(state.dictionary, page.slug, []);
 	}
@@ -39,12 +39,12 @@ export default {
 			state.all.push(record);
 		},
 		addToPage (state, payload) {
-			_initializePageSlug(state, payload.page);
+			initializePageSlug(state, payload.page);
 
 			state.dictionary[payload.page.slug].push(payload.record);
 		},
 		removeFromPage (state, payload) {
-			_initializePageSlug(state, payload.page);
+			initializePageSlug(state, payload.page);
 
 			state.dictionary[payload.page.slug] = 
 				state.dictionary[payload.page.slug].filter((currentRecord) => {
@@ -52,12 +52,12 @@ export default {
             	});
 		},
 		removeFromPageByIndex (state, payload) {
-			_initializePageSlug(state, payload.page);
+			initializePageSlug(state, payload.page);
 			
 			state.dictionary[payload.page.slug].splice(payload.index, 1);
 		},
 		removeFromPageByIdAndPivot (state, payload) {
-			_initializePageSlug(state, payload.page);
+			initializePageSlug(state, payload.page);
 
 			state.dictionary[payload.page.slug] = 
 				state.dictionary[payload.page.slug].filter((currentRecord) => {
