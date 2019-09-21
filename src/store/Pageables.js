@@ -31,6 +31,10 @@ export default {
 			state.all.push(record);
 		},
 		addToPage (state, payload) {
+			if (state.dictionary[payload.page.slug] === undefined) {
+				state.dictionary[payload.page.slug] = []
+			}
+
 			state.dictionary[payload.page.slug].push(payload.record);
 		},
 		removeFromPage (state, payload) {
@@ -41,14 +45,6 @@ export default {
 		},
 		removeFromPageByIndex (state, payload) {
 			state.dictionary[payload.page.slug].splice(payload.index, 1);
-		},
-		removeFromPageByIdOrPivot (state, payload) {
-			state.dictionary[payload.page.slug] = 
-				state.dictionary[payload.page.slug].filter((currentRecord) => {
-                	return currentRecord.id != payload.record.id || 
-                		currentRecord.pivot.preferences[payload.pivotProperty] != 
-                			payload.record.pivot.preferences[payload.pivotProperty];
-            	});
 		},
 		removeFromPageByIdAndPivot (state, payload) {
 			state.dictionary[payload.page.slug] = 
@@ -93,7 +89,7 @@ export default {
 			    return currentRecord.id == payload.record.id && 
 			    	currentRecord.pivot.preferences[payload.pivotProperty] == 
 			    		payload.record.pivot.preferences[payload.pivotProperty];
-			}).length == 0;
+			}).length > 0;
 		},
 		idsForPage: (state) => (page) => {
 			return state.dictionary[page.slug].map((record) => {
@@ -130,9 +126,6 @@ export default {
 		},
 		removeFromPageByIndex(context, payload) {
 			context.commit('removeFromPageByIndex', payload);
-		},
-		removeFromPageByIdOrPivot(context, payload) {
-			context.commit('removeFromPageByIdOrPivot', payload);
 		},
 		removeFromPageByIdAndPivot(context, payload) {
 			context.commit('removeFromPageByIdAndPivot', payload);

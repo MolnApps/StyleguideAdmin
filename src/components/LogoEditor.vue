@@ -114,7 +114,7 @@ export default {
             Object.assign(logo, {pivot: {preferences: {'background-color': ''}}});
         },
         removeLogo: function(logo) {
-            this.$store.dispatch('logos/removeFromPageByIdOrPivot', {
+            this.$store.dispatch('logos/removeFromPageByIdAndPivot', {
                 page: this.dataPage, 
                 record: logo, 
                 pivotProperty: 'background-color'

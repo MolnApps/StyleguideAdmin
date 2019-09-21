@@ -102,7 +102,7 @@ export default {
             }).length > 0;
         },
         weightNotInPage: function(id, weight) {
-            return this.$store.getters['typefaces/pageHasWithPivot']({
+            return ! this.$store.getters['typefaces/pageHasWithPivot']({
                 page: this.dataPage, 
                 record: {'id': id, pivot: {preferences: weight}},
                 pivotProperty: 'weight',
