@@ -7,6 +7,7 @@ import StyleguideIndexEditor from './src/components/IndexEditor.vue'
 import StyleguideUrl from './src/Url.js';
 import StyleguideLoader from './src/StyleguideLoader.js'
 import StyleguideBus from './src/bus.js';
+import StyleguideStore from './src/store.js';
 
 export { 
 	StyleguideConfirmModal,
@@ -14,7 +15,8 @@ export {
 	StyleguideIndexEditor,
 	StyleguideUrl,
 	StyleguideLoader,
-	StyleguideBus
+	StyleguideBus,
+	StyleguideStore
 }
 
 export default {}
