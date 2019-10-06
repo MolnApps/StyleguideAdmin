@@ -8,6 +8,8 @@ import StyleguideUrl from './src/Url.js';
 import StyleguideLoader from './src/StyleguideLoader.js'
 import StyleguideBus from './src/bus.js';
 import StyleguideStore from './src/store.js';
+// Subcomponents
+import LogoSafety from './src/components/LogoSafety.vue'
 
 export { 
 	StyleguideConfirmModal,
@@ -16,7 +18,9 @@ export {
 	StyleguideUrl,
 	StyleguideLoader,
 	StyleguideBus,
-	StyleguideStore
+	StyleguideStore,
+	//
+	LogoSafety
 }
 
 export default {}
