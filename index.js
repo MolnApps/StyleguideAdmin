@@ -9,7 +9,12 @@ import StyleguideLoader from './src/StyleguideLoader.js'
 import StyleguideBus from './src/bus.js';
 import StyleguideStore from './src/store.js';
 // Subcomponents
+import Logo from './src/components/Logo.vue'
 import LogoSafety from './src/components/LogoSafety.vue'
+import LogoSize from './src/components/LogoSize.vue'
+import Colour from './src/components/Colour.vue'
+import Vimeo from './src/components/Vimeo.vue'
+import Youtube from './src/components/Youtube.vue'
 
 export { 
 	StyleguideConfirmModal,
@@ -20,7 +25,12 @@ export {
 	StyleguideBus,
 	StyleguideStore,
 	//
-	LogoSafety
+	Colour,
+	Logo,
+	LogoSafety,
+	LogoSize,
+	Vimeo,
+	Youtube
 }
 
 export default {}
